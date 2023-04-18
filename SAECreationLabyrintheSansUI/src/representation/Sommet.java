@@ -1,5 +1,17 @@
+/* 
+ * Sommet.java				18 avril 2023
+ * Iut de Rodez , pas de copyright
+ */
+
 package representation;
 
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 
+ * @author Denamiel Clement , Descriaud Lucas
+ */
 public class Sommet {
     
     /** coordonnée X de la salle dans le labyrinthe */
@@ -9,8 +21,15 @@ public class Sommet {
     private int posY;
 
     /** liste des voisins du sommet */
-    private int[][] listeDesVoisins;
+    private List<Sommet> listeDesVoisins;
 
+
+    /**
+     * constructeur de la classe sommet
+     * @param x position y du sommet
+     * @param y position y du sommet
+     * @throws IllegalArgumentException si les arguments sont invalides
+     */
     public Sommet (int x, int y) {
         super();
 
@@ -22,8 +41,72 @@ public class Sommet {
         posY = y;
     }
 
+    /**
+     * verifie que les coordonnées sont valides (pas de coordonnées dans les négatifs)
+     * @param x positio, coordonnées sont positives x du sommet
+     * @param y position y du sommet
+     * @return true si les parametres sont valides
+     */
     private boolean coordonneesValides(int x, int y) {
-        return 0 >= x && 0 >= y;
+        return 0 <= x && 0 <= y;
     }
     
+    /**
+     * permet d'ajouter un sommet dans la liste des voisins du sommet courant
+     * @param nouveauVoisin le voisin à ajouter dans la liste des voisins
+     */
+    public void ajouterSommetVoisin(Sommet nouveauVoisin) {
+        listeDesVoisins.add(nouveauVoisin);
+    }
+    
+    /**
+     * permet de supprimer un sommet dans la liste des voisins du sommet courant
+     * @param voisinASupprimer le voisin à supprimer dans la liste des voisins
+     */    
+    public void supprimerSommetVoisin(Sommet voisinASupprimer) {
+        for (int i = 0; i < listeDesVoisins.size(); i++) {
+            if (voisinASupprimer.equals(listeDesVoisins.get(i))) {
+                listeDesVoisins.remove(i);
+            }
+        }
+    }
+
+    /**
+     * 
+     * @return la position x du sommet
+     */
+    public int getPosX() {
+        return posX;
+    }
+    
+    /**
+     * 
+     * @return la position y du sommet
+     */    
+    public int getPosY() {
+        return posY;
+    }
+    
+    /**
+     * 
+     * @return la liste des voisins de ce sommet
+     */
+    public List<Sommet> getListeDesVoisins() {
+        return listeDesVoisins;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + posX + "; " + posY + ")";
+    }
+
+    @Override
+    public int hashCode() {
+        return posX * 100 + posY * 10 + listeDesVoisins.size(); 
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return hashCode() == obj.hashCode();
+    }
 }
