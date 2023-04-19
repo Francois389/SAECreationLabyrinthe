@@ -39,6 +39,7 @@ public class Sommet {
 
         posX = x;
         posY = y;
+        listeDesVoisins = new ArrayList<Sommet>(10);
     }
 
     /**
@@ -54,8 +55,15 @@ public class Sommet {
     /**
      * permet d'ajouter un sommet dans la liste des voisins du sommet courant
      * @param nouveauVoisin le voisin à ajouter dans la liste des voisins
+     * @throw IllegalArgumentException si le sommmet est deja présent dans la liste
+     * @return true si l'element a bien ete ajoute dans la liste des voisins
      */
     public void ajouterSommetVoisin(Sommet nouveauVoisin) {
+        for (int i = 0; i < listeDesVoisins.size(); i++) {
+            if (nouveauVoisin.equals(listeDesVoisins.get(i))) {
+                throw new IllegalArgumentException("Le sommet existe deja dans la liste");
+            }
+        }
         listeDesVoisins.add(nouveauVoisin);
     }
     
