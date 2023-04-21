@@ -10,7 +10,8 @@ import java.util.List;
 
 /**
  * 
- * @author Denamiel Clement , Descriaud Lucas
+ * @author Denamiel Clement 
+ * @author Descriaud Lucas
  */
 public class Sommet {
     

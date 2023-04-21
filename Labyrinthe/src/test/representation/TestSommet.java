@@ -15,8 +15,8 @@ import org.junit.jupiter.api.Test;
 
 /**
  * //TODO Commenter la responsabilités de la classe TestSommet
- * @author francois
- *
+ * @author Denamiel Clement 
+ * @author Descriaud Lucas
  */
 class TestSommet {
     
