@@ -8,8 +8,10 @@ import representation.Sommet;
 
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -42,6 +44,7 @@ class TestSommet {
 /* 13 */sommetsValides.add(new Sommet(4,4));
 
     }
+    
 
     /**
      * Test method for {@link representation.Sommet#Sommet(int, int)}.
@@ -65,9 +68,12 @@ class TestSommet {
     
     @Test
     void testAjouterVoisin() {
-        Sommet sommetTest = new Sommet(0,0);
-        // TODO test entre egalité de deux arrayList 
-        // TODO assertThrow
+        Sommet test = new Sommet(5,5);
+        for (int i = 0 ;  i < sommetsValides.size() ; i++) {
+            System.out.println(sommetsValides.get(i));
+            test.ajouterSommetVoisin(sommetsValides.get(i));
+            assertEquals(test.getListeDesVoisins().size(),i+1);
+        }            
     }
     
     @Test 
@@ -101,10 +107,29 @@ class TestSommet {
         
     }
     
+    @DisplayName("Test hashcode")
     @Test
     void testHashCode() {
+        int x,
+        	y,
+        	tailleVoisins;
         
+        x = y = tailleVoisins = 0;
+        for (int i = 0; i < sommetsValides.size(); i++) {
+            x = sommetsValides.get(i).getPosX();
+            y = sommetsValides.get(i).getPosY();
+            tailleVoisins = sommetsValides.get(i).getListeDesVoisins().size();
+            res = x*100 + y * 10 + tailleVoisins;
+            assertEquals(, sommetsValides.get(i).hashCode());
+        }
+    
     }
     
+    @DisplayName("Test equals")
+    @Test
+    void testEquals() {
+        Sommet sommetTest = new Sommet(0,0);
+        assertEquals(sommetTest.hashCode(), sommetsValides.get(0).hashCode());
+    }
 
 }
