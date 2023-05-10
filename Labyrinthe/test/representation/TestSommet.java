@@ -23,6 +23,26 @@ import org.junit.jupiter.api.Test;
 class TestSommet {
     
     public ArrayList<Sommet> sommetsValides;
+   	public ArrayList<Sommet> sommetsValidesSansDoublon;
+   	
+    @BeforeEach
+    public void genererSommetsValidesSansDoublon() {
+        sommetsValidesSansDoublon = new ArrayList<>(10);
+        
+/*  0 */sommetsValidesSansDoublon.add(new Sommet(0,0));
+/*  1 */sommetsValidesSansDoublon.add(new Sommet(1,0));
+/*  2 */sommetsValidesSansDoublon.add(new Sommet(2,0));
+/*  3 */sommetsValidesSansDoublon.add(new Sommet(3,0));
+/*  4 */sommetsValidesSansDoublon.add(new Sommet(4,0));
+/*  5 */sommetsValidesSansDoublon.add(new Sommet(0,1));
+/*  6 */sommetsValidesSansDoublon.add(new Sommet(0,2));
+/*  7 */sommetsValidesSansDoublon.add(new Sommet(0,3));
+/*  8 */sommetsValidesSansDoublon.add(new Sommet(0,4));
+/*  9 */sommetsValidesSansDoublon.add(new Sommet(1,1));
+/* 10 */sommetsValidesSansDoublon.add(new Sommet(2,2));
+/* 11 */sommetsValidesSansDoublon.add(new Sommet(3,3));
+/* 12 */sommetsValidesSansDoublon.add(new Sommet(4,4));
+    }
     
     @BeforeEach
     public void genererSommetsValides() {
@@ -37,12 +57,11 @@ class TestSommet {
 /*  6 */sommetsValides.add(new Sommet(0,2));
 /*  7 */sommetsValides.add(new Sommet(0,3));
 /*  8 */sommetsValides.add(new Sommet(0,4));
-/*  9 */sommetsValides.add(new Sommet(0,0));
-/* 10 */sommetsValides.add(new Sommet(1,1));
-/* 11 */sommetsValides.add(new Sommet(2,2));
-/* 12 */sommetsValides.add(new Sommet(3,3));
-/* 13 */sommetsValides.add(new Sommet(4,4));
-
+/*  9 */sommetsValides.add(new Sommet(1,1));
+/* 10 */sommetsValides.add(new Sommet(2,2));
+/* 11 */sommetsValides.add(new Sommet(3,3));
+/* 12 */sommetsValides.add(new Sommet(4,4));
+/* 13 */sommetsValides.add(new Sommet(0,0));
     }
     
 
@@ -69,11 +88,15 @@ class TestSommet {
     @Test
     void testAjouterVoisin() {
         Sommet test = new Sommet(5,5);
-        for (int i = 0 ;  i < sommetsValides.size() ; i++) {
-            System.out.println(sommetsValides.get(i));
-            test.ajouterSommetVoisin(sommetsValides.get(i));
+        // Assure l'ajoutt de sommet
+        for (int i = 0 ;  i < sommetsValidesSansDoublon.size() ; i++) {
+            test.ajouterSommetVoisin(sommetsValidesSansDoublon.get(i));
             assertEquals(test.getListeDesVoisins().size(),i+1);
-        }            
+        }
+        // Assure la levée d'exceptions si sommet deja existant
+        for (int j = 0 ; j < sommetsValides.size()  ; j++) {
+            assertThrows(IllegalArgumentException.class, ()-> test.ajouterSommetVoisin(sommetsValides.get(j)));
+        }
     }
     
     @Test 
@@ -112,7 +135,8 @@ class TestSommet {
     void testHashCode() {
         int x,
         	y,
-        	tailleVoisins;
+        	tailleVoisins,
+        	res;
         
         x = y = tailleVoisins = 0;
         for (int i = 0; i < sommetsValides.size(); i++) {
@@ -120,7 +144,7 @@ class TestSommet {
             y = sommetsValides.get(i).getPosY();
             tailleVoisins = sommetsValides.get(i).getListeDesVoisins().size();
             res = x*100 + y * 10 + tailleVoisins;
-            assertEquals(, sommetsValides.get(i).hashCode());
+            assertEquals(res, sommetsValides.get(i).hashCode());
         }
     
     }
@@ -128,8 +152,9 @@ class TestSommet {
     @DisplayName("Test equals")
     @Test
     void testEquals() {
-        Sommet sommetTest = new Sommet(0,0);
-        assertEquals(sommetTest.hashCode(), sommetsValides.get(0).hashCode());
+        for (int i = 0; i < sommetsValidesSansDoublon.size(); i++) {
+            assertEquals(sommetsValidesSansDoublon.get(i),sommetsValides.get(i));
+        }
     }
 
 }
