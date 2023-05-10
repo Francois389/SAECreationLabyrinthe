@@ -95,7 +95,7 @@ class TestSommet {
         }
         // Assure la levée d'exceptions si sommet deja existant
         for (int j = 0 ; j < sommetsValides.size()  ; j++) {
-            assertThrows(IllegalArgumentException.class, ()-> test.ajouterSommetVoisin(sommetsValides.get(j)));
+            assertThrows(IllegalArgumentException.class, ()-> test.ajouterSommetVoisin(sommetsValides.get(j));
         }
     }
     
