@@ -56,7 +56,7 @@ public class Sommet {
     /**
      * permet d'ajouter un sommet dans la liste des voisins du sommet courant
      * @param nouveauVoisin le voisin à ajouter dans la liste des voisins
-     * @throw IllegalArgumentException si le sommmet est deja présent dans la liste
+     * @throws IllegalArgumentException si le sommmet est deja présent dans la liste
      * @return true si l'element a bien ete ajoute dans la liste des voisins
      */
     public void ajouterSommetVoisin(Sommet nouveauVoisin) {
@@ -73,10 +73,19 @@ public class Sommet {
      * @param voisinASupprimer le voisin à supprimer dans la liste des voisins
      */    
     public void supprimerSommetVoisin(Sommet voisinASupprimer) {
-        for (int i = 0; i < listeDesVoisins.size(); i++) {
+        boolean sommetTrouve;
+        
+        sommetTrouve = false;
+        for (int i = 0; i < listeDesVoisins.size() && !sommetTrouve; i++) {
             if (voisinASupprimer.equals(listeDesVoisins.get(i))) {
+                sommetTrouve = true;
                 listeDesVoisins.remove(i);
             }
+        }
+        
+        if (!sommetTrouve) {
+            throw new IllegalArgumentException(
+                "le sommet a supprimer n'est pas dans les voisins'");
         }
     }
 

@@ -95,9 +95,37 @@ class TestSommet {
         }
         // Assure la levée d'exceptions si sommet deja existant
         for (int j = 0 ; j < sommetsValides.size()  ; j++) {
-            assertThrows(IllegalArgumentException.class, ()-> test.ajouterSommetVoisin(sommetsValides.get(j));
+            Sommet aAjouter = sommetsValides.get(j);
+            assertThrows(IllegalArgumentException.class, ()-> test.ajouterSommetVoisin(aAjouter));
         }
     }
+    
+    @DisplayName("Test supprimerVoisin sommet valide")
+    @Test
+    void testSupprimerVoisinValide() {
+        Sommet avecVoisins = new Sommet(5,5);
+        for (Sommet valide : sommetsValidesSansDoublon) {
+            avecVoisins.ajouterSommetVoisin(valide);
+        }
+        
+        Sommet aSupprimer = new Sommet(0,0);
+        assertDoesNotThrow(()-> avecVoisins.supprimerSommetVoisin(aSupprimer));
+        
+    }
+    
+    @DisplayName("Test supprimerVoisin sommet invalide")
+    @Test
+    void testSupprimerVoisinInvalide() {
+        Sommet avecVoisins = new Sommet(5,5);
+        for (Sommet valide : sommetsValidesSansDoublon) {
+            avecVoisins.ajouterSommetVoisin(valide);
+        }
+        
+        Sommet aSupprimer = new Sommet(10,0);
+        assertThrows(IllegalArgumentException.class, ()-> avecVoisins.supprimerSommetVoisin(aSupprimer));
+        
+    }
+    
     
     @Test 
     void testGetX() {
@@ -128,6 +156,21 @@ class TestSommet {
         assertNotEquals(sommetsValides.get(3).getPosY(),3);
         assertNotEquals(sommetsValides.get(4).getPosY(),4);
         
+    }
+    
+    
+    @DisplayName("Test toString")
+    @Test
+    void testToString() {
+        String representation;
+        Sommet sommet;
+        
+        representation = "";
+        for (int i = 0; i < sommetsValidesSansDoublon.size(); i++) {
+            sommet = sommetsValidesSansDoublon.get(i);
+            representation = "(" + sommet.getPosX() + "; " + sommet.getPosY() + ")";
+            assertEquals(representation, sommet.toString());
+        } 
     }
     
     @DisplayName("Test hashcode")
