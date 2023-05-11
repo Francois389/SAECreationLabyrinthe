@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * 
- * @author Denamiel Clement 
+ * @author Denamiel Clément 
  * @author Descriaud Lucas
  */
 public class Sommet {
@@ -26,7 +26,8 @@ public class Sommet {
 
 
     /**
-     * constructeur de la classe sommet
+     * Constructeur de la classe sommet
+     * //TODO Expliquer la validité d'un Sommet
      * @param x position y du sommet
      * @param y position y du sommet
      * @throws IllegalArgumentException si les arguments sont invalides
