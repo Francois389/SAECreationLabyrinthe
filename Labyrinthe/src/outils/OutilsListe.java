@@ -19,6 +19,9 @@ public class OutilsListe {
      * @return
      */
     public static boolean contient(int[] liste, int element) {
+        if (liste == null) {
+            return false;
+        }
         for (int i = 0; i < liste.length; i++) {
             if (liste[i] == element) {
                 return true;

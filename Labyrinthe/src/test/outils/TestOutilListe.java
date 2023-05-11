@@ -23,6 +23,11 @@ class TestOutilListe {
             assertFalse(OutilsListe.contient(liste,3));            
             assertFalse(OutilsListe.contient(liste,3));            
         }
+        {
+            int[] liste = {};
+            assertFalse(OutilsListe.contient(liste, 0));
+        }
+        assertFalse(OutilsListe.contient(null, 0));
     }
 
 }
