@@ -86,14 +86,20 @@ class TestSommet {
     }
     
     @Test
-    void testAjouterVoisin() {
+    void testAjouterVoisinValide() {
         Sommet test = new Sommet(5,5);
-        // Assure l'ajoutt de sommet
         for (int i = 0 ;  i < sommetsValidesSansDoublon.size() ; i++) {
             test.ajouterSommetVoisin(sommetsValidesSansDoublon.get(i));
             assertEquals(test.getListeDesVoisins().size(),i+1);
         }
-        // Assure la levée d'exceptions si sommet deja existant
+    }
+    
+    @Test
+    void testAjouterVoisinInvalide() {
+        Sommet test = new Sommet(5,5);
+        for (int i = 0 ;  i < sommetsValidesSansDoublon.size() ; i++) {
+            test.ajouterSommetVoisin(sommetsValidesSansDoublon.get(i));
+        }
         for (int j = 0 ; j < sommetsValides.size()  ; j++) {
             Sommet aAjouter = sommetsValides.get(j);
             assertThrows(IllegalArgumentException.class, ()-> test.ajouterSommetVoisin(aAjouter));
@@ -120,11 +126,13 @@ class TestSommet {
         for (Sommet valide : sommetsValidesSansDoublon) {
             avecVoisins.ajouterSommetVoisin(valide);
         }
-        
+    	    
         Sommet aSupprimer = new Sommet(10,0);
         assertThrows(IllegalArgumentException.class, ()-> avecVoisins.supprimerSommetVoisin(aSupprimer));
         
     }
+    
+    
     
     
     @Test 
