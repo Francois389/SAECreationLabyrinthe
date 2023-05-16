@@ -1,7 +1,7 @@
 package representation;
 
 import outils.OutilsListe;
-import  representation.Sommet;
+import representation.Sommet;
 
 /**
  * 
@@ -35,7 +35,7 @@ public class Graphe {
             }     
         } catch (Exception e) {
             throw new IllegalArgumentException(
-                    "Erreur - Paramètres du constructeur invalide. \n\tRaison :"
+                    "Erreur - Paramètres du constructeur invalide.\n\tRaison : "
                     + e.getMessage());
         }
     }
@@ -47,7 +47,7 @@ public class Graphe {
 	 * @param listeArcs
 	 * @return
 	 */
-	private static boolean estValide(Sommet[] listeSommets, Sommet[][] listeArcs) 
+	protected static boolean estValide(Sommet[] listeSommets, Sommet[][] listeArcs) 
 	throws IllegalArgumentException{
         
         /* Dans notre situation, un graphe doit forcement avoir un arc et un sommet*/
@@ -65,20 +65,11 @@ public class Graphe {
             }
         }
         
-        /* On vérifie l'irreflexivitée du graphe */
-        for (int i = 0; i < listeArcs.length; i++) {
-            if (listeArcs[i][0] == listeArcs[i][1]) {
-                throw new IllegalArgumentException("Le graphe n'est pas irreflexif");
-            }
-        }
-        
         /* Le graphe n'a pas de sommet en double */
         for (int i = 0; i < listeSommets.length; i++) {
-            Sommet sommet = listeSommets[i];
             for (int j = 0; j < listeSommets.length; j++) {
-                if (i != j && sommet.equals(listeSommets[i])) {
-                    System.out.println();
-                    throw new IllegalArgumentException("Le graphe contient de même sommet");
+                if (i != j && listeSommets[i].equals(listeSommets[j])) {
+                    throw new IllegalArgumentException("Le graphe contient de fois même sommet");
                 }
             }
         }
@@ -121,14 +112,29 @@ public class Graphe {
     @Override
     public String toString() {
         String toString;
-        toString = "" ;
+        toString = "Sommets : " ;
         for (int i = 0 ;  i < this.getNbSommets() ; i++){
-            toString += listeSommet[i] ;
+            toString += "(" + listeSommet[i].getPosX() + ", " + listeSommet[i].getPosY() + "), ";
         }
-        toString += "\n";
+        toString += "Arcs :";
         for (int i = 0 ; i < this.getNbArretes() ; i++){
-            toString += listeArcs[i];
+            toString += "(" + "(" + listeArcs[i][0].getPosX() + ", " + listeArcs[i][0].getPosY() + "),"
+                            + "(" + listeArcs[i][1].getPosX() + ", " + listeArcs[i][1].getPosY() + "))";
         }
         return toString ; 
+    }
+    
+    /**
+     *@return une matrice booléenne 
+     */
+    public boolean[][] toMatriceAdjacence() {
+        boolean[][] matrice = new boolean[this.listeSommet.length][this.listeSommet.length];
+        for (int i = 0; i < listeSommet.length; i++) {
+            for (int j = 0; j < listeSommet.length; j++) {
+                matrice[i][j] = sontRelies(listeSommet[i],listeSommet[j]);
+            }
+        }
+        
+        return matrice;
     }
 }

@@ -26,18 +26,10 @@ class TestPile {
 	@Test
 	void testDepiler() {
 		Pile p = new Pile();
-		Pile p1 = p.empiler("1er");
-		Pile p2 = p1.empiler(2);
+		p = p.empiler(126).empiler(2);
 
-		assertTrue(p2.depiler().depiler().estVide());
-
-		p1 = p1.depiler();
-		assertTrue(p1.estVide());
-		
-		p2 = p2.depiler();
-		assertFalse(p2.estVide());
-		p2 = p2.depiler();
-		assertTrue(p2.estVide());
+		assertFalse(p.depiler().estVide());
+		assertTrue(p.depiler().estVide());
 	}
 
 	@Test
@@ -48,5 +40,25 @@ class TestPile {
 		assertTrue(p1.estVide());
 		assertFalse(p2.estVide());
 	}
+
+	@Test
+	void testSommet() {
+		Pile p = new Pile();
+		p = p.empiler(1).empiler("2").empiler(true);
+
+		assertEquals(p.sommet(), true);
+		p.depiler();
+		assertEquals(p.sommet(), "2");
+		p.depiler();
+		assertEquals(p.sommet(), 1);
+		p.depiler();
+
+		Pile temp = p;
+		
+		assertThrows(IllegalArgumentException.class, 
+					 ()-> temp.sommet());
+
+	}
+
 
 }

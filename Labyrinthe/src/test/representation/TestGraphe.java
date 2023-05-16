@@ -2,8 +2,11 @@ package test.representation;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 
 import representation.Graphe;
@@ -19,6 +22,37 @@ import representation.Sommet;
  *
  */
 class TestGraphe {
+    
+    private ArrayList<Graphe> grapheCorrecte;
+    
+    @BeforeEach
+    void genererGrapheValide() {
+        grapheCorrecte = new ArrayList<>(10);
+        {/* Un graphe normal */
+            Sommet[] tS = {new Sommet(1,1), new Sommet(1,2), new Sommet(1, 3)};
+            Sommet[][] tA = {{tS[0], tS[1]}, {tS[1], tS[2]}};
+            grapheCorrecte.add(new Graphe(tS, tA));            
+        }
+             
+        { /* graphe symétrique */
+            Sommet[] tS = {new Sommet(1,1), new Sommet(1,2), new Sommet(1, 3)};
+            Sommet[][] tA = {{tS[0], tS[1]}, {tS[1], tS[0]}, {tS[0], tS[2]}, 
+            				 {tS[2], tS[0]}, {tS[1], tS[2]}, {tS[2], tS[1]}};
+            grapheCorrecte.add(new Graphe(tS, tA)); 
+        }
+        
+        { /* graphe transitif */
+            Sommet[] tS = {new Sommet(1,1), new Sommet(1,2), new Sommet(1, 3)};
+            Sommet[][] tA = {{tS[0], tS[1]}, {tS[1], tS[2]}, {tS[2], tS[0]}};
+            grapheCorrecte.add(new Graphe(tS, tA)); 
+        }  
+        
+        { /* graphe avec un sommet isolé */
+            Sommet[] tS = {new Sommet(1,1), new Sommet(1,2), new Sommet(1, 3)};
+            Sommet[][] tA = {{tS[0], tS[1]}, {tS[1], tS[0]}};
+            grapheCorrecte.add(new Graphe(tS, tA)); 
+        } 
+    }
 
     @Test
     @DisplayName("Test du constructeur avec valeur Valide")
@@ -85,11 +119,7 @@ class TestGraphe {
             assertThrows(IllegalArgumentException.class,()-> new Graphe(tSommets, tArcs));            
         }
 
-        {/* Il existe une boucle dans ce graphe */
-            Sommet[] tSommets = {new Sommet(1,1)};
-            Sommet[][] tArcs = {{tSommets[0],tSommets[0]}};
-            assertThrows(IllegalArgumentException.class,()-> new Graphe(tSommets, tArcs));            
-        }
+
         
         {/* Un graphe doit  avoir au moins une arrête */
             Sommet[] tSommets = {new Sommet(1,1), new Sommet(1,2), new Sommet(1,4)};
@@ -227,8 +257,44 @@ class TestGraphe {
             assertFalse(g.sontRelies(tS[2], tS[0])); 
             assertTrue(g.sontRelies(tS[1], tS[0]));  
         }
-       
+    }
+    
+    @Test
+    void testToMatriceAdjacence() {
+        boolean[][] graphe1 = {{false,true,false},
+                               {false,false,true},
+                               {false,false,false}};
+                               
+        boolean[][] graphe2 = {{false , true , true},
+        					   {true , false , true},
+        					   {true , true , false}};
+        						
+        boolean[][] graphe3 = {{false,true,false},
+                               {false,false,true},
+                               {true,false,false}};
+                
+        boolean[][] graphe4 = {{false , true , false},
+        					   {true , false , false},
+        					   {false , false , false}};
         
+        assertEquals(graphe1, grapheCorrecte.get(1));
+        assertEquals(graphe2, grapheCorrecte.get(2));
+        assertEquals(graphe3, grapheCorrecte.get(3));
+        assertEquals(graphe4, grapheCorrecte.get(4));
+        
+    }
+    
+    @Test
+    void testToString() {
+        
+    	  final String[] STRING_OK
+        = {"Sommets : (1, 1), (1, 2), (1, 3), Arcs :((1, 2),(1, 1))",
+           "Sommets : (1, 1), (1, 2), (1, 3), Arcs :()" };
+        
+        for (int noTest = 0 ; noTest < grapheCorrecte.size() ; noTest ++) {
+            assertEquals(STRING_OK[noTest], grapheCorrecte.get(noTest).toString());
+        }  
+
     }
     
 

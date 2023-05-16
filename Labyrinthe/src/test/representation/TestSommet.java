@@ -85,56 +85,6 @@ class TestSommet {
         assertDoesNotThrow(()-> new Sommet(Integer.MAX_VALUE , Integer.MAX_VALUE));
     }
     
-    @Test
-    void testAjouterVoisinValide() {
-        Sommet test = new Sommet(5,5);
-        for (int i = 0 ;  i < sommetsValidesSansDoublon.size() ; i++) {
-            test.ajouterSommetVoisin(sommetsValidesSansDoublon.get(i));
-            assertEquals(test.getListeDesVoisins().size(),i+1);
-        }
-    }
-    
-    @Test
-    void testAjouterVoisinInvalide() {
-        Sommet test = new Sommet(5,5);
-        for (int i = 0 ;  i < sommetsValidesSansDoublon.size() ; i++) {
-            test.ajouterSommetVoisin(sommetsValidesSansDoublon.get(i));
-        }
-        for (int j = 0 ; j < sommetsValides.size()  ; j++) {
-            Sommet aAjouter = sommetsValides.get(j);
-            assertThrows(IllegalArgumentException.class, ()-> test.ajouterSommetVoisin(aAjouter));
-        }
-    }
-    
-    @DisplayName("Test supprimerVoisin sommet valide")
-    @Test
-    void testSupprimerVoisinValide() {
-        Sommet avecVoisins = new Sommet(5,5);
-        for (Sommet valide : sommetsValidesSansDoublon) {
-            avecVoisins.ajouterSommetVoisin(valide);
-        }
-        
-        Sommet aSupprimer = new Sommet(0,0);
-        assertDoesNotThrow(()-> avecVoisins.supprimerSommetVoisin(aSupprimer));
-        
-    }
-    
-    @DisplayName("Test supprimerVoisin sommet invalide")
-    @Test
-    void testSupprimerVoisinInvalide() {
-        Sommet avecVoisins = new Sommet(5,5);
-        for (Sommet valide : sommetsValidesSansDoublon) {
-            avecVoisins.ajouterSommetVoisin(valide);
-        }
-    	    
-        Sommet aSupprimer = new Sommet(10,0);
-        assertThrows(IllegalArgumentException.class, ()-> avecVoisins.supprimerSommetVoisin(aSupprimer));
-        
-    }
-    
-    
-    
-    
     @Test 
     void testGetX() {
         assertEquals(sommetsValides.get(0).getPosX(),0);
@@ -186,15 +136,13 @@ class TestSommet {
     void testHashCode() {
         int x,
         	y,
-        	tailleVoisins,
         	res;
         
-        x = y = tailleVoisins = 0;
+        x = y = 0;
         for (int i = 0; i < sommetsValides.size(); i++) {
             x = sommetsValides.get(i).getPosX();
             y = sommetsValides.get(i).getPosY();
-            tailleVoisins = sommetsValides.get(i).getListeDesVoisins().size();
-            res = x*100 + y * 10 + tailleVoisins;
+            res = x*100 + y;
             assertEquals(res, sommetsValides.get(i).hashCode());
         }
     
@@ -205,6 +153,17 @@ class TestSommet {
     void testEquals() {
         for (int i = 0; i < sommetsValidesSansDoublon.size(); i++) {
             assertEquals(sommetsValidesSansDoublon.get(i),sommetsValides.get(i));
+        }
+        for (int i = 1; i < sommetsValidesSansDoublon.size(); i++) {
+            assertNotEquals(sommetsValidesSansDoublon.get(0),sommetsValides.get(i));
+        }
+        for (int i = 0; i < sommetsValidesSansDoublon.size(); i++) {
+            for (int j = 0; j < sommetsValidesSansDoublon.size(); j++) {
+                if (i != j) {
+                    assertNotEquals(sommetsValidesSansDoublon.get(j),sommetsValides.get(i));                    
+                    assertNotEquals(sommetsValidesSansDoublon.get(i),sommetsValides.get(j));
+                }
+            }
         }
     }
 

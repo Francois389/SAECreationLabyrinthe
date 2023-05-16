@@ -49,4 +49,13 @@ public class OutilsListe {
         }
         return false;
     }
+    
+    
+    public static String versString(Object[] liste) {
+        String resulat = "[";
+        for (int i = 0; i < liste.length - 1; i++) {
+            resulat += liste[i] + ", ";
+        }
+        return resulat + liste[liste.length - 1] + "]";
+    }
 }

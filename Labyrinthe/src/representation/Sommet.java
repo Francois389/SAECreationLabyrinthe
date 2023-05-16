@@ -21,8 +21,6 @@ public class Sommet {
     /** coordonnée Y de la salle dans le labyrinthe */
     private int posY;
 
-    /** liste des voisins du sommet */
-    private List<Sommet> listeDesVoisins;
 
 
     /**
@@ -42,7 +40,6 @@ public class Sommet {
 
         posX = x;
         posY = y;
-        listeDesVoisins = new ArrayList<Sommet>(10);
     }
 
     /**
@@ -53,42 +50,6 @@ public class Sommet {
      */
     private boolean coordonneesValides(int x, int y) {
         return 0 <= x && 0 <= y;
-    }
-    
-    /**
-     * permet d'ajouter un sommet dans la liste des voisins du sommet courant
-     * @param nouveauVoisin le voisin à ajouter dans la liste des voisins
-     * @throws IllegalArgumentException si le sommmet est deja présent dans la liste
-     * @return true si l'element a bien ete ajoute dans la liste des voisins
-     */
-    public void ajouterSommetVoisin(Sommet nouveauVoisin) {
-        for (int i = 0; i < listeDesVoisins.size(); i++) {
-            if (nouveauVoisin.equals(listeDesVoisins.get(i))) {
-                throw new IllegalArgumentException("Le sommet existe deja dans la liste");
-            }
-        }
-        listeDesVoisins.add(nouveauVoisin);
-    }
-    
-    /**
-     * permet de supprimer un sommet dans la liste des voisins du sommet courant
-     * @param voisinASupprimer le voisin à supprimer dans la liste des voisins
-     */    
-    public void supprimerSommetVoisin(Sommet voisinASupprimer) {
-        boolean sommetTrouve;
-        
-        sommetTrouve = false;
-        for (int i = 0; i < listeDesVoisins.size() && !sommetTrouve; i++) {
-            if (voisinASupprimer.equals(listeDesVoisins.get(i))) {
-                sommetTrouve = true;
-                listeDesVoisins.remove(i);
-            }
-        }
-        
-        if (!sommetTrouve) {
-            throw new IllegalArgumentException(
-                "le sommet à supprimer n'est pas dans les voisins'");
-        }
     }
 
     /**
@@ -106,14 +67,6 @@ public class Sommet {
     public int getPosY() {
         return posY;
     }
-    
-    /**
-     * 
-     * @return la liste des voisins de ce sommet
-     */
-    public List<Sommet> getListeDesVoisins() {
-        return listeDesVoisins;
-    }
 
     @Override
     public String toString() {
@@ -122,7 +75,7 @@ public class Sommet {
 
     @Override
     public int hashCode() {
-        return posX * 100 + posY * 10 + listeDesVoisins.size(); 
+        return posX * 100 + posY; 
     }
 
     @Override

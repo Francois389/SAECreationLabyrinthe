@@ -7,7 +7,7 @@ package representation;
 
 /**
  * classe permettant de représenter une pile
- * @author clement denamiel
+ * @author Clement Denamiel
  */
 public class Pile {
 
@@ -23,7 +23,11 @@ public class Pile {
      * Constructeur d'une nouvelle a partir d'un tableau d'objet
      */
     private Pile(Object[] pileExistante) {
-        elementsEmpiles = pileExistante;
+        elementsEmpiles = new Object[pileExistante.length];
+
+        for (int i = 0; i < pileExistante.length; i++) {
+            elementsEmpiles[i] = pileExistante[i];
+        }
     }
     /**
      * permet de vérifier si la pile est vide
@@ -41,8 +45,14 @@ public class Pile {
      * @return la pile modifiee
      */
     public Pile empiler(Object element) {
+    	// System.out.println("element ajoute : " + element);
         Object[] nouvellePile = new Object[elementsEmpiles.length + 1];
+        
+        for (int i = 0; i < elementsEmpiles.length; i++) {
+            nouvellePile[i] = elementsEmpiles[i];
+        }
         nouvellePile[elementsEmpiles.length] = element;
+        elementsEmpiles = nouvellePile;
  
         return new Pile(nouvellePile);
     }
@@ -64,7 +74,40 @@ public class Pile {
         for (int i = 0; i < nouvellePile.length; i++) {
             nouvellePile[i] = elementsEmpiles[i];
         }
+        elementsEmpiles = nouvellePile;
+        
         return new Pile(nouvellePile);
     }
+
+    /**
+     * méthode permettant de récupérer le sommet de la pile
+     * si la pile est vide, 
+     * @return le sommet de la pile
+     * @throws IllagelArgumentException
+     */
+    public Object sommet() {
+        if (estVide()) {
+            throw new IllegalArgumentException(
+                "on ne peut pas depiler une pile vide"
+            );
+        }
+        return elementsEmpiles[elementsEmpiles.length-1];
+    }
 	
+    @Override
+    public String toString() {
+        String resultat = "|               | <- haut de la pile\n";
+
+        String ligne = "|%s\t\t|\n";
+
+        for (int i = 0; i < elementsEmpiles.length; i++) {
+            resultat += ligne.format(ligne, elementsEmpiles[i].toString());
+        	// System.out.println(elementsEmpiles[i]);
+        }
+
+        resultat += "+---------------+";
+
+        return resultat;
+        
+    }
 }

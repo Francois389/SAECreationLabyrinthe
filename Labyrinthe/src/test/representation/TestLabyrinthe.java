@@ -22,10 +22,30 @@ class TestLabyrinthe {
 
     @Test
     void testConstructeur() {
-        {/* Liste d'arcs non vide alors que liste sommet vide */
-            Sommet[] tS = {};
-            Sommet[][] tA = {{new Sommet(1,1),new Sommet(1,2)}};
-            assertThrows(IllegalArgumentException.class, ()->new Labyrinthe(tS, tA, tS[1], tS[0]));
+        {/* graphe réflexif */
+            Sommet[] tS = {new Sommet(1, 1)};
+            Sommet[][] tA = {{tS[0], tS[0]}};
+            assertThrows(IllegalArgumentException.class, ()->new Labyrinthe(tS, tA, tS[0], tS[0] ));
+        }
+        
+        {/* graphe réflexif */
+            Sommet[] tS = {new Sommet(1, 1), new Sommet(1, 2), new Sommet(1, 3)};
+            Sommet[][] tA = {{tS[0], tS[0]}, {tS[1], tS[1]}, {tS[2], tS[2]},
+            				 {tS[0], tS[1]}, {tS[1], tS[2]}, {tS[2], tS[1]}};
+            assertThrows(IllegalArgumentException.class, ()->new Labyrinthe(tS, tA, tS[0], tS[0] ));
+        }
+        
+        {/* graphe avec boucle(s) */
+            Sommet[] tS = {new Sommet(1, 1), new Sommet(1, 2)};
+            Sommet[][] tA = {{tS[0], tS[0]}};
+            assertThrows(IllegalArgumentException.class, ()->new Labyrinthe(tS, tA, tS[0], tS[0] ));
+        }
+        
+        
+        {/* graphe avec circuit(s) */
+            Sommet[] tS = {new Sommet(1, 1), new Sommet(1, 2), new Sommet(1, 3)};
+            Sommet[][] tA = {{tS[0], tS[1]}, {tS[1], tS[2]}, {tS[2], tS[0]}};
+            assertThrows(IllegalArgumentException.class, ()->new Labyrinthe(tS, tA, tS[0], tS[0] ));
         }
     }
 
