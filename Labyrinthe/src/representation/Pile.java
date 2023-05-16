@@ -1,6 +1,6 @@
 /*
  * Pile.java            12/05/2023
- * IUT de Rodes
+ * IUT de Rodez
  */
 
 package representation;

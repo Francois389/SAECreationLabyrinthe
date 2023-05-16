@@ -69,13 +69,20 @@ public class Labyrinthe extends Graphe{
 	 * @return true si un labyrinthe peut etre construit.
 	 */
 	private static boolean estValide(Sommet[] listeSommets, Sommet[][] listeArcs, Sommet debut, Sommet fin){
+		Graphe g = new Graphe(listeSommets, listeArcs);
 		
 		/* On vrifie l'irreflexivitÃ©e du graphe */
-        for (int i = 0; i < listeArcs.length; i++) {
-            if (listeArcs[i][0] == (listeArcs[i][1])) {
-                throw new IllegalArgumentException("Le graphe n'est pas irreflexif");
-            }
-        }
+        if (g.isReflexif()) {
+			throw new IllegalArgumentException("le graphe est réflexif");
+		}
+        
+        /* verifie qu'il n'y ai pas de boucle */
+        if (g.contienBoucle()) {
+			throw new IllegalArgumentException("le graphe contient des boucles");
+		}
+			
+            
+        
         
         return true;
 		

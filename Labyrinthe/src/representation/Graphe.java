@@ -1,7 +1,7 @@
 package representation;
 
 import outils.OutilsListe;
-import representation.Sommet;
+//import representation.Sommet;
 
 /**
  * 
@@ -94,35 +94,31 @@ public class Graphe {
     
     /**
      * Permet de verifier la présence d'un arc entre deux sommets
+     * dans les deux sens.
      * @param sommet1
      * @param sommet2
      * @return true si un arc existe entre les deux sommets, false sinon
      */
     public boolean sontRelies (Sommet sommet1, Sommet sommet2) {
+//        for (int i = 0; i < listeArcs.length; i++) {
+//         	if (   listeArcs[i][0].equals(sommet1) && listeArcs[i][1].equals(sommet2)
+//         	    || listeArcs[i][0].equals(sommet2) && listeArcs[i][1].equals(sommet1) ) {
+//            	return true;
+//            }  
+//        }
+        return    existeArcEntre(sommet1, sommet2) 
+               || existeArcEntre(sommet2, sommet1);
+    }
+    
+    public boolean existeArcEntre(Sommet sommet1, Sommet sommet2) {
         for (int i = 0; i < listeArcs.length; i++) {
-         	if (   listeArcs[i][0].equals(sommet1) && listeArcs[i][1].equals(sommet2)
-         	    || listeArcs[i][0].equals(sommet2) && listeArcs[i][1].equals(sommet1) ) {
-            	return true;
+            if (listeArcs[i][0].equals(sommet1) && listeArcs[i][1].equals(sommet2)) {
+                return true;
             }  
         }
         return false;
-        
     }
     
-    @Override
-    public String toString() {
-        String toString;
-        toString = "Sommets : " ;
-        for (int i = 0 ;  i < this.getNbSommets() ; i++){
-            toString += "(" + listeSommet[i].getPosX() + ", " + listeSommet[i].getPosY() + "), ";
-        }
-        toString += "Arcs :";
-        for (int i = 0 ; i < this.getNbArretes() ; i++){
-            toString += "(" + "(" + listeArcs[i][0].getPosX() + ", " + listeArcs[i][0].getPosY() + "),"
-                            + "(" + listeArcs[i][1].getPosX() + ", " + listeArcs[i][1].getPosY() + "))";
-        }
-        return toString ; 
-    }
     
     /**
      *@return une matrice booléenne 
@@ -131,10 +127,82 @@ public class Graphe {
         boolean[][] matrice = new boolean[this.listeSommet.length][this.listeSommet.length];
         for (int i = 0; i < listeSommet.length; i++) {
             for (int j = 0; j < listeSommet.length; j++) {
-                matrice[i][j] = sontRelies(listeSommet[i],listeSommet[j]);
+                matrice[i][j] = existeArcEntre(listeSommet[i],listeSommet[j]);
             }
         }
         
         return matrice;
     }
+    
+    
+    public boolean isReflexif() {
+        for (int i = 0; i < listeArcs.length; i++) {
+            if (listeArcs[i][0] == (listeArcs[i][1])) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    public boolean contienBoucle() {
+        boolean[][] matrice = this.toMatriceAdjacence();
+        boolean continuer;
+        
+        continuer = false;
+        do {
+            for (int i = 0; i < matrice.length; i++) {
+         		
+             	if (ligneVide(i) || colonneVide(i)) {
+                     supLigneColonne(i);
+                 }  
+        	}
+        } while (continuer);
+        
+        return continuer;
+    }
+    
+    @Override
+    public String toString() {
+        
+        
+        String toString;
+        toString = "Sommets : \n" ;
+        for (int i = 0 ;  i < getNbSommets() ; i++){
+            toString += listeSommet[i].toString();
+        }
+        toString += "\nArcs :";
+        for (int i = 0 ; i < getNbArretes() ; i++){
+            toString += "(" + "(" + listeArcs[i][0].getPosX() + ", " + listeArcs[i][0].getPosY() + "),"
+                            + "(" + listeArcs[i][1].getPosX() + ", " + listeArcs[i][1].getPosY() + "))";
+        }
+        return toString ; 
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

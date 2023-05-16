@@ -5,9 +5,6 @@
 
 package representation;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * 
  * @author Denamiel Clément 

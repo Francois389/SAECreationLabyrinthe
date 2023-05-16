@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import representation.Graphe;
 import representation.Sommet;
 import representation.Labyrinthe;
 
@@ -50,3 +49,4 @@ class TestLabyrinthe {
     }
 
 }
+
