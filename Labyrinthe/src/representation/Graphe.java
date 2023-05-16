@@ -14,7 +14,6 @@ import  representation.Sommet;
  */
 public class Graphe {
 
-    //TODO des que la classe Sommet est fini changer les tableau de int en tableau de Sommet
     /** liste de tous le sommets */
     private Sommet[] listeSommet;
     
@@ -29,12 +28,16 @@ public class Graphe {
 	public Graphe(Sommet[] listeSommets, Sommet[][] listeArcs) {
         super();
         
-        if (!estValide(listeSommets,listeArcs)) {
-            throw new IllegalArgumentException("Erreur - Paramétre du constructeur invalide");
-        }     
-        // else
-        this.listeSommet = listeSommets;
-        this.listeArcs = listeArcs;
+        try {
+            if (estValide(listeSommets,listeArcs)) {
+                this.listeSommet = listeSommets;
+                this.listeArcs = listeArcs;            
+            }     
+        } catch (Exception e) {
+            throw new IllegalArgumentException(
+                    "Erreur - Paramètres du constructeur invalide. \n\tRaison :"
+                    + e.getMessage());
+        }
     }
     
 	/**
@@ -44,35 +47,44 @@ public class Graphe {
 	 * @param listeArcs
 	 * @return
 	 */
-	private boolean estValide(Sommet[] listeSommets, Sommet[][] listeArcs) {
+	private static boolean estValide(Sommet[] listeSommets, Sommet[][] listeArcs) 
+	throws IllegalArgumentException{
         
-        /* Un graphe doit forcement avoir un arc et un sommet dans notre situation */
+        /* Dans notre situation, un graphe doit forcement avoir un arc et un sommet*/
         if (   listeSommets == null  || listeArcs == null 
             || listeArcs.length == 0 || listeArcs[0].length == 0 
             || listeSommets.length == 0) {
-            return false;
+            throw new IllegalArgumentException("Une des liste est vide");
         }
         
         /* Vérifie que tous les sommets des arcs existent */
         for (int j = 0; j < listeArcs.length; j++) {
             if (   !OutilsListe.contient(listeSommets, listeArcs[j][0]) 
                 || !OutilsListe.contient(listeSommets, listeArcs[j][1])) {
-                return false;
+                throw new IllegalArgumentException("Un arcs pointe un sommet inexistant");
             }
         }
         
         /* On vérifie l'irreflexivitée du graphe */
         for (int i = 0; i < listeArcs.length; i++) {
             if (listeArcs[i][0] == listeArcs[i][1]) {
-                return false;
+                throw new IllegalArgumentException("Le graphe n'est pas irreflexif");
+            }
+        }
+        
+        /* Le graphe n'a pas de sommet en double */
+        for (int i = 0; i < listeSommets.length; i++) {
+            Sommet sommet = listeSommets[i];
+            for (int j = 0; j < listeSommets.length; j++) {
+                if (i != j && sommet.equals(listeSommets[i])) {
+                    System.out.println();
+                    throw new IllegalArgumentException("Le graphe contient de même sommet");
+                }
             }
         }
         return true;
     }
-
 	
-	
-
    /**
 	 * renvoie le nombre d'arcs du graphe
 	 * @return int nombre d'arcs
@@ -96,15 +108,27 @@ public class Graphe {
      * @return true si un arc existe entre les deux sommets, false sinon
      */
     public boolean sontRelies (Sommet sommet1, Sommet sommet2) {
-        
         for (int i = 0; i < listeArcs.length; i++) {
          	if (   listeArcs[i][0].equals(sommet1) && listeArcs[i][1].equals(sommet2)
          	    || listeArcs[i][0].equals(sommet2) && listeArcs[i][1].equals(sommet1) ) {
             	return true;
             }  
         }
-        
         return false;
         
+    }
+    
+    @Override
+    public String toString() {
+        String toString;
+        toString = "" ;
+        for (int i = 0 ;  i < this.getNbSommets() ; i++){
+            toString += listeSommet[i] ;
+        }
+        toString += "\n";
+        for (int i = 0 ; i < this.getNbArretes() ; i++){
+            toString += listeArcs[i];
+        }
+        return toString ; 
     }
 }

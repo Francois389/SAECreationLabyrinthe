@@ -27,7 +27,8 @@ public class Sommet {
 
     /**
      * Constructeur de la classe sommet
-     * //TODO Expliquer la validité d'un Sommet
+     * Un sommet est valide si ses coordonnées sont dans les entier naturels
+     * les paramètres x et y ne peuvent donc pas être négatifs
      * @param x position y du sommet
      * @param y position y du sommet
      * @throws IllegalArgumentException si les arguments sont invalides
@@ -86,7 +87,7 @@ public class Sommet {
         
         if (!sommetTrouve) {
             throw new IllegalArgumentException(
-                "le sommet a supprimer n'est pas dans les voisins'");
+                "le sommet à supprimer n'est pas dans les voisins'");
         }
     }
 
