@@ -8,6 +8,7 @@ package representation;
 /**
  * Permet de stocker un labyrinthe qui est sous type de Graphe
  * @author Costes Quentin
+ * @author de Saint Palais François
  * @author Descriaud Lucas
  *
  */
@@ -24,16 +25,16 @@ public class Labyrinthe extends Graphe{
  	
  	/**
  	 * Constructeur de la classe
- 	 * Les type de graphe suivant ne peuvent pas etre des labyrinthe
+ 	 * Les type de graphe suivant ne peuvent pas être des labyrinthe
  	 * <ul>
- 	 * 	<li> Graphe reflexif ou comportant des boucles </li>
+ 	 * 	<li> Graphe réflexif ou comportant des boucles </li>
  	 *	<li> Graphe avec des circuits </li>
- 	 *	<li> Graphhe comportant des sous graphes 
+ 	 *	<li> Graphe comportant des sous graphes 
  	 *		 ou des sommets isolés </li>
- 	 * <ul>
- 	 * @param graphe representant le labyrinthe
- 	 * @param debut sommet du debut labyrinthe
- 	 * @param fin sommet du graphe etant la fin du labyrinthe
+ 	 * </ul>
+ 	 * @param graphe représentant le labyrinthe
+ 	 * @param debut sommet du début labyrinthe
+ 	 * @param fin sommet du graphe étant la fin du labyrinthe
      * @throws IllegalArgumentException 
 	 */ 	
 	public Labyrinthe(Sommet[] lSommet, Sommet[][] lArcs, Sommet debut, Sommet fin) {
@@ -48,40 +49,43 @@ public class Labyrinthe extends Graphe{
 			
 		 } catch (Exception e) {
             throw new IllegalArgumentException(
-                    "Erreur - ParamÃ¨tres du constructeur invalide. \n\tRaison :"
+                    "Erreur - Paramètres du constructeur invalide. \n\tRaison :"
                     + e.getMessage());
         }
  	}
  	
  	
  	/**
-	 * Fonction qui vÃ©rifie la validitÃ© du couple sommet - arcs, 
-	 * pour crÃ©er un graphe valide.
+	 * Fonction qui vérifie la validitÃ© du couple sommet - arcs, 
+	 * pour créer un graphe valide.
 	 * @param listeSommets
 	 * @param listeArcs
 	 * @throws IllegalArgumentException
 	 * <ul>
- 	 * 	<li> Graphe reflexif ou comportant des boucles </li>
+ 	 * 	<li> Graphe réflexif ou comportant des boucles </li>
  	 *	<li> Graphe avec des circuits </li>
- 	 *	<li> Graphhe comportant des sous graphes 
+ 	 *	<li> Graphe comportant des sous graphes 
  	 *		 ou des sommets isolés </li>
  	 * <ul> 
-	 * @return true si un labyrinthe peut etre construit.
+	 * @return true si un labyrinthe peut être construit.
 	 */
 	private static boolean estValide(Sommet[] listeSommets, Sommet[][] listeArcs, Sommet debut, Sommet fin){
 		Graphe g = new Graphe(listeSommets, listeArcs);
 		
-		/* On vrifie l'irreflexivitÃ©e du graphe */
-        if (g.isReflexif()) {
-			throw new IllegalArgumentException("le graphe est réflexif");
+		/* On vérifie l'irreflexivitée du graphe */
+        if (!g.estIrreflexif()) {
+			throw new IllegalArgumentException("Le graphe n'est pas irréflexif");
 		}
         
-        /* verifie qu'il n'y ai pas de boucle */
-        if (g.contienBoucle()) {
-			throw new IllegalArgumentException("le graphe contient des boucles");
+        /* Vérifie qu'il n'y ai pas de Circuit */
+        if (g.contienCircuit()) {
+			throw new IllegalArgumentException("Le graphe contient des circuits");
+		} else {
+		    System.out.println("qvusodu");
+		    System.out.println(g);
 		}
-			
-            
+        
+        //TODO Vérifier que le graphe est connexe.
         
         
         return true;

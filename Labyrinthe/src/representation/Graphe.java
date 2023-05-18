@@ -1,6 +1,7 @@
 package representation;
 
 import outils.OutilsListe;
+import outils.OutilsMatrice;
 //import representation.Sommet;
 
 /**
@@ -134,10 +135,12 @@ public class Graphe {
         return matrice;
     }
     
-    
-    public boolean isReflexif() {
-        for (int i = 0; i < listeArcs.length; i++) {
-            if (listeArcs[i][0] == (listeArcs[i][1])) {
+    /**
+     * @return true si tous les sommet ce pointe eux même false sinon
+     */
+    public boolean estReflexif() {
+        for (Sommet sommet : listeSommet) {
+            if (!sontRelies(sommet, sommet)) {
                 return false;
             }
         }
@@ -145,7 +148,22 @@ public class Graphe {
         return true;
     }
     
-    public boolean contienBoucle() {
+    /**
+     * @return true s'il n'existe aucune boucle sur chacun des sommets false sinon
+     */
+    public boolean estIrreflexif() {
+        for (int i = 0; i < listeArcs.length; i++) {
+            if (listeArcs[i][0] == (listeArcs[i][1])) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    /**
+     * @return true si le graphe contient au moins une boucle et false sinon
+     */
+    public boolean contienCircuit() {
         boolean[][] matrice = this.toMatriceAdjacence();
         boolean continuer;
         
@@ -153,10 +171,13 @@ public class Graphe {
         do {
             for (int i = 0; i < matrice.length; i++) {
          		
-             	if (ligneVide(i) || colonneVide(i)) {
-                     supLigneColonne(i);
+             	if (   OutilsMatrice.ligneVide(matrice,i) 
+             	    || OutilsMatrice.colonneVide(matrice,i)) {
+             	    
+                     OutilsMatrice.supLigneColonne(matrice, i);
                  }  
         	}
+            //TODO Finir
         } while (continuer);
         
         return continuer;
@@ -164,45 +185,16 @@ public class Graphe {
     
     @Override
     public String toString() {
-        
-        
         String toString;
-        toString = "Sommets : \n" ;
+        toString = "Sommets : (" ;
         for (int i = 0 ;  i < getNbSommets() ; i++){
             toString += listeSommet[i].toString();
         }
-        toString += "\nArcs :";
-        for (int i = 0 ; i < getNbArretes() ; i++){
-            toString += "(" + "(" + listeArcs[i][0].getPosX() + ", " + listeArcs[i][0].getPosY() + "),"
-                            + "(" + listeArcs[i][1].getPosX() + ", " + listeArcs[i][1].getPosY() + "))";
+        toString += ")\nArcs : (";
+        for (int i = 0 ; i < getNbArretes() - 1 ; i++){
+            toString += "(" + listeArcs[i][0] + " -> " + listeArcs[i][1]+ "), ";
         }
+        toString += "(" + listeArcs[getNbArretes()-1][0] + " -> " + listeArcs[getNbArretes()-1][1]+ "))";
         return toString ; 
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

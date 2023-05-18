@@ -8,7 +8,7 @@ import representation.Sommet;
 
 /**
  * //TODO Commenter la responsabilités de la classe OutilsListe
- * @author francois
+ * @author de Saint Palais François
  *
  */
 public class OutilsListe {
@@ -51,7 +51,19 @@ public class OutilsListe {
     }
     
     
-    public static String versString(Object[] liste) {
+    /**
+     * Retourne la représentation humaine du tableau passer en paramètre.
+     * @param liste Le tableau dont ont veux obtenir la représention
+     * @return
+     */
+    public static String tabVersString(Object[] liste) {
+        String resulat = "[";
+        for (int i = 0; i < liste.length - 1; i++) {
+            resulat += liste[i] + ", ";
+        }
+        return resulat + liste[liste.length - 1] + "]";
+    }
+    public static String tabVersString(boolean[] liste) {
         String resulat = "[";
         for (int i = 0; i < liste.length - 1; i++) {
             resulat += liste[i] + ", ";

@@ -6,6 +6,9 @@ import java.util.ArrayList;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import outils.OutilsMatrice;
+
 import org.junit.jupiter.api.BeforeEach;
 
 
@@ -17,7 +20,7 @@ import representation.Sommet;
  * Test Unitaire de la classe Graphe
  * @author Costes Quentin
  * @author de Saint Palais François
- * @author Denamiel Clement
+ * @author Denamiel Clément
  * @author Descriaud Lucas
  *
  */
@@ -90,9 +93,17 @@ class TestGraphe {
         {/* Il doit exister une liste de sommet et/ou d'arcs */
             Sommet[] tSommet = {new Sommet(1,1), new Sommet(1,2)};
             Sommet[][] tArcs = {{tSommet[0],tSommet[1]}};
+            Sommet[] tSommetVide = {};
+            Sommet[][] tArcsVide = {{}};
             assertThrows(IllegalArgumentException.class, ()->new Graphe(null, null));
             assertThrows(IllegalArgumentException.class, ()->new Graphe(tSommet, null));
             assertThrows(IllegalArgumentException.class, ()->new Graphe(null, tArcs));            
+            assertThrows(IllegalArgumentException.class, ()->new Graphe(tSommetVide, tArcsVide));            
+            assertThrows(IllegalArgumentException.class, ()->new Graphe(tSommet, tArcsVide));
+            assertThrows(IllegalArgumentException.class, ()->new Graphe(tSommetVide, tArcs));
+        }
+        {
+            
         }
         
         {/* Liste d'arcs non vide alors que liste sommet vide */
@@ -287,6 +298,75 @@ class TestGraphe {
     @Test
     void testToString() { 
 		Graphe test = grapheCorrecte.get(0);
-		System.out.println(test);
+		String attendu = "Sommets : ((1; 1)(1; 2)(1; 3))"
+		        + "\nArcs : (((1; 1) -> (1; 2)), ((1; 2) -> (1; 3)))";
+		assertEquals(attendu, test.toString());
+    }
+    
+    @Test
+    void testContientCircuit() {
+        Sommet[] tS = {new Sommet(0, 1),new Sommet(0, 2),new Sommet(0, 3)};
+        Sommet[][] tA = {{tS[0],tS[1]},{tS[1],tS[2]},{tS[2],tS[0]}};
+        Graphe graphe = new Graphe(tS,tA);
+        assertTrue(graphe.contienCircuit());
+
+        assertFalse(grapheCorrecte.get(0).contienCircuit());
+        assertTrue(grapheCorrecte.get(1).contienCircuit());
+        assertTrue(grapheCorrecte.get(2).contienCircuit());
+        assertTrue(grapheCorrecte.get(3).contienCircuit());
+    }
+    
+    @Test
+    void testEstReflexif() {
+        assertFalse(grapheCorrecte.get(0).estReflexif());
+        assertFalse(grapheCorrecte.get(1).estReflexif());
+        assertFalse(grapheCorrecte.get(2).estReflexif());
+        assertFalse(grapheCorrecte.get(3).estReflexif());
+        
+        {
+            Sommet[] tS = {new Sommet(0, 1),new Sommet(0, 2),new Sommet(0, 3)};
+            Sommet[][] tA = {{tS[0],tS[1]},{tS[1],tS[2]},{tS[2],tS[0]},
+                             {tS[0],tS[0]},{tS[1],tS[1]},{tS[2],tS[2]}};
+            Graphe graphe = new Graphe(tS,tA);
+            assertTrue(graphe.estReflexif());
+        }
+        {
+            Sommet[] tS = {new Sommet(0, 1),new Sommet(0, 2),new Sommet(0, 3)};
+            Sommet[][] tA = {{tS[0],tS[1]},{tS[1],tS[2]},{tS[2],tS[0]},
+                             {tS[0],tS[0]},{tS[1],tS[1]}};
+            Graphe graphe = new Graphe(tS,tA);
+            assertFalse(graphe.estReflexif());
+        }
+        
+    }
+
+    @Test
+    void testEstIreflexif() {
+        assertTrue(grapheCorrecte.get(0).estIrreflexif());
+        assertTrue(grapheCorrecte.get(1).estIrreflexif());
+        assertTrue(grapheCorrecte.get(2).estIrreflexif());
+        assertTrue(grapheCorrecte.get(3).estIrreflexif());
+        
+        {
+            Sommet[] tS = {new Sommet(0, 1),new Sommet(0, 2),new Sommet(0, 3)};
+            Sommet[][] tA = {{tS[0],tS[1]},{tS[1],tS[2]},{tS[2],tS[0]},
+                    {tS[0],tS[0]},{tS[1],tS[1]},{tS[2],tS[2]}};
+            Graphe graphe = new Graphe(tS,tA);
+            assertFalse(graphe.estIrreflexif());
+        }
+        {
+            Sommet[] tS = {new Sommet(0, 1),new Sommet(0, 2),new Sommet(0, 3)};
+            Sommet[][] tA = {{tS[0],tS[1]},{tS[1],tS[2]},{tS[2],tS[0]},
+                    {tS[0],tS[0]},{tS[1],tS[1]}};
+            Graphe graphe = new Graphe(tS,tA);
+            assertFalse(graphe.estIrreflexif());
+        }
+        {
+            Sommet[] tS = {new Sommet(0, 1),new Sommet(0, 2),new Sommet(0, 3)};
+            Sommet[][] tA = {{tS[0],tS[1]},{tS[1],tS[2]},{tS[2],tS[0]}};
+            Graphe graphe = new Graphe(tS,tA);
+            assertTrue(graphe.estIrreflexif());
+        }
+        
     }
 }
