@@ -63,6 +63,12 @@ public class OutilsListe {
         }
         return resulat + liste[liste.length - 1] + "]";
     }
+    
+    /**
+     * Retourne la représentation humaine du tableau passer en paramètre.
+     * @param liste Le tableau dont ont veux obtenir la représention
+     * @return
+     */
     public static String tabVersString(boolean[] liste) {
         String resulat = "[";
         for (int i = 0; i < liste.length - 1; i++) {

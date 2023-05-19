@@ -13,5 +13,5 @@ import representation.Graphe;
  */
 public class ConstructionLabyrinthe {
 	
-	priv
+	
 }

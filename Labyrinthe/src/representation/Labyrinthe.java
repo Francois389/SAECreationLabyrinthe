@@ -81,8 +81,6 @@ public class Labyrinthe extends Graphe{
         if (g.contienCircuit()) {
 			throw new IllegalArgumentException("Le graphe contient des circuits");
 		} else {
-		    System.out.println("qvusodu");
-		    System.out.println(g);
 		}
         
         //TODO Vérifier que le graphe est connexe.

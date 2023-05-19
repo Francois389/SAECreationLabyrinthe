@@ -139,8 +139,9 @@ public class OutilsMatrice {
   	
   	public static String matriceToString(Object[][] matrice) {
   	    String chaine = "[";
-  	    for (int i = 0; i < matrice.length - 1; i++) {
-            chaine += OutilsListe.tabVersString(matrice[i]) + ",\n";
+  	    chaine += OutilsListe.tabVersString(matrice[0]) + ",\n";
+  	    for (int i = 1; i < matrice.length - 1; i++) {
+            chaine += OutilsListe.tabVersString(matrice[i]) + ",\n ";
         }
   	    chaine += OutilsListe.tabVersString(matrice[matrice.length-1]) + "]";
   	    return chaine;
@@ -148,8 +149,9 @@ public class OutilsMatrice {
 
     public static String matriceToString(boolean[][] matrice) {
         String chaine = "[";
-        for (int i = 0; i < matrice.length - 1; i++) {
-            chaine += OutilsListe.tabVersString(matrice[i]) + ",\n";
+        chaine += OutilsListe.tabVersString(matrice[0]) + ",\n";
+        for (int i = 1; i < matrice.length - 1; i++) {
+            chaine += OutilsListe.tabVersString(matrice[i]) + ",\n ";
         }
         chaine += OutilsListe.tabVersString(matrice[matrice.length-1]) + "]";
         return chaine;

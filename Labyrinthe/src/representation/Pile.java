@@ -101,8 +101,7 @@ public class Pile {
         String ligne = "|%s\t\t|\n";
 
         for (int i = 0; i < elementsEmpiles.length; i++) {
-            resultat += ligne.format(ligne, elementsEmpiles[i].toString());
-        	// System.out.println(elementsEmpiles[i]);
+            resultat += String.format(ligne, elementsEmpiles[i].toString());
         }
 
         resultat += "+---------------+";
