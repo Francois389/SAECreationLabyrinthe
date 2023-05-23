@@ -31,13 +31,14 @@ public class Sommet {
      * @param y position y du sommet
      * @throws IllegalArgumentException si les arguments sont invalides
      */
-    public Sommet (int x, int y) {
+    public Sommet (int x, int y, int m) {
         super();
         if (!coordonneesValides(x, y)) {
             throw new IllegalArgumentException();
         }
         posX = x;
         posY = y;
+        marque = m;
     }
 
     /**

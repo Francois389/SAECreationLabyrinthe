@@ -231,5 +231,9 @@ class TestLabyrinthe {
         }
         return false;
     }
+    
+    @Test
+    @DisplayName("Test du tos")
+    void testGrapheNotOk() {
 }
 

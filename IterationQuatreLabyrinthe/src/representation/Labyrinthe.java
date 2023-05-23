@@ -96,7 +96,7 @@ public class Labyrinthe {
         for (int j = 0; j < hauteur; j++) {
             if (j%2 == 0) {
 				for (int i = 0; i < largeur; i++) {
-    	        	grilleRetour[j][i] = -1;
+    	        	grilleRetour[j][i] = new Sommet();
 	        	}
             } else {
                 for (int i = 0; i < largeur; i++) {
