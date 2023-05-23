@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import outils.OutilsMatrice;
 
 import org.junit.jupiter.api.BeforeEach;
 
@@ -24,7 +23,7 @@ import representation.Sommet;
  * @author Descriaud Lucas
  *
  */
-class TestGraphe {
+class TestLabyrinthe {
     
     private ArrayList<Labyrinthe> grapheCorrecte;
     
@@ -152,6 +151,7 @@ class TestGraphe {
         
     }
 
+
     @Test
     void testAjoutetArrete() {
         {
@@ -161,9 +161,9 @@ class TestGraphe {
             Sommet[] tS = {s1, s2, s3};
             Sommet[][] tA = {{tS[1], tS[2]}};
             Labyrinthe g = new Labyrinthe(tS, tA);
-            assertFalse(g.sontRelies(tS[0], tS[1]));           
+            assertFalse(sontRelies(tS[0], tS[1]), tA);           
             g.ajouterArrete(s1, s2);
-            assertTrue(g.sontRelies(s1, s2));                        
+            assertTrue(sontRelies(s1, s2, tA));                        
         }
         
         {
@@ -174,12 +174,12 @@ class TestGraphe {
             Sommet[][] tA = {{tS[0], tS[1]}, {tS[1], tS[2]}};
             Labyrinthe g = new Labyrinthe(tS, tA);
             
-            assertFalse(g.sontRelies(tS[0], tS[2]));
+            assertFalse(sontRelies(tS[0], tS[2], tA));
             
             g.ajouterArrete(tS[0], tS[2]);
             
-            assertTrue(g.sontRelies(tS[0], tS[2]));
-            assertTrue(g.sontRelies(tS[1], tS[2]));
+            assertTrue(sontRelies(tS[0], tS[2], tA));
+            assertTrue(sontRelies(tS[1], tS[2], tA));
 
         }
         
@@ -192,16 +192,44 @@ class TestGraphe {
             Labyrinthe g = new Labyrinthe(tS, tA);
             
             // le sommet n'existe pas dans le graphe
-            assertThrows(IllegalArgumentException.class, ()-> g.ajouterArrete(tS[1], s3));  
+            assertThrows(IllegalArgumentException.class, ()-> g.ajouterArrete(tS[1], s3));
+            assertThrows(IllegalArgumentException.class, ()-> g.ajouterArrete(tS[0], s3));  
         }
         // TODO tester le fait que ça throw si l'arrete existe deja
         {
             Sommet s1 = new Sommet(1,1);
             Sommet s2 = new Sommet(1,2);
-            Sommet s3 = new Sommet(1,3);
-            Sommet[] tS = {s1, s2, s3};
-            Sommet[][] tA = {{tS[0], tS[1]}, {tS[1], tS[2]}};
+            Sommet[] tS = {s1, s2};
+            Sommet[][] tA = {{tS[1], tS[0]}};
             Labyrinthe g = new Labyrinthe(tS, tA);
+            
+            assertThrows(IllegalArgumentException.class, ()-> g.ajouterArrete(tS[0], tS[1]));
+            assertDoesNotThrow(()-> g.ajouterArrete(tS[1], tS[0]));
+                      
         }
     }
+    
+    
+    
+    /**
+     * Permet de verifier la prÃ©sence d'un arc entre deux sommets
+     * dans les deux sens.
+     * @param sommet1
+     * @param sommet2
+     * @return true si un arc existe entre les deux sommets, false sinon
+     */
+    public boolean sontRelies (Sommet sommet1, Sommet sommet2, Sommet[][] listeArcs) {
+        return    existeArcEntre(sommet1, sommet2, listeArcs) 
+               || existeArcEntre(sommet2, sommet1, listeArcs);
+    }
+    
+    public boolean existeArcEntre(Sommet sommet1, Sommet sommet2, Sommet[][] listeArcs) {
+        for (int i = 0; i < listeArcs.length; i++) {
+            if (listeArcs[i][0].equals(sommet1) && listeArcs[i][1].equals(sommet2)) {
+                return true;
+            }  
+        }
+        return false;
+    }
 }
+

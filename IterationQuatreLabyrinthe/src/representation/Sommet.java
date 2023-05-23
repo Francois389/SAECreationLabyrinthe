@@ -7,7 +7,7 @@ package representation;
 
 /**
  * Représentation d'un sommet d'un graphe
- * Un sommet a une position en x et y et des marques
+ * Un sommet a une position en x et y et des marque
  * @author Denamiel Clément 
  * @author Descriaud Lucas
  */
@@ -19,8 +19,8 @@ public class Sommet {
     /** coordonnée Y de la salle dans le labyrinthe */
     private int posY;
 
-    /** Contient les possibles marques du Sommet.  */
-    private char[] marques;
+    /** Contient les possibles marque du Sommet.  */
+    private int marque;
 
 
     /**
@@ -38,7 +38,6 @@ public class Sommet {
         }
         posX = x;
         posY = y;
-        marques = new char[10];
     }
 
     /**
@@ -85,22 +84,11 @@ public class Sommet {
         return hashCode() == obj.hashCode();
     }
 
-    public char[] getMarques() {
-        return marques;
+    public int getMarque() {
+        return marque;
     }
 
-    public void setMarques(char[] argMarques) throws IllegalArgumentException{
-        if (argMarques.length != 10) {
-            throw new IllegalArgumentException("Erreur : "
-                    + "La liste doit être de longueur 10");
-        }
-        this.marques = argMarques;
-    }
-
-    public void setMarques(char marque, int indice) {
-        if (indice < 0 || 9 < indice) {
-            throw new IllegalArgumentException("Erreur : l'indice doit être compris entre 0 et 10");
-        }
-        this.marques[indice] = marque;
+    public void setMarque(int argMarque) {
+        this.marque = argMarque;
     }
 }

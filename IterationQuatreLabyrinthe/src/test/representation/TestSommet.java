@@ -169,42 +169,12 @@ class TestSommet {
             }
         }
     }
-
-    @Test
-    void testGetMarques() {
-        char[] marque = new char[10];
-        marque[0] = '+';
-        marque[1] = '-';
-        sommetsValides.get(0).setMarques(marque);
-        sommetsValides.get(0).setMarques('a',9);
-        
-        char[] attendu = new char[10];
-        attendu[0] = '+';
-        attendu[1] = '-';
-        attendu[9] = 'a';
-        assertArrayEquals(attendu, sommetsValides.get(0).getMarques());
-    }
     
     @Test
-    void testSetMarqueAvecTab() {
-        char[] marque = new char[10];
-        marque[0] = '+';
-        marque[1] = '-';
-        char[] marque2 = new char[9];
-        char[] marque3 = new char[11];
-        assertDoesNotThrow(()->sommetsValides.get(0).setMarques(marque));
-        assertThrows(IllegalArgumentException.class, 
-		()->sommetsValides.get(0).setMarques(marque2));
-        assertThrows(IllegalArgumentException.class, 
-		()->sommetsValides.get(0).setMarques(marque3));
+    void testGetMarque() {
+        for (int i = 0; i < sommetsValides.size(); i++) {
+            sommetsValides.get(i).setMarque(i);
+            assertEquals(i, sommetsValides.get(i).getMarque());
+        }
     }
-
-    @Test
-    void testSetMarqueAvecIndice() {
-        assertDoesNotThrow(()->sommetsValides.get(0).setMarques('+',0));
-        assertDoesNotThrow(()->sommetsValides.get(0).setMarques('-',9));
-        assertThrows(IllegalArgumentException.class, ()->sommetsValides.get(0).setMarques('a',-1));
-        assertThrows(IllegalArgumentException.class, ()->sommetsValides.get(0).setMarques('b',10));
-    }
-
 }
