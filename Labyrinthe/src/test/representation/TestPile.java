@@ -21,6 +21,7 @@ class TestPile {
 		assertDoesNotThrow(()->p.empiler("bonjour"));
 		assertDoesNotThrow(()->p.empiler(true));
 		assertDoesNotThrow(()->p.empiler(1));
+		assertThrows(IllegalArgumentException.class, ()->p.empiler(null));
 	}
 
 	@Test

@@ -46,6 +46,10 @@ public class Pile {
      */
     public Pile empiler(Object element) {
     	// System.out.println("element ajoute : " + element);
+        if (element == null) {
+            throw new IllegalArgumentException("Erreur  : "
+                    + "On ne peut pas empiler un element null");
+        }
         Object[] nouvellePile = new Object[elementsEmpiles.length + 1];
         
         for (int i = 0; i < elementsEmpiles.length; i++) {
