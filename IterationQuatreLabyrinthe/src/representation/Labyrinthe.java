@@ -195,15 +195,17 @@ public class Labyrinthe {
      * @param s2
      */
     public void fusionnerMarques(Sommet s1, Sommet s2) {
-        int marqueS1 = s1.getMarque();
-        int marqueS2 = s2.getMarque();
+        int marqueEcrasante = s1.getMarque();
+        int marqueCreasee = s2.getMarque();
         
         // TODO parcourir les sommets et voir si ils ont la marque de l'ecrase, si oui le changer
         
-        if (Math.random() >= 0.5) {
-            s1.setMarque(marqueS2);
-        } else {
-            s2.setMarque(marqueS1);
+        for (Sommet[] ligneSommet : listeSommet) {
+            for (Sommet sommet : ligneSommet) {
+                if (sommet.getMarque() == marqueEcrasee) {
+                    sommet.setMarque(marqueEcransante)
+                }
+            }
         }
         
         
