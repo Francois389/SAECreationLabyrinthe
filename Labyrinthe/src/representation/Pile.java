@@ -19,16 +19,7 @@ public class Pile {
      */
     public Pile() {}
 
-    /**
-     * Constructeur d'une nouvelle a partir d'un tableau d'objet
-     */
-    private Pile(Object[] pileExistante) {
-        elementsEmpiles = new Object[pileExistante.length];
-
-        for (int i = 0; i < pileExistante.length; i++) {
-            elementsEmpiles[i] = pileExistante[i];
-        }
-    }
+    
     /**
      * permet de vérifier si la pile est vide
      * 
@@ -42,12 +33,13 @@ public class Pile {
     /**
      * Ajoute un element de type object a une pile
      * @param element l'element a ajouter
+     * @throws NullPointerException
      * @return la pile modifiee
      */
     public Pile empiler(Object element) {
     	// System.out.println("element ajoute : " + element);
         if (element == null) {
-            throw new IllegalArgumentException("Erreur  : "
+            throw new NullPointerException("Erreur  : "
                     + "On ne peut pas empiler un element null");
         }
         Object[] nouvellePile = new Object[elementsEmpiles.length + 1];
@@ -58,17 +50,17 @@ public class Pile {
         nouvellePile[elementsEmpiles.length] = element;
         elementsEmpiles = nouvellePile;
  
-        return new Pile(nouvellePile);
+        return this;
     }
 
     /**
      * retire le dernier element de la pile
      * @return la pile modifiee
-     * @throws IllegalArgumentException
+     * @throws PileVideException
      */
     public Pile depiler() {
         if (estVide()) {
-            throw new IllegalArgumentException(
+            throw new PileVideException(
                 "on ne peut pas depiler une pile vide"
             );
         }
@@ -80,19 +72,19 @@ public class Pile {
         }
         elementsEmpiles = nouvellePile;
         
-        return new Pile(nouvellePile);
+        return this;
     }
 
     /**
      * méthode permettant de récupérer le sommet de la pile
      * si la pile est vide, 
      * @return le sommet de la pile
-     * @throws IllagelArgumentException
+     * @throws PileVideException
      */
     public Object sommet() {
         if (estVide()) {
-            throw new IllegalArgumentException(
-                "on ne peut pas depiler une pile vide"
+            throw new PileVideException(
+                "une pile vide n'a pas de sommet'"
             );
         }
         return elementsEmpiles[elementsEmpiles.length-1];

@@ -6,7 +6,8 @@
 package representation;
 
 /**
- * 
+ * Représentation d'un sommet d'un graphe
+ * Un sommet a une position en x et y et des marques
  * @author Denamiel Clément 
  * @author Descriaud Lucas
  */
@@ -78,6 +79,9 @@ public class Sommet {
 
     @Override
     public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
         return hashCode() == obj.hashCode();
     }
 

@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
 import junit.framework.Assert;
 
 /**
- * //TODO Commenter la responsabilités de la classe TestSommet
+ * Test unitaire de la classe Sommet
  * @author de Saint Palais François
  * @author Denamiel Clément 
  * @author Descriaud Lucas
@@ -158,6 +158,7 @@ class TestSommet {
         }
         for (int i = 1; i < sommetsValidesSansDoublon.size(); i++) {
             assertNotEquals(sommetsValidesSansDoublon.get(0),sommetsValides.get(i));
+            assertNotEquals(sommetsValidesSansDoublon.get(0),null);
         }
         for (int i = 0; i < sommetsValidesSansDoublon.size(); i++) {
             for (int j = 0; j < sommetsValidesSansDoublon.size(); j++) {

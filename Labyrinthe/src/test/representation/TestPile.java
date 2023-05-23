@@ -3,6 +3,7 @@ package test.representation;
 import static org.junit.jupiter.api.Assertions.*;
 
 import representation.Pile;
+import representation.PileVideException;
 
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +22,7 @@ class TestPile {
 		assertDoesNotThrow(()->p.empiler("bonjour"));
 		assertDoesNotThrow(()->p.empiler(true));
 		assertDoesNotThrow(()->p.empiler(1));
-		assertThrows(IllegalArgumentException.class, ()->p.empiler(null));
+		assertThrows(NullPointerException.class, ()->p.empiler(null));
 	}
 
 	@Test
@@ -56,7 +57,7 @@ class TestPile {
 
 		Pile temp = p;
 		
-		assertThrows(IllegalArgumentException.class, 
+		assertThrows(PileVideException.class, 
 					 ()-> temp.sommet());
 
 	}

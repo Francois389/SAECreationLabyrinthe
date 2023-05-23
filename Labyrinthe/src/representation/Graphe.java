@@ -2,7 +2,6 @@ package representation;
 
 import outils.OutilsListe;
 import outils.OutilsMatrice;
-//import representation.Sommet;
 
 /**
  * 
@@ -101,12 +100,6 @@ public class Graphe {
      * @return true si un arc existe entre les deux sommets, false sinon
      */
     public boolean sontRelies (Sommet sommet1, Sommet sommet2) {
-//        for (int i = 0; i < listeArcs.length; i++) {
-//         	if (   listeArcs[i][0].equals(sommet1) && listeArcs[i][1].equals(sommet2)
-//         	    || listeArcs[i][0].equals(sommet2) && listeArcs[i][1].equals(sommet1) ) {
-//            	return true;
-//            }  
-//        }
         return    existeArcEntre(sommet1, sommet2) 
                || existeArcEntre(sommet2, sommet1);
     }
@@ -170,7 +163,6 @@ public class Graphe {
         continuer = false;
         do {
             for (int i = 0; i < matrice.length; i++) {
-         		
              	if (   OutilsMatrice.ligneVide(matrice,i) 
              	    || OutilsMatrice.colonneVide(matrice,i)) {
              	    
@@ -178,9 +170,11 @@ public class Graphe {
                  }  
         	}
             //TODO Finir
+            continuer = !OutilsMatrice.estNul(matrice);
         } while (continuer);
         
         return continuer;
+//        return false;
     }
     
     /** 
@@ -188,6 +182,7 @@ public class Graphe {
      * @param extreemitée 1 de l'arrete
      * @param extremitée 2 de l'arrete
      * @throws IllegalArgumentException si les sommet ne sont pas dans le graphe
+     * 									ou si l'arrete existe deja
      */
     public void ajouterArrete(Sommet sommet1, Sommet sommet2) {
         boolean sommet1Valide,
@@ -200,49 +195,31 @@ public class Graphe {
                 sommet1Valide = true;
             } else if (sommet2.equals(listeSommet[i])) {
                 sommet2Valide = true;
-            }
-         
+            }        
         }
         
-        if (sommet1Valide && sommet2Valide) {
-     
-       		Sommet listeArcs2[][] = new Sommet[this.listeArcs.length + 1][1];
-       		
-       		for (int i = 0; i < this.listeArcs.length; i++) {
-                listeArcs2[i] = this.listeArcs[i];
-            }
-            
-            System.out.println("len de L1 = " + this.listeArcs.length);
-            System.out.println("len de L2 = " + listeArcs2.length);
-            
-            System.out.println("len de L1[0] = " + this.listeArcs[0].length);  
-            
-            System.out.println("len de L2[0] = " + listeArcs2[0].length);
-            System.out.println("len de L2[1] = " + listeArcs2[1].length);
-            
-            listeArcs2[this.listeArcs.length + 1][0] = sommet1;
-            listeArcs2[this.listeArcs.length + 1][1] = sommet2;
-   			
-			this.listeArcs = listeArcs2;
-		      
-        } else {
+        if (!sommet1Valide || !sommet2Valide) {
             throw new IllegalArgumentException("les sommets données ne sont pas dans le graphe");
+        }; 
+          
+        // TODO verifier que l'arrete n'existe pas deja
+   		Sommet listeArcs2[][] = new Sommet[this.listeArcs.length + 1][1];
+   		
+   		for (int i = 0; i < this.listeArcs.length; i++) {
+            listeArcs2[i] = this.listeArcs[i];
         }
+       	
+       	Sommet[] listTemp = {sommet1, sommet2};
+        listeArcs2[listeArcs2.length - 1] = listTemp; 			
+		this.listeArcs = listeArcs2;
+		      
     }
     
     @Override
     public String toString() {
-        
-        String salle = 
-        """
-        +---+
-        |   |
-        |   |
-        +---+""";
        	 
        	String res = "";
        	Sommet courant, aTester;
-       	//Sommet[] 
        	
        	for (int i = 0; i < listeSommet.length; i++) {
             courant = listeSommet[i];
@@ -250,12 +227,7 @@ public class Graphe {
                 aTester = listeSommet[j];
                 
                 if (sontRelies(courant, aTester)) {
-                    if (courant.getPosX() == aTester.getPosX()) {
-                        res += courant.toString() + "-" + aTester.toString();
-                    } else if(courant.getPosY() == aTester.getPosY()) {
-                        res += courant.toString() + "\n    |\n" + aTester.toString();
-                    }
-                    res += "\n";
+                    res += courant.toString() + "-" + aTester.toString() + "\n";
                 }
             }
         }

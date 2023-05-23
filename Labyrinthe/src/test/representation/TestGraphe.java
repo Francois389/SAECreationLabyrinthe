@@ -401,10 +401,8 @@ class TestGraphe {
             Graphe g = new Graphe(tS, tA);
             
             assertFalse(g.sontRelies(tS[0], tS[2]));
-            assertFalse(g.sontRelies(tS[1], tS[2]));
             
-            g.ajouterArrete(s1, s3);
-            g.ajouterArrete(s2, s3);
+            g.ajouterArrete(tS[0], tS[2]);
             
             assertTrue(g.sontRelies(tS[0], tS[2]));
             assertTrue(g.sontRelies(tS[1], tS[2]));
@@ -416,9 +414,20 @@ class TestGraphe {
             Sommet s2 = new Sommet(1,2);
             Sommet s3 = new Sommet(1,3);
             Sommet[] tS = {s1, s2};
-            Sommet[][] tA = {{tS[1], tS[2]}};
+            Sommet[][] tA = {{tS[0], tS[1]}};
             Graphe g = new Graphe(tS, tA);
-            assertThrows(IllegalArgumentException.class, ()-> g.ajouterArrete(s2, s3));                      
+            
+            // le sommet n'existe pas dans le graphe
+            assertThrows(IllegalArgumentException.class, ()-> g.ajouterArrete(tS[1], s3));  
+        }
+        // TODO tester le fait que ça throw si l'arrete existe deja
+        {
+            Sommet s1 = new Sommet(1,1);
+            Sommet s2 = new Sommet(1,2);
+            Sommet s3 = new Sommet(1,3);
+            Sommet[] tS = {s1, s2, s3};
+            Sommet[][] tA = {{tS[0], tS[1]}, {tS[1], tS[2]}};
+            Graphe g = new Graphe(tS, tA);
         }
     }
 }
