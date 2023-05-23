@@ -108,13 +108,22 @@ public class OutilsMatrice {
   	 * @return matrice avec la ligne et colonne en moins
   	 */
   	public static boolean[][] supLigneColonne(boolean[][] matrice, int indice) {
+		int ligne;
+		int colonne;
   	    boolean[][] matriceResultat = new boolean[matrice.length - 1][matrice[0].length - 1];
+  	    ligne = 0 ; 
+  	    colonne = 0; 
+  	    System.out.println(indice);
   	    for (int i = 0; i < matrice.length; i++) {
   	        for (int j = 0; j < matrice[i].length; j++) {
   	            if (i != indice && j != indice) {
-  	                matriceResultat[i][j] = matrice[i][j];
+					System.out.println("ligne : " + i + " colonne : " + j);
+					System.out.println("ligne resultat " + ligne + " colonne resulat " + colonne);
+  	                matriceResultat[ligne][colonne] = matrice[i][j];	
   	            }
+			colonne++;
   	        }
+  	    ligne++;
   	    }
   	    return matriceResultat;
   	}

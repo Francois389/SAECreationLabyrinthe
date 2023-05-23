@@ -18,6 +18,8 @@ public class Sommet {
     /** coordonnée Y de la salle dans le labyrinthe */
     private int posY;
 
+    /** Contient les possibles marques du Sommet.  */
+    private char[] marques;
 
 
     /**
@@ -30,20 +32,19 @@ public class Sommet {
      */
     public Sommet (int x, int y) {
         super();
-
         if (!coordonneesValides(x, y)) {
             throw new IllegalArgumentException();
         }
-
         posX = x;
         posY = y;
+        marques = new char[10];
     }
 
     /**
-     * verifie que les coordonnées sont valides (pas de coordonnées dans les négatifs)
-     * @param x positio, coordonnées sont positives x du sommet
+     * Vérifie que les coordonnées sont valides (pas de coordonnées dans les négatifs)
+     * @param x position coordonnées sont positives x du sommet
      * @param y position y du sommet
-     * @return true si les parametres sont valides
+     * @return true si les paramètres sont valides
      */
     private boolean coordonneesValides(int x, int y) {
         return 0 <= x && 0 <= y;
@@ -78,5 +79,24 @@ public class Sommet {
     @Override
     public boolean equals(Object obj) {
         return hashCode() == obj.hashCode();
+    }
+
+    public char[] getMarques() {
+        return marques;
+    }
+
+    public void setMarques(char[] argMarques) throws IllegalArgumentException{
+        if (argMarques.length != 10) {
+            throw new IllegalArgumentException("Erreur : "
+                    + "La liste doit être de longueur 10");
+        }
+        this.marques = argMarques;
+    }
+
+    public void setMarques(char marque, int indice) {
+        if (indice < 0 || 9 < indice) {
+            throw new IllegalArgumentException("Erreur : l'indice doit être compris entre 0 et 10");
+        }
+        this.marques[indice] = marque;
     }
 }

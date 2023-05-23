@@ -7,15 +7,20 @@ package test.representation;
 import representation.Sommet;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 
 import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 
+import junit.framework.Assert;
+
 /**
  * //TODO Commenter la responsabilités de la classe TestSommet
- * @author Denamiel Clement 
+ * @author de Saint Palais François
+ * @author Denamiel Clément 
  * @author Descriaud Lucas
  */
 class TestSommet {
@@ -114,7 +119,6 @@ class TestSommet {
         
     }
     
-    
     @DisplayName("Test toString")
     @Test
     void testToString() {
@@ -163,6 +167,43 @@ class TestSommet {
                 }
             }
         }
+    }
+
+    @Test
+    void testGetMarques() {
+        char[] marque = new char[10];
+        marque[0] = '+';
+        marque[1] = '-';
+        sommetsValides.get(0).setMarques(marque);
+        sommetsValides.get(0).setMarques('a',9);
+        
+        char[] attendu = new char[10];
+        attendu[0] = '+';
+        attendu[1] = '-';
+        attendu[9] = 'a';
+        assertArrayEquals(attendu, sommetsValides.get(0).getMarques());
+    }
+    
+    @Test
+    void testSetMarqueAvecTab() {
+        char[] marque = new char[10];
+        marque[0] = '+';
+        marque[1] = '-';
+        char[] marque2 = new char[9];
+        char[] marque3 = new char[11];
+        assertDoesNotThrow(()->sommetsValides.get(0).setMarques(marque));
+        assertThrows(IllegalArgumentException.class, 
+		()->sommetsValides.get(0).setMarques(marque2));
+        assertThrows(IllegalArgumentException.class, 
+		()->sommetsValides.get(0).setMarques(marque3));
+    }
+
+    @Test
+    void testSetMarqueAvecIndice() {
+        assertDoesNotThrow(()->sommetsValides.get(0).setMarques('+',0));
+        assertDoesNotThrow(()->sommetsValides.get(0).setMarques('-',9));
+        assertThrows(IllegalArgumentException.class, ()->sommetsValides.get(0).setMarques('a',-1));
+        assertThrows(IllegalArgumentException.class, ()->sommetsValides.get(0).setMarques('b',10));
     }
 
 }

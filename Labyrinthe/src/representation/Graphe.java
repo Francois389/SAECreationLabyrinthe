@@ -20,7 +20,7 @@ public class Graphe {
     
     /** liste de tous le sommets */
     private Sommet[][] listeArcs;
-    
+        
     /**
      * Créer un graphe composé 
      * @param listeSommets
@@ -183,9 +183,85 @@ public class Graphe {
         return continuer;
     }
     
+    /** 
+     * permet d'ajouter une arrete au graphe
+     * @param extreemitée 1 de l'arrete
+     * @param extremitée 2 de l'arrete
+     * @throws IllegalArgumentException si les sommet ne sont pas dans le graphe
+     */
+    public void ajouterArrete(Sommet sommet1, Sommet sommet2) {
+        boolean sommet1Valide,
+        		sommet2Valide;
+        
+        sommet1Valide = false;
+        sommet2Valide = false;
+        for (int i = 0; i < listeSommet.length; i++) {
+            if (sommet1.equals(listeSommet[i])) {
+                sommet1Valide = true;
+            } else if (sommet2.equals(listeSommet[i])) {
+                sommet2Valide = true;
+            }
+         
+        }
+        
+        if (sommet1Valide && sommet2Valide) {
+     
+       		Sommet listeArcs2[][] = new Sommet[this.listeArcs.length + 1][1];
+       		
+       		for (int i = 0; i < this.listeArcs.length; i++) {
+                listeArcs2[i] = this.listeArcs[i];
+            }
+            
+            System.out.println("len de L1 = " + this.listeArcs.length);
+            System.out.println("len de L2 = " + listeArcs2.length);
+            
+            System.out.println("len de L1[0] = " + this.listeArcs[0].length);  
+            
+            System.out.println("len de L2[0] = " + listeArcs2[0].length);
+            System.out.println("len de L2[1] = " + listeArcs2[1].length);
+            
+            listeArcs2[this.listeArcs.length + 1][0] = sommet1;
+            listeArcs2[this.listeArcs.length + 1][1] = sommet2;
+   			
+			this.listeArcs = listeArcs2;
+		      
+        } else {
+            throw new IllegalArgumentException("les sommets données ne sont pas dans le graphe");
+        }
+    }
+    
     @Override
     public String toString() {
-        String toString;
+        
+        String salle = 
+        """
+        +---+
+        |   |
+        |   |
+        +---+""";
+       	 
+       	String res = "";
+       	Sommet courant, aTester;
+       	//Sommet[] 
+       	
+       	for (int i = 0; i < listeSommet.length; i++) {
+            courant = listeSommet[i];
+            for (int j = 0; j < listeSommet.length; j++) {
+                aTester = listeSommet[j];
+                
+                if (sontRelies(courant, aTester)) {
+                    if (courant.getPosX() == aTester.getPosX()) {
+                        res += courant.toString() + "-" + aTester.toString();
+                    } else if(courant.getPosY() == aTester.getPosY()) {
+                        res += courant.toString() + "\n    |\n" + aTester.toString();
+                    }
+                    res += "\n";
+                }
+            }
+        }
+       	 
+        return res;
+        /*String toString;
         toString = "Sommets : (" ;
         for (int i = 0 ;  i < getNbSommets() ; i++){
             toString += listeSommet[i].toString();
@@ -195,6 +271,7 @@ public class Graphe {
             toString += "(" + listeArcs[i][0] + " -> " + listeArcs[i][1]+ "), ";
         }
         toString += "(" + listeArcs[getNbArretes()-1][0] + " -> " + listeArcs[getNbArretes()-1][1]+ "))";
-        return toString ; 
+        return toString ;*/ 
     }
+    
 }
