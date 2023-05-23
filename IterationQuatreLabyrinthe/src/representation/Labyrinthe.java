@@ -1,5 +1,9 @@
 package representation;
 
+import java.lang.Math;
+
+import org.hamcrest.Condition.Step;
+
 /**
  * 
  * Classe représentant des Graphes étant 
@@ -17,26 +21,78 @@ public class Labyrinthe {
     /** liste de tous le sommets */
     private int hauteur;
     
-     	/** Affichage d'une case par defaut */
- 	private static final String CASE = 
- 								     """
- 								     +-------+
- 								     |	   	 |
- 								     |	%d   |
- 								     |		 |
- 								     +-------+
- 								   	 """;	    
+	/** */
+	private Sommet[][] listeSommet;  
+	
+	/** lsite des arcs du graphe */
+	private Sommet[][] listeArcs;
+    
+ 	/** Affichage du haut d'une case */
+ 	private static final String HAUT_CASE = "+-----+";	 
+ 	
+ 	/** Affichage des bord d'une case*/
+ 	private static final String BORD_CASE = "|     |";
+ 	
+ 	private static final int HAUTEUR_CASE = 3;
     /**
      * Créer un graphe composé 
-     * @param listeSommets
-     * @param listeArcs
+     * @param largeur
+     * @param hauteur
+     * @throws IllegalArgumentException
      */
-	public Labyrinthe(int largeur, int hauteur) {
+	public Labyrinthe(int hauteur, int largeur) {
         super();
-		this.largeur = largeur;
+        if (!(largeur > 0 && hauteur > 0)) {
+			throw new IllegalArgumentException("largeur ou hauteur invalide");
+        }
+    	this.largeur = largeur;
 		this.hauteur = hauteur;
+		genererLabirynthe(largeur, hauteur);
+		
     }
     
+    
+    /** 
+     * modifie la grille de sommets
+     */
+    private void genererLabirynthe(int largeur, int hauteur) {
+  		listeSommet = creerGrille(largeur, hauteur);
+  		setMarqueSommet();
+    }
+
+	/**
+     * permet de creer une grille carre de 0 (salle), et de -1 (murs)
+     * @return grilleRetour liste de liste de sommets
+     */
+    private Sommet[][] creerGrille(int largeur, int hauteur) {
+        
+        Sommet[][] grilleRetour = new Sommet[hauteur][largeur];
+        
+        for (int j = 0; j < hauteur; j++) {
+            for (int i = 0; i < largeur; i++) {
+                grilleRetour[j][i] = new Sommet(j, i);
+            }
+        }
+        return grilleRetour; // stub
+    }
+    
+    /**
+     * modifie les sommets de la grille
+     */
+    private void setMarqueSommet() {
+        int marque;
+        
+        marque = 0;
+    	for (int i = 0; i < listeSommet.length; i++) {
+            for (int j = 0; j < listeSommet[0].length; j++) {
+                marque++;
+                Sommet s = listeSommet[i][j];
+            	s.setMarque(marque);
+            }
+        }  
+    }
+    
+
 
 
     
@@ -47,7 +103,7 @@ public class Labyrinthe {
      * @throws IllegalArgumentException si les sommet ne sont pas dans le graphe
      * 									ou si l'arrete existe deja
      */
-    public void ajouterArrete(Sommet sommet1, Sommet sommet2) {
+    private void ajouterArrete(Sommet sommet1, Sommet sommet2) {
         boolean sommet1Valide,
         		sommet2Valide;
         
@@ -86,46 +142,99 @@ public class Labyrinthe {
     }
     
     /**
-     * permet de creer une grille carre de 0 (salle), et de -1 (murs)
-     * @r
+     * Algorithme pour créer un labyrinthe avec un chemin
      */
-    private Sommet[][] creerGrille(int largeur, int hauteur) {
+    private void percerLesMurs() {
+        Sommet sommetTest;
+        do {
+			int indiceXSommetRandom = (int) Math.random() * listeSommet.length;
+			int indiceYSommetRandom = (int) Math.random() * listeSommet[0].length;
+			Sommet sommetChoisie = listeSommet[indiceXSommetRandom][indiceYSommetRandom];
+			for (int i = 0; i < listeSommet.length; i++) {
+	            for (int j = 0; j < listeSommet[0].length; j++) {
+                    sommetTest = listeSommet[i][j];
+	                if (   sommetAdjacent(sommetChoisie, sommetTest) 
+	                    && sommetChoisie.getMarque()!= sommetTest.getMarque()) {
+						ajouterArrete(sommetTest, sommetChoisie);
+						fusionnerMarques(sommetChoisie, sommetTest);
+					}
+	            }
+	        }
+		} while (ontLesMemeMarques());
+    }
+    
+	private boolean ontLesMemeMarques() {
+		int marque = listeSommet[0][0].getMarque();
+		for (int i = 0; i < listeSommet.length; i++) {
+	            for (int j = 0; j < listeSommet[0].length; j++) {
+                    if (listeSommet[i][j].getMarque() != marque) {
+						return false;
+					}
+	            }
+	        }
+		return true;
+	}
+	
+	private boolean sommetAdjacent(Sommet sChoisie, Sommet sTeste) {
+        return 
+           (sChoisie.getPosX() == sTeste.getPosX() 
+            && (sChoisie.getPosY()-1 == sTeste.getPosY() 
+                || sChoisie.getPosY()+1 == sTeste.getPosY()
+                )
+           ) 
+		|| (sChoisie.getPosY() == sTeste.getPosY() 
+		    && (   sChoisie.getPosX()-1 == sTeste.getPosX() 
+		        || sChoisie.getPosX()+1 == sTeste.getPosX()
+		        )
+		    );
+    }
+	
+    /** 
+     * fussionne les marques de tous les sommets
+     * @param s1
+     * @param s2
+     */
+    public void fusionnerMarques(Sommet s1, Sommet s2) {
+        int marqueS1 = s1.getMarque();
+        int marqueS2 = s2.getMarque();
         
-        Sommet[][] grilleRetour = new int[largeur][hauteur];
+        // TODO parcourir les sommets et voir si ils ont la marque de l'ecrase, si oui le changer
         
-        for (int j = 0; j < hauteur; j++) {
-            if (j%2 == 0) {
-				for (int i = 0; i < largeur; i++) {
-    	        	grilleRetour[j][i] = new Sommet();
-	        	}
-            } else {
-                for (int i = 0; i < largeur; i++) {
-                    if (i%2 == 0) {
-                        grilleRetour[j][i] = -1;
-                    } else {
-                        grilleRetour[j][i] = 0;
-                    }
-                }
-            }
+        if (Math.random() >= 0.5) {
+            s1.setMarque(marqueS2);
+        } else {
+            s2.setMarque(marqueS1);
         }
         
         
-        return grilleRetour; // stub
-    }
+    } 
     
     
     
-    
-    	@Override
+    @Override
 	public String toString() {
         String affichage;
         affichage = "";
-        for (int i = 0 ; i < this.largeur ; i++ ) {
-            affichage += CASE ;
-        }
+        
+        for (int hauteur = 0 ; hauteur < this.hauteur ; hauteur++){ 
+        	for (int j = 0 ; j < this.largeur ; j++ ) {
+                affichage += HAUT_CASE;
+                
+            }    
+		    for (int i = 0; i < HAUTEUR_CASE ; i++) {
+	            affichage += "\n";		
+	           	for (int j = 0; j < this.largeur; j++) {
+	           		affichage += BORD_CASE; 
+				}
+	        }
+	        affichage += "\n";
+	        for (int j = 0 ; j < this.largeur ; j++ ) {
+	            affichage += HAUT_CASE;
+	            
+	        }
+	        affichage += "\n";
+	    }
+        // TODO peter le mur en affichage
 		return affichage;
-	}
-    
-    
-    
+	} 
 }
