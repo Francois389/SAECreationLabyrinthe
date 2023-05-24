@@ -203,7 +203,7 @@ public class Labyrinthe {
         for (Sommet[] ligneSommet : listeSommet) {
             for (Sommet sommet : ligneSommet) {
                 if (sommet.getMarque() == marqueEcrasee) {
-                    sommet.setMarque(marqueEcransante)
+                    sommet.setMarque(marqueEcransante);
                 }
             }
         }
