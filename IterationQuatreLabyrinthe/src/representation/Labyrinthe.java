@@ -84,6 +84,23 @@ public class Labyrinthe {
         sortie = getListeSommet()[getListeSommet().length-1][getListeSommet()[0].length-1];
         listeArcs = new Sommet[0][0];
     }
+    
+    public Labyrinthe(int hauteur, int largeur, 
+                      Sommet[][] listeSommet,
+                      Sommet[][] listeArcs,
+                      Sommet entree, Sommet sortie) {
+        super();
+        if (!(largeur > 0 && hauteur > 0)) {
+            throw new IllegalArgumentException("largeur ou hauteur invalide");
+        }
+        this.largeur = largeur;
+        this.hauteur = hauteur;
+        this.listeSommet = listeSommet;
+        this.listeArcs = listeArcs;
+        this.entre = entree;
+        this.sortie = sortie;
+    }
+    
 
     /**
      * permet de créer une grille carre de 0 (salle), et de -1 (murs)
@@ -494,6 +511,16 @@ public class Labyrinthe {
      */
     public void setSortie(Sommet sortie) {
         this.sortie = sortie;
+    }
+    
+    /** */
+    public int getHauteur() {
+        return hauteur;
+    }
+    
+    /** */
+    public int getLargeur() {
+        return largeur;
     }
 
 }
