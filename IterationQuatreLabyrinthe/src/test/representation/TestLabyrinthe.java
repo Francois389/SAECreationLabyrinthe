@@ -3,8 +3,6 @@ package test.representation;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -64,24 +62,64 @@ class TestLabyrinthe {
         }
         return false;
     }
-        
-    
-    @Test
-    void testA() {
-        Labyrinthe a = new Labyrinthe(3,4);
-    	//a.fusionnerMarques();
-    }
     
     @Test
     @DisplayName("Test du toString")
     void testToString() {
         {
-            Labyrinthe aAfficher = new Labyrinthe(10,10);
-            //aAfficher.
-        	System.out.print(aAfficher);
-        	System.out.println("fini ");
+            Labyrinthe aAfficher = new Labyrinthe(5,7);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[0][0], aAfficher.listeSommet[0][1]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[0][1], aAfficher.listeSommet[0][2]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[0][2], aAfficher.listeSommet[0][3]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[0][2], aAfficher.listeSommet[1][2]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[0][3], aAfficher.listeSommet[0][4]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[0][5], aAfficher.listeSommet[0][6]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[0][5], aAfficher.listeSommet[1][5]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[1][0], aAfficher.listeSommet[1][1]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[1][1], aAfficher.listeSommet[1][2]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[1][3], aAfficher.listeSommet[1][4]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[1][5], aAfficher.listeSommet[1][6]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[1][0], aAfficher.listeSommet[2][0]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[1][2], aAfficher.listeSommet[2][2]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[2][1], aAfficher.listeSommet[3][1]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[1][4], aAfficher.listeSommet[2][4]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[1][3], aAfficher.listeSommet[2][3]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[3][1], aAfficher.listeSommet[3][2]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[3][2], aAfficher.listeSommet[3][3]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[2][0], aAfficher.listeSommet[3][0]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[2][3], aAfficher.listeSommet[3][3]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[1][5], aAfficher.listeSommet[2][5]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[1][6], aAfficher.listeSommet[2][6]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[2][4], aAfficher.listeSommet[3][4]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[4][0], aAfficher.listeSommet[3][0]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[4][0], aAfficher.listeSommet[4][1]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[4][1], aAfficher.listeSommet[4][2]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[4][2], aAfficher.listeSommet[4][3]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[4][3], aAfficher.listeSommet[3][3]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[4][4], aAfficher.listeSommet[4][5]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[4][4], aAfficher.listeSommet[3][4]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[4][5], aAfficher.listeSommet[4][6]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[4][6], aAfficher.listeSommet[3][6]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[3][4], aAfficher.listeSommet[3][5]);
+            aAfficher.ajouterArrete(aAfficher.listeSommet[2][5], aAfficher.listeSommet[3][5]);
+            aAfficher.listeSommet[0][0].setVoisin(true, 3);
+            aAfficher.listeSommet[2][6].setVoisin(true, 1);
+//            aAfficher.constructionBacktracking();
+            System.out.print(aAfficher);
+            System.out.println("Fini ");
+        }     
+//        {
+//            Labyrinthe aAfficher = new Labyrinthe(5,7);
+//            aAfficher.chaineAscendante();
+//            System.out.print(aAfficher);
+//            System.out.println("Fini ");
+//        }
+        {
+            Labyrinthe aAfficher = new Labyrinthe(2,2);
+            aAfficher.constructionBacktracking();
+            System.out.print(aAfficher);
+            System.out.println("Fini ");
         }
-        
     }
     
     @Test
@@ -90,5 +128,32 @@ class TestLabyrinthe {
         Sommet s1 = new Sommet(3,1);
         assertFalse(g.estPresent(s1));
         assertTrue(g.estPresent(g.getListeSommet()[0][0]));
+    }
+    
+    @Test
+    void testOntTousLaMemeMarque() {
+        Labyrinthe g = new Labyrinthe(2,2);
+        System.out.println("remier appele");
+        assertFalse(g.ontTousLaMemeMarque());
+        for (Sommet[] sommets : g.getListeSommet()) {
+            for (Sommet sTest : sommets) {
+                sTest.setMarque(1);
+            }
+        }
+        assertTrue(g.ontTousLaMemeMarque());
+    }
+    
+    @Test
+    void testFusionnerMarques() {
+        Labyrinthe g = new Labyrinthe(2,2);
+        Sommet s = new Sommet(3,3,123);
+        for (Sommet[] sommets : g.getListeSommet()) {
+            for (Sommet sTest : sommets) {
+                System.out.print("Avant: "+sTest.getMarque());
+                g.fusionnerMarques(s,sTest);
+                System.out.println("Apres " + sTest.getMarque()+"\n");
+            }
+        }
+        assertTrue(g.ontTousLaMemeMarque());
     }
 }
