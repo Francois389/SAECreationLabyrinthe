@@ -152,11 +152,9 @@ public class PileContigue {
 
         String ligne = "|%s\t\t|\n";
 
-        int index = 0;
-        while (elementsEmpiles[index] != null) {
-        	System.out.println(elementsEmpiles[index]);
-        	resultat += ligne.format(ligne, elementsEmpiles[index].toString());
-        	index++;
+        for (int i = 0; i < elementsEmpiles.length && elementsEmpiles[i] != null; i++) {
+            System.out.println(elementsEmpiles[i]);
+            resultat += String.format(ligne, elementsEmpiles[i].toString());
         }
       
         resultat += "+---------------+";

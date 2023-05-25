@@ -62,19 +62,12 @@ class TestLabyrinthe {
         }
         return false;
     }
-        
-    
-    @Test
-    void testA() {
-        Labyrinthe a = new Labyrinthe(3,4);
-    	//a.fusionnerMarques();
-    }
     
     @Test
     @DisplayName("Test du toString")
     void testToString() {
         {
-            Labyrinthe aAfficher = new Labyrinthe(5,7 , true);
+            Labyrinthe aAfficher = new Labyrinthe(5,7);
 			aAfficher.ajouterArrete(aAfficher.listeSommet[0][0], aAfficher.listeSommet[0][1]);
 			aAfficher.ajouterArrete(aAfficher.listeSommet[0][1], aAfficher.listeSommet[0][2]);
 			aAfficher.ajouterArrete(aAfficher.listeSommet[0][2], aAfficher.listeSommet[0][3]);
@@ -113,13 +106,19 @@ class TestLabyrinthe {
 			aAfficher.listeSommet[2][6].setVoisin(true, 1);
 //            aAfficher.constructionBacktracking();
         	System.out.print(aAfficher);
-        	System.out.println("fini ");
+        	System.out.println("Fini ");
         }     
+//        {
+//            Labyrinthe aAfficher = new Labyrinthe(5,7);
+//            aAfficher.chaineAscendante();
+//            System.out.print(aAfficher);
+//            System.out.println("Fini ");
+//        }
         {
-            Labyrinthe aAfficher = new Labyrinthe(5,7 , true);
-            aAfficher.chaineAscendante();
+            Labyrinthe aAfficher = new Labyrinthe(2,2);
+            aAfficher.constructionBacktracking();
             System.out.print(aAfficher);
-            System.out.println("fini ");
+            System.out.println("Fini ");
         }
     }
     
