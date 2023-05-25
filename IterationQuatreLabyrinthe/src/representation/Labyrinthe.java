@@ -261,6 +261,7 @@ public class Labyrinthe {
         } while (!ontTousLaMemeMarque());
     }
     
+    
     /**
      * Vérifie si tous les sommets de la grille on la même marque.
      * @return true s'ils ont tous la même et false sinon 
@@ -315,9 +316,9 @@ public class Labyrinthe {
     
     
     /**
-     * construction par backtracking avec une pile
+     * Construction par backtracking avec une pile
      * en modifiant la liste des arcs via l'appel de la 
-     * methode ajouterArc
+     * méthode ajouterArc
      */
     public void constructionBacktracking() {
         

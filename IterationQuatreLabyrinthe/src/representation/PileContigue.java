@@ -109,7 +109,7 @@ public class PileContigue {
     
     /**
      * retire le dernier element de la pile
-     * @return la pile modifiee
+     * @return la pile modifiée
      * @throws PileVideException si la pile est vide
      */
     public PileContigue depiler() {
