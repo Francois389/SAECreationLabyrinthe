@@ -75,7 +75,20 @@ class TestLabyrinthe {
     @Test
     @DisplayName("Test du toString")
     void testToString() {
-        Labyrinthe aAfficher = new Labyrinthe(3,4);
-        System.out.print(aAfficher);
+        {
+            Labyrinthe aAfficher = new Labyrinthe(10,10);
+            aAfficher.
+        	System.out.print(aAfficher);
+        	System.out.println("fini ");
+        }
+        
+    }
+    
+    @Test
+    void testEstPresent(){
+        Labyrinthe g = new Labyrinthe(2,2);
+        Sommet s1 = new Sommet(3,1);
+        assertFalse(g.estPresent(s1));
+        assertTrue(g.estPresent(g.getListeSommet()[0][0]));
     }
 }

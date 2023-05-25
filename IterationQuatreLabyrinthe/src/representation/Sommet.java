@@ -11,6 +11,11 @@ package representation;
  * @author Denamiel Clément 
  * @author Descriaud Lucas
  */
+/**
+ * //TODO Commenter la responsabilités de la classe Sommet
+ * @author francois
+ *
+ */
 public class Sommet {
     
     /** coordonnée X de la salle dans le labyrinthe */
@@ -21,6 +26,12 @@ public class Sommet {
 
     /** Contient les possibles marque du Sommet.  */
     private int marque;
+    
+    /** 
+     * Indique les voisins du sommet. 
+     * Commence par le voisin du haut puis continue dans le sens horaire
+     */
+    private boolean[] voisins;
 
 
     /**
@@ -39,6 +50,7 @@ public class Sommet {
         posX = x;
         posY = y;
         marque = m;
+        voisins = new boolean[4]; // par defaut a false
     }
     
     /**
@@ -56,6 +68,7 @@ public class Sommet {
         }
         posX = x;
         posY = y;
+        voisins = new boolean[4]; // par defaut a false
     }
 
     /**
@@ -69,15 +82,13 @@ public class Sommet {
     }
 
     /**
-     * 
      * @return la position x du sommet
      */
     public int getPosX() {
         return posX;
     }
     
-    /**
-     * 
+    /**  
      * @return la position y du sommet
      */    
     public int getPosY() {
@@ -94,19 +105,52 @@ public class Sommet {
         return posX * 100 + posY; 
     }
 
-    @Override
+	 
+	@Override
     public boolean equals(Object obj) {
         if (obj == null) {
             return false;
         }
         return hashCode() == obj.hashCode();
     }
-
+	
+	/**
+	 * @return la marque du sommet
+	 */
     public int getMarque() {
         return marque;
     }
-
+	
+	/**
+	 * attribut a un sommet une marque
+	 */
     public void setMarque(int argMarque) {
         this.marque = argMarque;
+    }
+
+	/**
+	 * getter de l'atrbut voisins
+	 * @return liste des voisins
+	 */
+	public boolean[] getVoisins() {
+        return this.voisins;
+    }
+    
+    
+    /**
+     * @param voisins la nouvelle liste a attribuer
+     */
+    public void setVoisin(boolean[] voisins) {
+        this.voisins = voisins ; 
+    }
+
+	/**
+	 *
+	 */
+    public void setVoisin(boolean voisin, int indice) {
+        if (indice < 0 || voisins.length <= indice) {
+            throw new IllegalArgumentException("Erreur : Indice ");
+        }
+        this.voisins[indice] = voisin ; 
     }
 }
