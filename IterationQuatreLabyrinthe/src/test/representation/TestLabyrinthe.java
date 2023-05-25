@@ -77,7 +77,7 @@ class TestLabyrinthe {
     void testToString() {
         {
             Labyrinthe aAfficher = new Labyrinthe(10,10);
-            aAfficher.
+            //aAfficher.
         	System.out.print(aAfficher);
         	System.out.println("fini ");
         }
