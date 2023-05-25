@@ -368,7 +368,7 @@ public class Labyrinthe {
 		pileSommets.empiler(entre);
 		
 		while (!pileSommets.estVide()) {
-			Sommet sommetCourant = pileSommet.sommet();
+			Sommet sommetCourant = (Sommet) pileSommets.sommet();
 		}
 		
 	}
