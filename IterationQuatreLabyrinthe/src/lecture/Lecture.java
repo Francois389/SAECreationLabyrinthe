@@ -1,3 +1,8 @@
+/*
+ * Lecture.java                                        25 mai 2023
+ * IUT de Rodez, pas de copyright, ni "copyleft"
+ */
+
 package lecture;
 
 import representation.Sommet;
@@ -18,6 +23,12 @@ import java.io.FileWriter;
 
 import java.util.ArrayList;
 
+/**
+ * 
+ * //TODO Commenter la responsabilités de la classe Lecture
+ * @author Denamiel Clément
+ *
+ */
 public class Lecture {
     public static void main(final String[] args) {
        

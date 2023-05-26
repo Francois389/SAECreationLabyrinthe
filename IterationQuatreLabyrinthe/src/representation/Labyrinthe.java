@@ -85,6 +85,17 @@ public class Labyrinthe {
         listeArcs = new Sommet[0][0];
     }
     
+    /**
+     * Constructeur utilisé pour la construction d'un labyrinthe 
+     * issu d'un fichier .json
+     * TODO commenter
+     * @param hauteur
+     * @param largeur
+     * @param listeSommet
+     * @param listeArcs
+     * @param entree
+     * @param sortie
+     */
     public Labyrinthe(int hauteur, int largeur, 
                       Sommet[][] listeSommet,
                       Sommet[][] listeArcs,
