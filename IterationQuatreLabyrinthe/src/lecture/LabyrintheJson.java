@@ -1,3 +1,6 @@
+/*
+ * //TODO comentez
+ */
 package lecture;
 
 import representation.Labyrinthe;
@@ -18,8 +21,18 @@ import java.io.FileWriter;
 
 import java.util.ArrayList;
 
+/**
+ * 
+ * //TODO Commenter la responsabilités de la classe LabyrintheJson
+ * @author Lenovo
+ *
+ */
 public class LabyrintheJson {
 
+    /**
+     * //TODO commentez
+     * @return
+     */
     private static Labyrinthe getLabyrinthe() {
         Labyrinthe retour = new Labyrinthe(5,7);
         retour.ajouterArrete(retour.listeSommet[0][0], retour.listeSommet[0][1]);

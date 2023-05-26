@@ -30,6 +30,11 @@ import java.util.ArrayList;
  *
  */
 public class Lecture {
+    
+    /**
+     * //TODO comenter
+     * @param args
+     */
     public static void main(final String[] args) {
        
         ArrayList<Sommet> sommetsValidesSansDoublon; 
