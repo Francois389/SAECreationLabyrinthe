@@ -7,8 +7,8 @@ import java.util.Iterator;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 
 
@@ -113,7 +113,7 @@ class TestLabyrinthe {
 			aAfficher.ajouterArrete(aAfficher.listeSommet[2][5], aAfficher.listeSommet[3][5]);
 			aAfficher.listeSommet[0][0].setVoisin(true, 3);
 			aAfficher.listeSommet[2][6].setVoisin(true, 1);
-//            aAfficher.constructionBacktracking();
+            //aAfficher.constructionBacktracking();
         	System.out.print(aAfficher);
         	System.out.println("fini ");
         }     
@@ -158,5 +158,17 @@ class TestLabyrinthe {
             }
         }
         assertTrue(g.ontTousLaMemeMarque());
+    }
+    
+    @AfterAll
+    @Test
+    /**
+     * Pour tester le temps d'execution des algos
+     */
+    static void  grandLabyrinthe() {
+        System.out.println("debut");
+        Labyrinthe l = new Labyrinthe(100, 1000);
+        //l.chaineAscendante();
+        System.out.println("fin");
     }
 }
