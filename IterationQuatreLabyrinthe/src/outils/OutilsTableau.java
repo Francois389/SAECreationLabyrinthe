@@ -76,19 +76,4 @@ public class OutilsTableau {
         }
         return resulat + liste[liste.length - 1] + "]";
     }
-    
-    
-   
-    
 }
-
-
-
-
-
-
-
-
-
-
-

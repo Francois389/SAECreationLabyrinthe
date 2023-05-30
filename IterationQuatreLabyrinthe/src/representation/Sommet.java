@@ -28,7 +28,7 @@ public class Sommet {
     private int marque;
     
     /** 
-     * Indique les voisins du sommet. 
+     * Indique la présence de voisins du sommet. 
      * Commence par le voisin du haut puis continue dans le sens horaire
      */
     private boolean[] voisins;

@@ -3,8 +3,6 @@ package test.representation;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterAll;
@@ -64,13 +62,6 @@ class TestLabyrinthe {
         }
         return false;
     }
-        
-    
-    @Test
-    void testA() {
-        Labyrinthe a = new Labyrinthe(3,4);
-    	//a.fusionnerMarques();
-    }
     
     @Test
     @DisplayName("Test du toString")
@@ -116,12 +107,18 @@ class TestLabyrinthe {
             //aAfficher.constructionBacktracking();
         	System.out.print(aAfficher);
         	System.out.println("fini ");
-        }     
+        }         
+//        {
+//            Labyrinthe aAfficher = new Labyrinthe(5,7);
+//            aAfficher.chaineAscendante();
+//            System.out.print(aAfficher);
+//            System.out.println("Fini ");
+//        }
         {
-            Labyrinthe aAfficher = new Labyrinthe(5,7 , true);
-            aAfficher.chaineAscendante();
+            Labyrinthe aAfficher = new Labyrinthe(2,2);
+            aAfficher.constructionBacktracking();
             System.out.print(aAfficher);
-            System.out.println("fini ");
+            System.out.println("Fini ");
         }
     }
     

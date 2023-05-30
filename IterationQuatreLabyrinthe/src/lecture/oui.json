@@ -1,0 +1,147 @@
+{
+  "sommets": [
+    {
+      "posX": 0,
+      "posY": 0,
+      "marque": 0,
+      "voisins": [
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "posX": 1,
+      "posY": 0,
+      "marque": 0,
+      "voisins": [
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "posX": 2,
+      "posY": 0,
+      "marque": 0,
+      "voisins": [
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "posX": 3,
+      "posY": 0,
+      "marque": 0,
+      "voisins": [
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "posX": 4,
+      "posY": 0,
+      "marque": 0,
+      "voisins": [
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "posX": 0,
+      "posY": 1,
+      "marque": 0,
+      "voisins": [
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "posX": 0,
+      "posY": 2,
+      "marque": 0,
+      "voisins": [
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "posX": 0,
+      "posY": 3,
+      "marque": 0,
+      "voisins": [
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "posX": 0,
+      "posY": 4,
+      "marque": 0,
+      "voisins": [
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "posX": 1,
+      "posY": 1,
+      "marque": 0,
+      "voisins": [
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "posX": 2,
+      "posY": 2,
+      "marque": 0,
+      "voisins": [
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "posX": 3,
+      "posY": 3,
+      "marque": 0,
+      "voisins": [
+        false,
+        false,
+        false,
+        false
+      ]
+    },
+    {
+      "posX": 4,
+      "posY": 4,
+      "marque": 0,
+      "voisins": [
+        false,
+        false,
+        false,
+        false
+      ]
+    }
+  ]
+}
