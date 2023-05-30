@@ -80,9 +80,9 @@ public class Labyrinthe {
         this.largeur = largeur;
         this.hauteur = hauteur;
         listeSommet = creerGrille(largeur, hauteur);
+        listeArcs = new Sommet[0][0];
         entre = getListeSommet()[0][0];
         sortie = getListeSommet()[getListeSommet().length-1][getListeSommet()[0].length-1];
-        listeArcs = new Sommet[0][0];
     }
 
     /**
@@ -106,6 +106,7 @@ public class Labyrinthe {
     
     /**
      * Mes des marques unique sur les sommets du labyrinthe
+     * Les marques commencent à 1
      */
     public void setMarqueSommet() {
         int marque;
@@ -285,63 +286,99 @@ public class Labyrinthe {
         }
     } 
     
+    /**
+     * @param tab un tableaud de booleen
+     * @return true si tous les elements sont true
+     *         false sinon
+     */
+    private boolean sontTousVisites(boolean[] tab) {
+         for (boolean b : tab) {
+             if (!b) {
+                  return false;
+             } 
+         }
+         
+         return true;
+    }
+    
     
     /**
      * Construction par backtracking avec une pile
      * en modifiant la liste des arcs via l'appel de la 
      * méthode ajouterArc
      */
-    public void constructionBacktracking() {
+    public void constructionBacktracking(){
+        System.out.println("Debut");
+        setMarqueSommet();
+        
         boolean[] sommetsVisites = new boolean[largeur * hauteur];
-        PileContigue pileSommets = new PileContigue();    
+        
+        PileContigue pileSommets = new PileContigue();
         
         int indiceXSommetRandom = (int)(Math.random() * (listeSommet.length));
         int indiceYSommetRandom = (int)(Math.random() * (listeSommet[0].length));   
-        setMarqueSommet();
-    
+        //On marque le sommet comme parcourue
+        sommetsVisites[getIndice(indiceXSommetRandom, indiceYSommetRandom)] = true;
         //On empile un sommet au hasard
         pileSommets.empiler(listeSommet[indiceXSommetRandom][indiceYSommetRandom]);
+
+        Sommet sommetCourant = (Sommet) pileSommets.sommet();
         
-        Sommet sommetPile = (Sommet) pileSommets.sommet();
-        //On marque le sommet comme parcourue
-        sommetsVisites[sommetPile.getMarque()-1] = true;
-        
-        
-        while (!pileSommets.estVide()) {
-            Sommet sommetCourant = (Sommet) pileSommets.sommet();
-            Sommet[] listeVoisins = getSommetsVoisins(sommetCourant);
+        while (!pileSommets.estVide() && !sontTousVisites(sommetsVisites)) {
+            try {
+                Thread.sleep(100);
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
+            Sommet[] listeVoisinsParcourus = getSommetsVoisins(sommetCourant);
             
+            //System.out.println("Sommet courant : "+sommetCourant+" | listeVoisins"+OutilsTableau.tabVersString(listeVoisins));
             
-            boolean tousParcourus = true;
-            for (int i = 0; i < listeVoisins.length - 1 && tousParcourus; i++ ) {
-                if (!sommetsVisites[listeVoisins[i].getMarque()]) {
-                    tousParcourus = false;
+            for (int i = 0; i < listeVoisinsParcourus.length - 1; i++ ) {
+                if (sommetsVisites[listeVoisinsParcourus[i].getMarque()]) {
+                    listeVoisinsParcourus[i] = null;
                 }
             }
-            
-            
-            if (tousParcourus) {
+            listeVoisinsParcourus = OutilsTableau.copieSaufNull(listeVoisinsParcourus);
+            if (listeVoisinsParcourus.length == 0) {
+                System.out.println("on depile");
                 pileSommets.depiler();
-                System.out.println(pileSommets);
-                sommetCourant =(Sommet) pileSommets.sommet();
+                if (!pileSommets.estVide()) {
+                    sommetCourant = (Sommet) pileSommets.sommet();
+                }
             } else {
-                int indiceVoisinRandom = (int)(Math.random() * (listeVoisins.length));
-                Sommet voisinRandom = listeVoisins[indiceVoisinRandom];
+                //TODO il ne doit pas pouvoir prendre de sommets déjà parcoursu
+                int indiceVoisinRandom = (int)(Math.random() * (listeVoisinsParcourus.length));
+                Sommet voisinRandom = listeVoisinsParcourus[indiceVoisinRandom];
                 ajouterArrete(sommetCourant, voisinRandom);
-                pileSommets.empiler(voisinRandom);
-                sommetsVisites[voisinRandom.getMarque()-1] = true;
+                pileSommets.empiler(voisinRandom);                
+                sommetsVisites[voisinRandom.getMarque() - 1] = true;
+                sommetCourant = (Sommet) pileSommets.sommet();
+                
             }
-            sommetsVisites[sommetCourant.getMarque()-1] = true;
-            System.out.println(pileSommets.sommet());
-            for (int i = 0; i < sommetsVisites.length; i++) {
-                System.out.print(sommetsVisites[i] + " | ");
-            }
-            System.out.println("\n");
+//            System.out.println(pileSommets.sommet());
+//            for (int i = 0; i < sommetsVisites.length; i++) {
+//                System.out.print(sommetsVisites[i] + " | ");
+//            }
+//            System.out.println("\n" + pileSommets+"\n\n");
         }
         
     }
     
-    /** 
+
+    /**
+     * 
+     * @param x
+     * @param y
+     * @return
+     */
+    private int getIndice(int x, int y) {
+        return y * largeur + x + 1;
+    }
+    
+    
+    
+    /**
      * permet de récupérer la liste des voisins d'un sommet
      * @param current le sommet dont on veut avoir les voisins
      */

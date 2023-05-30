@@ -77,9 +77,32 @@ public class OutilsTableau {
         return resulat + liste[liste.length - 1] + "]";
     }
     
-    
-   
-    
+    /**
+     * Renvoie un nouveau tableau en aillant retirer 
+     * l'élement à l'inice non voulue
+     * @param tab
+     * @return
+     */
+    public static Sommet[] copieSaufNull(Sommet[] tab) {
+       
+       	
+       	int taille = 0;
+        for (int i = 0; i < tab.length; i++) {
+            if (tab[i] != null) {
+                taille++;
+            }
+        }
+        
+        Sommet[] nouveauTableau = new Sommet[taille];
+        int pointeur = 0;
+        for (int i = 0; i < tab.length; i++) {
+            if (tab[i] != null) {
+                nouveauTableau[pointeur] = tab[i];
+                pointeur++;
+            }
+        }
+        return nouveauTableau;
+    }
 }
 
 

@@ -156,4 +156,10 @@ class TestLabyrinthe {
         }
         assertTrue(g.ontTousLaMemeMarque());
     }
+    
+    @Test
+    void testBacktracking() {
+        Labyrinthe test = new Labyrinthe(2, 2);
+        test.constructionBacktracking();
+    }
 }
