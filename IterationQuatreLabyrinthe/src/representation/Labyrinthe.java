@@ -1,6 +1,7 @@
 package representation;
 
 import java.lang.Math;
+import java.util.Iterator;
 
 import org.hamcrest.Condition.Step;
 import outils.OutilsTableau;
@@ -46,7 +47,7 @@ public class Labyrinthe {
      
      /** Hauteur en ligne dans la console texte */
      private static final int HAUTEUR_CASE = 3;
-     
+    
      
      private Sommet entre;
      
@@ -111,7 +112,6 @@ public class Labyrinthe {
      */
     private void genererLabirynthe(int largeur, int hauteur) {
           listeSommet = creerGrille(largeur, hauteur);
-          setMarqueSommet();
     }
 
     /**
@@ -132,23 +132,7 @@ public class Labyrinthe {
 
         return grilleRetour; // stub
     }
-    
-    /**
-     * Mes des marques unique sur les sommets du labyrinthe
-     */
-    private void setMarqueSommet() {
-        int marque;
-        
-        marque = 0;
-        for (int i = 0; i < listeSommet.length; i++) {
-            for (int j = 0; j < listeSommet[0].length; j++) {
-                marque++;
-                Sommet s = listeSommet[i][j];
-                s.setMarque(marque);
-            }
-        }  
-    }
-    
+   
 
 	// TODO remettre private
     /** 
@@ -265,43 +249,83 @@ public class Labyrinthe {
         int murACasser,
             nbArcCreer;
         nbArcCreer = 0;  
-        
+        System.out.println(this.hauteur * this.largeur -1);
     	do {
     		int indiceXSommetRandom = (int) (Math.random() * listeSommet.length) ;
         	int indiceYSommetRandom = (int) (Math.random() * listeSommet[0].length);
             Sommet sommetChoisie = listeSommet[indiceXSommetRandom][indiceYSommetRandom];
             murACasser = (int) (Math.random()*4);
-            System.out.println("sommet " + sommetChoisie + "arc " + murACasser);
             Sommet sommetAAteindre;
+            
             switch (murACasser) {
-			case 0: {	
-				Sommet sommetAAteindre = listeSommet[indiceXSommetRandom][indiceYSommetRandom - 1];
+			case 0: {
+                if (indiceYSommetRandom != 0) {
+                	sommetAAteindre = listeSommet[indiceXSommetRandom][indiceYSommetRandom - 1];
+                } else {
+                    sommetAAteindre = listeSommet[indiceXSommetRandom][indiceYSommetRandom];
+                }	
 				break;
 			}
 			case 1: {
-				Sommet sommetAAteindre = listeSommet[indiceXSommetRandom + 1][indiceYSommetRandom];
+				if (indiceXSommetRandom != listeSommet.length -1 ) {
+            		sommetAAteindre = listeSommet[indiceXSommetRandom + 1][indiceYSommetRandom];
+            	} else {
+            		sommetAAteindre = listeSommet[indiceXSommetRandom][indiceYSommetRandom];
+            	}
                 break;
             }
             case 2: {
-            	Sommet sommetAAteindre = listeSommet[indiceXSommetRandom][indiceYSommetRandom + 1];
+            	if (indiceYSommetRandom != listeSommet[indiceXSommetRandom].length - 1) {
+            		sommetAAteindre = listeSommet[indiceXSommetRandom][indiceYSommetRandom + 1];
+            	} else {
+            		sommetAAteindre = listeSommet[indiceXSommetRandom][indiceYSommetRandom];
+            	}
                 break;
             }
 			case 3: {
-				Sommet sommetAAteindre = listeSommet[indiceXSommetRandom - 1][indiceYSommetRandom];
-				break;
+				 if (indiceXSommetRandom != 0) {
+					 sommetAAteindre = listeSommet[indiceXSommetRandom -1 ][indiceYSommetRandom];
+						 
+				 } else {
+					 sommetAAteindre = listeSommet[indiceXSommetRandom][indiceYSommetRandom];
+				 }	 
+				break;	 
             }
 			default: {
                 // Ne rentre jamais dans cette branche et permet de ne pas initialiser 
-				Sommet sommetAAteindre = listeSommet[indiceXSommetRandom][indiceYSommetRandom];
+				 sommetAAteindre = listeSommet[indiceXSommetRandom][indiceYSommetRandom];
 			}
             } 
-                
-			if (sommetChoisie.getMarque() != sommetAAteindre.getMarque()) {
-            	nbArcCreer++;     
+            
+            
+            if (sommetChoisie.getMarque() == -1 && sommetAAteindre.getMarque() == -1) {
+            	nbArcCreer++;  
+            	ajouterArrete(sommetChoisie, sommetAAteindre);
+            	sommetChoisie.setMarque(nbArcCreer);
+            	sommetAAteindre.setMarque(nbArcCreer);
+            } else if (sommetAAteindre.getMarque() != sommetChoisie.getMarque()) {
+            	if (sommetChoisie.getMarque() == -1) {
+            		nbArcCreer++; 
+            		ajouterArrete(sommetChoisie, sommetAAteindre);
+            		sommetChoisie.setMarque(sommetAAteindre.getMarque());
+            	} else if (sommetAAteindre.getMarque() == -1) {
+            		nbArcCreer++; 
+            		ajouterArrete(sommetChoisie, sommetAAteindre);
+            		sommetAAteindre.setMarque(sommetChoisie.getMarque());
+            	} else {
+                	nbArcCreer++;   
+                	ajouterArrete(sommetChoisie, sommetAAteindre);
+                	fusionnerMarques(sommetChoisie, sommetAAteindre);
+//                	System.out.println("sommet " + sommetChoisie + "arc " + murACasser);
+//                	System.out.println(nbArcCreer);
+//                	System.out.println("marque sommet choisi " + sommetChoisie.getMarque() + "marque aatteindre" + sommetAAteindre.getMarque());
+                    
+                }
             }
-            
-            
-         } while (nbArcCreer < this.hauteur * this.largeur -1 ) ;
+			
+           	
+			            
+         } while (nbArcCreer < this.hauteur * this.largeur) ;
     }
     /**
      * Vérifie si tous les sommets de la grille on la même marque.
@@ -341,18 +365,12 @@ public class Labyrinthe {
      * @param s2
      */
     public void fusionnerMarques(Sommet sommetEcrasant, Sommet sommetEcrase) {
-        int marqueEcrasante = sommetEcrasant.getMarque();
-        int marqueEcrasee = sommetEcrase.getMarque();
+        Sommet[] voisins = getSommetsVoisins(sommetEcrase);
         
-        
-        for (Sommet[] ligneSommet : listeSommet) {
-            for (Sommet sommet : ligneSommet) {
-                System.out.println("ECRASANTE:"+marqueEcrasante+" | ecrasé:"+marqueEcrasee);
-                if (sommet.getMarque() == marqueEcrasee) {
-                    sommet.setMarque(marqueEcrasante);
-                }
-            }
-        }
+        for (int i = 0; i < voisins.length; i++) {
+			voisins[i].setMarque(sommetEcrasant.getMarque());
+		}
+        		
     } 
     
     

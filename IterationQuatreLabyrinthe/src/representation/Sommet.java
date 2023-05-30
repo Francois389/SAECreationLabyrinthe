@@ -42,25 +42,6 @@ public class Sommet {
      * @param y position y du sommet
      * @throws IllegalArgumentException si les arguments sont invalides
      */
-    public Sommet (int x, int y, int m) {
-        super();
-        if (!coordonneesValides(x, y)) {
-            throw new IllegalArgumentException();
-        }
-        posX = x;
-        posY = y;
-        marque = m;
-        voisins = new boolean[4]; // par defaut a false
-    }
-    
-    /**
-     * Constructeur de la classe sommet
-     * Un sommet est valide si ses coordonnées sont dans les entier naturels
-     * les paramètres x et y ne peuvent donc pas être négatifs
-     * @param x position y du sommet
-     * @param y position y du sommet
-     * @throws IllegalArgumentException si les arguments sont invalides
-     */
     public Sommet (int x, int y) {
         super();
         if (!coordonneesValides(x, y)) {
@@ -68,8 +49,10 @@ public class Sommet {
         }
         posX = x;
         posY = y;
+        marque = -1;
         voisins = new boolean[4]; // par defaut a false
     }
+    
 
     /**
      * Vérifie que les coordonnées sont valides (pas de coordonnées dans les négatifs)

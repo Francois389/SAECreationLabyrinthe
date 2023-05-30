@@ -162,7 +162,9 @@ class TestLabyrinthe {
     
     @Test
     void testChaineAscendante2() {
-    	Labyrinthe g = new Labyrinthe(5, 7);
+    	Labyrinthe g = new Labyrinthe(4, 4);
     	g.chaineAscendante2();
+    	System.out.print(g);
+    	System.out.println("fini");
     }
 }
