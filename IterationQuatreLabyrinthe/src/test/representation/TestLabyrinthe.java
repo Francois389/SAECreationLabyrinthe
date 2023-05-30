@@ -159,4 +159,10 @@ class TestLabyrinthe {
         }
         assertTrue(g.ontTousLaMemeMarque());
     }
+    
+    @Test
+    void testChaineAscendante2() {
+    	Labyrinthe g = new Labyrinthe(5, 7);
+    	g.chaineAscendante2();
+    }
 }

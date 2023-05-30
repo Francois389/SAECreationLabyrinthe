@@ -240,8 +240,8 @@ public class Labyrinthe {
         int[][] coordonDejaGenerees = new int[hauteur * largeur][2];
         
         do {
-        	int indiceXSommetRandom = (int) Math.random() * listeSommet.length;
-        	int indiceYSommetRandom = (int) Math.random() * listeSommet[0].length;
+        	int indiceXSommetRandom = (int) (Math.random() * listeSommet.length);
+        	int indiceYSommetRandom = (int) (Math.random() * listeSommet[0].length);
 						
 			arreteCreer = false;
             Sommet sommetChoisie = listeSommet[indiceXSommetRandom][indiceYSommetRandom];
@@ -261,6 +261,48 @@ public class Labyrinthe {
         } while (!ontTousLaMemeMarque());
     }
     
+    public void chaineAscendante2() {
+        int murACasser,
+            nbArcCreer;
+        nbArcCreer = 0;  
+        
+    	do {
+    		int indiceXSommetRandom = (int) (Math.random() * listeSommet.length) ;
+        	int indiceYSommetRandom = (int) (Math.random() * listeSommet[0].length);
+            Sommet sommetChoisie = listeSommet[indiceXSommetRandom][indiceYSommetRandom];
+            murACasser = (int) (Math.random()*4);
+            System.out.println("sommet " + sommetChoisie + "arc " + murACasser);
+            Sommet sommetAAteindre;
+            switch (murACasser) {
+			case 0: {	
+				Sommet sommetAAteindre = listeSommet[indiceXSommetRandom][indiceYSommetRandom - 1];
+				break;
+			}
+			case 1: {
+				Sommet sommetAAteindre = listeSommet[indiceXSommetRandom + 1][indiceYSommetRandom];
+                break;
+            }
+            case 2: {
+            	Sommet sommetAAteindre = listeSommet[indiceXSommetRandom][indiceYSommetRandom + 1];
+                break;
+            }
+			case 3: {
+				Sommet sommetAAteindre = listeSommet[indiceXSommetRandom - 1][indiceYSommetRandom];
+				break;
+            }
+			default: {
+                // Ne rentre jamais dans cette branche et permet de ne pas initialiser 
+				Sommet sommetAAteindre = listeSommet[indiceXSommetRandom][indiceYSommetRandom];
+			}
+            } 
+                
+			if (sommetChoisie.getMarque() != sommetAAteindre.getMarque()) {
+            	nbArcCreer++;     
+            }
+            
+            
+         } while (nbArcCreer < this.hauteur * this.largeur -1 ) ;
+    }
     /**
      * Vérifie si tous les sommets de la grille on la même marque.
      * @return true s'ils ont tous la même et false sinon 
@@ -431,7 +473,7 @@ public class Labyrinthe {
     public String toString() {
         String affichage;
         affichage = "";
-        
+        //  TODO rajouter numero de case calcule comme i*j
         for (int hauteur = 0 ; hauteur < this.hauteur ; hauteur++){ 
             for (int j = 0 ; j < this.largeur ; j++ ) {
                 if (this.listeSommet[hauteur][j].getVoisins()[HAUT]) {
