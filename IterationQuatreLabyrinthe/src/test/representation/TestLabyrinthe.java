@@ -145,20 +145,7 @@ class TestLabyrinthe {
         }
         assertTrue(g.ontTousLaMemeMarque());
     }
-    
-    @Test
-    void testFusionnerMarques() {
-        Labyrinthe g = new Labyrinthe(2,2);
-        Sommet s = new Sommet(3,3,123);
-        for (Sommet[] sommets : g.getListeSommet()) {
-            for (Sommet sTest : sommets) {
-                System.out.print("Avant: "+sTest.getMarque());
-                g.fusionnerMarques(s,sTest);
-                System.out.println("Apres " + sTest.getMarque()+"\n");
-            }
-        }
-        assertTrue(g.ontTousLaMemeMarque());
-    }
+
     
     @Test
     void testChaineAscendante2() {

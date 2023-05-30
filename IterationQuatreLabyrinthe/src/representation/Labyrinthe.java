@@ -2,6 +2,7 @@ package representation;
 
 import java.lang.Math;
 import java.util.Iterator;
+import java.util.Random;
 
 import org.hamcrest.Condition.Step;
 import outils.OutilsTableau;
@@ -246,58 +247,18 @@ public class Labyrinthe {
     }
     
     public void chaineAscendante2() {
-        int murACasser,
-            nbArcCreer;
+        int nbArcCreer;
         nbArcCreer = 0;  
-        System.out.println(this.hauteur * this.largeur -1);
+
     	do {
     		int indiceXSommetRandom = (int) (Math.random() * listeSommet.length) ;
         	int indiceYSommetRandom = (int) (Math.random() * listeSommet[0].length);
             Sommet sommetChoisie = listeSommet[indiceXSommetRandom][indiceYSommetRandom];
-            murACasser = (int) (Math.random()*4);
-            Sommet sommetAAteindre;
+            Sommet[] voisinsChoisi = getSommetsVoisins(sommetChoisie);
+
+            Sommet sommetAAteindre = voisinsChoisi[new Random().nextInt(voisinsChoisi.length)];
             
-            switch (murACasser) {
-			case 0: {
-                if (indiceYSommetRandom != 0) {
-                	sommetAAteindre = listeSommet[indiceXSommetRandom][indiceYSommetRandom - 1];
-                } else {
-                    sommetAAteindre = listeSommet[indiceXSommetRandom][indiceYSommetRandom];
-                }	
-				break;
-			}
-			case 1: {
-				if (indiceXSommetRandom != listeSommet.length -1 ) {
-            		sommetAAteindre = listeSommet[indiceXSommetRandom + 1][indiceYSommetRandom];
-            	} else {
-            		sommetAAteindre = listeSommet[indiceXSommetRandom][indiceYSommetRandom];
-            	}
-                break;
-            }
-            case 2: {
-            	if (indiceYSommetRandom != listeSommet[indiceXSommetRandom].length - 1) {
-            		sommetAAteindre = listeSommet[indiceXSommetRandom][indiceYSommetRandom + 1];
-            	} else {
-            		sommetAAteindre = listeSommet[indiceXSommetRandom][indiceYSommetRandom];
-            	}
-                break;
-            }
-			case 3: {
-				 if (indiceXSommetRandom != 0) {
-					 sommetAAteindre = listeSommet[indiceXSommetRandom -1 ][indiceYSommetRandom];
-						 
-				 } else {
-					 sommetAAteindre = listeSommet[indiceXSommetRandom][indiceYSommetRandom];
-				 }	 
-				break;	 
-            }
-			default: {
-                // Ne rentre jamais dans cette branche et permet de ne pas initialiser 
-				 sommetAAteindre = listeSommet[indiceXSommetRandom][indiceYSommetRandom];
-			}
-            } 
-            
-            
+           
             if (sommetChoisie.getMarque() == -1 && sommetAAteindre.getMarque() == -1) {
             	nbArcCreer++;  
             	ajouterArrete(sommetChoisie, sommetAAteindre);
@@ -316,9 +277,6 @@ public class Labyrinthe {
                 	nbArcCreer++;   
                 	ajouterArrete(sommetChoisie, sommetAAteindre);
                 	fusionnerMarques(sommetChoisie, sommetAAteindre);
-//                	System.out.println("sommet " + sommetChoisie + "arc " + murACasser);
-//                	System.out.println(nbArcCreer);
-//                	System.out.println("marque sommet choisi " + sommetChoisie.getMarque() + "marque aatteindre" + sommetAAteindre.getMarque());
                     
                 }
             }
