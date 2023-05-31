@@ -99,4 +99,11 @@ class TestLabyrinthe {
         }
         assertTrue(g.ontTousLaMemeMarque());
     }
+    
+    @Test
+    void testEntreeSortie() {
+    	Labyrinthe g = new Labyrinthe(4,4, new Sommet(0,3), new Sommet(3, 0));
+    	g.chaineAscendante();
+    	System.out.println(g);
+    }
 }
