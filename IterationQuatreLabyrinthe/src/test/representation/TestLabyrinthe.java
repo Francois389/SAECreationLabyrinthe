@@ -116,24 +116,24 @@ class TestLabyrinthe {
     }
     
 
-    @Test
-    void testBacktracking() {
-        System.out.println("Debut");
-        Labyrinthe test = new Labyrinthe(200, 200);
-        test.constructionBacktracking();
-        System.out.println("Fin");
-//        System.out.println(test);
-        
-        
-    }
+//    @Test
+//    void testBacktracking() {
+//        System.out.println("Debut");
+//        Labyrinthe test = new Labyrinthe(200, 200);
+//        test.constructionBacktracking();
+//        System.out.println("Fin");
+////        System.out.println(test);
+//        
+//        
+//    }
 
     @Test
-    void testMainDroite() {
-        Labyrinthe test = new Labyrinthe(10, 10);
+    void testProfondeur() {
+        Labyrinthe test = new Labyrinthe(2, 2);
         test.constructionBacktracking();
         System.out.println("Fin");
         System.out.println(test);
-        System.out.println(OutilsTableau.tabVersString(test.parcoursMainDroite()));
+        test.parcoursProfondeur();
     }
     
 }

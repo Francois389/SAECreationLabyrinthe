@@ -1,8 +1,6 @@
 package representation;
 
 import java.lang.Math;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Random;
 import java.util.ArrayList;
 
@@ -348,14 +346,15 @@ public class Labyrinthe {
      * @return true si tous les elements sont true
      *         false sinon
      */
-    private boolean sontTousVisites(boolean[] tab) {
-         for (boolean b : tab) {
-             if (!b) {
-                  return false;
-             } 
-         }
-         
-         return true;
+    private boolean sontTousVisites(Sommet[] tab) {
+        
+        for (Sommet s : tab) {
+            if (!s.estParcourus()) {
+                return false;
+            }
+        }
+        return true;
+        
     }
     
     
@@ -380,7 +379,7 @@ public class Labyrinthe {
         //On empile le sommet pris au hasard
         pileSommets.empiler(sommetCourant);
         
-        while (!pileSommets.estVide() && !sontTousVisites(sommetsVisites)) {
+        while (!pileSommets.estVide()) {
             Sommet[] listeVoisins = getSommetsVoisins(sommetCourant);
             
             for (int i = 0; i < listeVoisins.length; i++ ) {
@@ -415,7 +414,7 @@ public class Labyrinthe {
     
     /**
      * Mes des marques unique sur les sommets du labyrinthe
-     * Les marques commencent à 1
+     * Les marques commencent à 0
      */
     public void setMarqueSommet() {
         int marque;
@@ -426,6 +425,7 @@ public class Labyrinthe {
                 marque++;
                 Sommet s = listeSommet[i][j];
                 s.setMarque(marque);
+                s.setEstParcourus(false);
             }
         }  
     }
@@ -476,36 +476,44 @@ public class Labyrinthe {
      * a partir du sommet defini comme entree
      * @return le parcours en profondeur a partir de l'entree
      */
-    public Sommet[] parcoursMainDroite() {
+    public void parcoursProfondeur() {
+        
+        setMarqueSommet();
         
         Sommet[] sommetsParcourus = new Sommet[largeur * hauteur]; 
-        int indice;
-        
+
         PileContigue pileSommets = new PileContigue();
         pileSommets.empiler(entree);
+        entree.setEstParcourus(true);
         
-        indice = 0;
-        while (!pileSommets.estVide()) {
-            Sommet sommetCourant = (Sommet) pileSommets.sommet();
-            pileSommets.depiler();
+        Sommet sommetCourant = (Sommet) pileSommets.sommet();
+        
+        while (!sommetCourant.equals(sortie)) {
             
-            if (!OutilsTableau.contient(sommetsParcourus, sommetCourant)) {
-                sommetsParcourus[indice] = sommetCourant;
-                indice++;
-                
-                if (sommetCourant.equals(sortie)) {
-                    return sommetsParcourus;
-                } else {
-                    for (Sommet voisin : getSommetsVoisins(sommetCourant)) {
-                        if (!OutilsTableau.contient(sommetsParcourus, voisin)) {
-							pileSommets.empiler(voisin);
-						}
-                    }
+            Sommet[] listeVoisins = getSommetsVoisins(sommetCourant);
+            
+            for (int i = 0; i < listeVoisins.length; i++ ) {
+                if (listeVoisins[i].estParcourus()) {
+                    listeVoisins[i] = null;
                 }
             }
+            listeVoisins = OutilsTableau.copieSaufNull(listeVoisins);
+            
+            if (sontTousVisites(listeVoisins)) {
+                pileSommets.depiler();
+                if (!pileSommets.estVide()) {
+                    sommetCourant = (Sommet) pileSommets.sommet();
+                } 
+            } else {
+                sommetCourant = listeVoisins[0];
+                sommetCourant.setEstParcourus(true);
+                pileSommets.empiler(sommetCourant);
+            }
+            
         }
         
-        return sommetsParcourus;
+        System.out.println(pileSommets);
+        
     }
     
     
