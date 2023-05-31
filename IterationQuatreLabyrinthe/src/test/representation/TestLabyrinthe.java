@@ -99,4 +99,41 @@ class TestLabyrinthe {
         }
         assertTrue(g.ontTousLaMemeMarque());
     }
+
+    
+    @Test
+    void testFusionnerMarques() {
+        Labyrinthe g = new Labyrinthe(2,2);
+        Sommet s = new Sommet(3,3);
+        for (Sommet[] sommets : g.getListeSommet()) {
+            for (Sommet sTest : sommets) {
+                System.out.print("Avant: "+sTest.getMarque());
+                g.fusionnerMarques(s,sTest);
+                System.out.println("Apres " + sTest.getMarque()+"\n");
+            }
+        }
+        assertTrue(g.ontTousLaMemeMarque());
+    }
+    
+
+    @Test
+    void testBacktracking() {
+        System.out.println("Debut");
+        Labyrinthe test = new Labyrinthe(200, 200);
+        test.constructionBacktracking();
+        System.out.println("Fin");
+//        System.out.println(test);
+        
+        
+    }
+
+    @Test
+    void testMainDroite() {
+        Labyrinthe test = new Labyrinthe(10, 10);
+        test.constructionBacktracking();
+        System.out.println("Fin");
+        System.out.println(test);
+        System.out.println(OutilsTableau.tabVersString(test.parcoursMainDroite()));
+    }
+    
 }

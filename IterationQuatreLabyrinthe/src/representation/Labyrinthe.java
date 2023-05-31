@@ -6,10 +6,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.ArrayList;
 
+import java.util.Arrays;
+import java.util.Objects;
 
-import org.hamcrest.Condition.Step;
-import outils.OutilsTableau;
 import representation.PileContigue;
+import outils.OutilsTableau;
 
 /**
  * 
@@ -53,7 +54,7 @@ public class Labyrinthe {
      private static final int HAUTEUR_CASE = 3;
     
      
-     private Sommet entre;
+     private Sommet entree;
      
      private Sommet sortie;
      
@@ -85,7 +86,7 @@ public class Labyrinthe {
         this.hauteur = hauteur;
         listeSommet = creerGrille(largeur, hauteur);
         listeArcs = new Sommet[0][0];
-        entre = getListeSommet()[0][0];
+        entree = getListeSommet()[0][0];
         sortie = getListeSommet()[getListeSommet().length-1][getListeSommet()[0].length-1];
         // TODO gerer l'entrée / sortie
     }
@@ -113,7 +114,7 @@ public class Labyrinthe {
         this.hauteur = hauteur;
         this.listeSommet = listeSommet;
         this.listeArcs = listeArcs;
-        this.entre = entree;
+        this.entree = entree;
         this.sortie = sortie;
     }
        
@@ -364,7 +365,6 @@ public class Labyrinthe {
      * méthode ajouterArc
      */
     public void constructionBacktracking(){
-        System.out.println("Debut");
         setMarqueSommet();
         
         boolean[] sommetsVisites = new boolean[largeur * hauteur];
@@ -400,7 +400,7 @@ public class Labyrinthe {
                      int indiceVoisinRandom = (int)(Math.random() * (listeVoisins.length));
                      Sommet voisinRandom = listeVoisins[indiceVoisinRandom];
 
-                 	 if (!voisinRandom.estParcourus()) {
+                     if (!voisinRandom.estParcourus()) {
                          ajouterArrete(sommetCourant, voisinRandom);
                          pileSommets.empiler(voisinRandom);              
                          voisinRandom.setEstParcourus(true);
@@ -408,7 +408,7 @@ public class Labyrinthe {
                          sommetCourant = (Sommet) pileSommets.sommet();
                          sommetRandomTrouve = true;
                      }
-                } 
+                 } 
             }
         }
     }
@@ -482,7 +482,7 @@ public class Labyrinthe {
         int indice;
         
         PileContigue pileSommets = new PileContigue();
-        pileSommets.empiler(entre);
+        pileSommets.empiler(entree);
         
         indice = 0;
         while (!pileSommets.estVide()) {
@@ -570,17 +570,17 @@ public class Labyrinthe {
     } 
     
         /**
-     * @return la valeur de entre
+     * @return la valeur de entree
      */
     public Sommet getEntre() {
-        return entre;
+        return entree;
     }
 
     /**
-     * @param entre modifie la valeur de entre
+     * @param entree modifie la valeur de entree
      */
     public void setEntre(Sommet entre) {
-        this.entre = entre;
+        this.entree = entre;
     }
 
     /**
@@ -607,4 +607,19 @@ public class Labyrinthe {
         return largeur;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Labyrinthe other = (Labyrinthe) obj;
+        return Objects.equals(entree, other.entree) && hauteur == other.hauteur && largeur == other.largeur
+                && Arrays.deepEquals(listeArcs, other.listeArcs) && Arrays.deepEquals(listeSommet, other.listeSommet)
+                && Objects.equals(sortie, other.sortie);
+    }
+
+    
 }
