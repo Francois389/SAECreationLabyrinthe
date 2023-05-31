@@ -5,6 +5,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import outils.OutilsTableau;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -163,6 +166,8 @@ class TestLabyrinthe {
         Labyrinthe test = new Labyrinthe(10, 10);
         test.constructionBacktracking();
         System.out.println(test);
+        
+        System.out.println(OutilsTableau.tabVersString(test.parcoursMainDroite()));
         
         System.out.println("Fin");
     }

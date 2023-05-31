@@ -382,7 +382,6 @@ public class Labyrinthe {
         
         while (!pileSommets.estVide() && !sontTousVisites(sommetsVisites)) {
             Sommet[] listeVoisins = getSommetsVoisins(sommetCourant);
-            //System.out.println("Sommet courant : "+sommetCourant+" | listeVoisins"+OutilsTableau.tabVersString(listeVoisins));
             
             for (int i = 0; i < listeVoisins.length; i++ ) {
                 if (listeVoisins[i].estParcourus()) {
@@ -390,9 +389,7 @@ public class Labyrinthe {
                 }
             }
             listeVoisins = OutilsTableau.copieSaufNull(listeVoisins);
-            //System.out.println(listeVoisins.length);
             if (listeVoisins.length == 0) {
-                //System.out.println("on depile");
                 pileSommets.depiler();
                 if (!pileSommets.estVide()) {
                     sommetCourant = (Sommet) pileSommets.sommet();
@@ -403,10 +400,7 @@ public class Labyrinthe {
                      int indiceVoisinRandom = (int)(Math.random() * (listeVoisins.length));
                      Sommet voisinRandom = listeVoisins[indiceVoisinRandom];
 
-                     if (voisinRandom.estParcourus()) {
-                         //System.out.println("sommet deja parcouru " + voisinRandom);
-                     } else {
-                         //TODO il ne doit pas pouvoir prendre de sommets déjà parcoursu
+                 	 if (!voisinRandom.estParcourus()) {
                          ajouterArrete(sommetCourant, voisinRandom);
                          pileSommets.empiler(voisinRandom);              
                          voisinRandom.setEstParcourus(true);
@@ -414,17 +408,9 @@ public class Labyrinthe {
                          sommetCourant = (Sommet) pileSommets.sommet();
                          sommetRandomTrouve = true;
                      }
-                 } 
-
-
+                } 
             }
-//            System.out.println(pileSommets.sommet());
-//            for (int i = 0; i < sommetsVisites.length; i++) {
-//                System.out.print(sommetsVisites[i] + " | ");
-//            }
-//            System.out.println("\n" + pileSommets+"\n\n");
         }
-        
     }
 
     /**
