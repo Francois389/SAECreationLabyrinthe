@@ -3,6 +3,7 @@ package representation;
 import java.util.Arrays;
 import java.util.Objects;
 
+import representation.PileContigue;
 import outils.OutilsTableau;
 
 /**
