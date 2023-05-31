@@ -109,7 +109,7 @@ public class PileContigue {
     
     /**
      * retire le dernier element de la pile
-     * @return la pile modifiee
+     * @return la pile modifiée
      * @throws PileVideException si la pile est vide
      */
     public PileContigue depiler() {
@@ -152,11 +152,9 @@ public class PileContigue {
 
         String ligne = "|%s\t\t|\n";
 
-        int index = 0;
-        while (elementsEmpiles[index] != null) {
-        	System.out.println(elementsEmpiles[index]);
-        	resultat += ligne.format(ligne, elementsEmpiles[index].toString());
-        	index++;
+        for (int i = 0; i < elementsEmpiles.length && elementsEmpiles[i] != null; i++) {
+            System.out.println(elementsEmpiles[i]);
+            resultat += String.format(ligne, elementsEmpiles[i].toString());
         }
       
         resultat += "+---------------+";

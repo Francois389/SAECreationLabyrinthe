@@ -27,6 +27,8 @@ public class Sommet {
     /** Contient les possibles marque du Sommet.  */
     private int marque;
     
+    private boolean estParcourus;
+    
     /** 
      * Indique la présence de voisins du sommet. 
      * Commence par le voisin du haut puis continue dans le sens horaire
@@ -153,4 +155,20 @@ public class Sommet {
         }
         this.voisins[indice] = voisin ; 
     }
+
+    /**
+     * @return la valeur de estParcourus
+     */
+    public boolean estParcourus() {
+        return estParcourus;
+    }
+
+    /**
+     * @param estParcourus modifie la valeur de estParcourus
+     */
+    public void setEstParcourus(boolean estParcourus) {
+        this.estParcourus = estParcourus;
+    }
+    
+    
 }

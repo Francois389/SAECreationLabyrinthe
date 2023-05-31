@@ -67,7 +67,7 @@ class TestLabyrinthe {
     @DisplayName("Test du toString")
     void testToString() {
         {
-            Labyrinthe aAfficher = new Labyrinthe(5,7 , true);
+            Labyrinthe aAfficher = new Labyrinthe(5,7);
 			aAfficher.ajouterArrete(aAfficher.listeSommet[0][0], aAfficher.listeSommet[0][1]);
 			aAfficher.ajouterArrete(aAfficher.listeSommet[0][1], aAfficher.listeSommet[0][2]);
 			aAfficher.ajouterArrete(aAfficher.listeSommet[0][2], aAfficher.listeSommet[0][3]);
@@ -104,10 +104,10 @@ class TestLabyrinthe {
 			aAfficher.ajouterArrete(aAfficher.listeSommet[2][5], aAfficher.listeSommet[3][5]);
 			aAfficher.listeSommet[0][0].setVoisin(true, 3);
 			aAfficher.listeSommet[2][6].setVoisin(true, 1);
-            //aAfficher.constructionBacktracking();
+            aAfficher.constructionBacktracking();
         	System.out.print(aAfficher);
-        	System.out.println("fini ");
-        }         
+        	System.out.println("Fini ");
+        }     
 //        {
 //            Labyrinthe aAfficher = new Labyrinthe(5,7);
 //            aAfficher.chaineAscendante();
@@ -157,15 +157,13 @@ class TestLabyrinthe {
         assertTrue(g.ontTousLaMemeMarque());
     }
     
-    @AfterAll
+
     @Test
-    /**
-     * Pour tester le temps d'execution des algos
-     */
-    static void  grandLabyrinthe() {
-        System.out.println("debut");
-        Labyrinthe l = new Labyrinthe(100, 1000);
-        //l.chaineAscendante();
-        System.out.println("fin");
+    void testBacktracking() {
+        Labyrinthe test = new Labyrinthe(10, 10);
+        test.constructionBacktracking();
+        System.out.println(test);
+        
+        System.out.println("Fin");
     }
 }
