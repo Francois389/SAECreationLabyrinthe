@@ -315,46 +315,53 @@ public class Labyrinthe {
         
         PileContigue pileSommets = new PileContigue();
         
-        int indiceXSommetRandom = (int)(Math.random() * (listeSommet.length));
-        int indiceYSommetRandom = (int)(Math.random() * (listeSommet[0].length));   
+        int indiceXSommetRandom = (int)(Math.random() * (listeSommet.length-1));
+        int indiceYSommetRandom = (int)(Math.random() * (listeSommet[0].length-1)); 
+        Sommet sommetCourant = listeSommet[indiceXSommetRandom][indiceYSommetRandom];
         //On marque le sommet comme parcourue
         sommetsVisites[getIndice(indiceXSommetRandom, indiceYSommetRandom)] = true;
-        //On empile un sommet au hasard
-        pileSommets.empiler(listeSommet[indiceXSommetRandom][indiceYSommetRandom]);
-
-        Sommet sommetCourant = (Sommet) pileSommets.sommet();
+        sommetCourant.setEstParcourus(true);
+        //On empile le sommet pris au hasard
+        pileSommets.empiler(sommetCourant);
         
         while (!pileSommets.estVide() && !sontTousVisites(sommetsVisites)) {
-            try {
-                Thread.sleep(100);
-            } catch (Exception e) {
-                // TODO: handle exception
-            }
-            Sommet[] listeVoisinsParcourus = getSommetsVoisins(sommetCourant);
+            Sommet[] listeVoisins = getSommetsVoisins(sommetCourant);
             
             //System.out.println("Sommet courant : "+sommetCourant+" | listeVoisins"+OutilsTableau.tabVersString(listeVoisins));
             
-            for (int i = 0; i < listeVoisinsParcourus.length - 1; i++ ) {
-                if (sommetsVisites[listeVoisinsParcourus[i].getMarque()]) {
-                    listeVoisinsParcourus[i] = null;
+            for (int i = 0; i < listeVoisins.length; i++ ) {
+                if (listeVoisins[i].estParcourus()) {
+                    listeVoisins[i] = null;
                 }
             }
-            listeVoisinsParcourus = OutilsTableau.copieSaufNull(listeVoisinsParcourus);
-            if (listeVoisinsParcourus.length == 0) {
-                System.out.println("on depile");
+            listeVoisins = OutilsTableau.copieSaufNull(listeVoisins);
+            //System.out.println(listeVoisins.length);
+            if (listeVoisins.length == 0) {
+                //System.out.println("on depile");
                 pileSommets.depiler();
                 if (!pileSommets.estVide()) {
                     sommetCourant = (Sommet) pileSommets.sommet();
                 }
             } else {
-                //TODO il ne doit pas pouvoir prendre de sommets déjà parcoursu
-                int indiceVoisinRandom = (int)(Math.random() * (listeVoisinsParcourus.length));
-                Sommet voisinRandom = listeVoisinsParcourus[indiceVoisinRandom];
-                ajouterArrete(sommetCourant, voisinRandom);
-                pileSommets.empiler(voisinRandom);                
-                sommetsVisites[voisinRandom.getMarque() - 1] = true;
-                sommetCourant = (Sommet) pileSommets.sommet();
-                
+                 boolean sommetRandomTrouve = false;
+                 for (int i = 0; i < listeVoisins.length && !sommetRandomTrouve; i++) {
+                     int indiceVoisinRandom = (int)(Math.random() * (listeVoisins.length));
+                     Sommet voisinRandom = listeVoisins[indiceVoisinRandom];
+
+                     if (voisinRandom.estParcourus()) {
+                         //System.out.println("sommet deja parcouru " + voisinRandom);
+                     } else {
+                         //TODO il ne doit pas pouvoir prendre de sommets déjà parcoursu
+                         ajouterArrete(sommetCourant, voisinRandom);
+                         pileSommets.empiler(voisinRandom);              
+                         voisinRandom.setEstParcourus(true);
+                         sommetsVisites[voisinRandom.getMarque() - 1] = true;
+                         sommetCourant = (Sommet) pileSommets.sommet();
+                         sommetRandomTrouve = true;
+                     }
+                 } 
+
+
             }
 //            System.out.println(pileSommets.sommet());
 //            for (int i = 0; i < sommetsVisites.length; i++) {
@@ -379,17 +386,17 @@ public class Labyrinthe {
     
     
     /**
-     * permet de récupérer la liste des voisins d'un sommet
-     * @param current le sommet dont on veut avoir les voisins
+     * Renvoie la liste des voisins d'un sommet
+     * @param sommet le sommet dont on veut avoir les voisins
      */
-    private Sommet[] getSommetsVoisins(Sommet current) {
+    private Sommet[] getSommetsVoisins(Sommet sommet) {
         int indice;
         Sommet[] retour = new Sommet[4];
         
         indice = 0;
         for (Sommet[] liste : listeSommet) {
             for (Sommet s : liste) {
-                if (sommetAdjacent(current, s)) {
+                if (sommetAdjacent(sommet, s)) {
                     retour[indice] = s;
                     indice++;
                 }

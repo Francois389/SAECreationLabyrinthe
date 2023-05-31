@@ -104,7 +104,7 @@ class TestLabyrinthe {
 			aAfficher.ajouterArrete(aAfficher.listeSommet[2][5], aAfficher.listeSommet[3][5]);
 			aAfficher.listeSommet[0][0].setVoisin(true, 3);
 			aAfficher.listeSommet[2][6].setVoisin(true, 1);
-//            aAfficher.constructionBacktracking();
+            aAfficher.constructionBacktracking();
         	System.out.print(aAfficher);
         	System.out.println("Fini ");
         }     
@@ -159,7 +159,10 @@ class TestLabyrinthe {
     
     @Test
     void testBacktracking() {
-        Labyrinthe test = new Labyrinthe(2, 2);
+        Labyrinthe test = new Labyrinthe(10, 10);
         test.constructionBacktracking();
+        System.out.println(test);
+        
+        System.out.println("Fin");
     }
 }
