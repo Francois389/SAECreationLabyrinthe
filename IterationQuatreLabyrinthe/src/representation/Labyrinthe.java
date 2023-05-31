@@ -1,12 +1,9 @@
 package representation;
 
-import java.lang.Math;
 import java.util.Arrays;
 import java.util.Objects;
 
-import org.hamcrest.Condition.Step;
 import outils.OutilsTableau;
-import representation.PileContigue;
 
 /**
  * 
