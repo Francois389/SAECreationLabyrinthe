@@ -1,0 +1,158 @@
+{
+  "hauteur": 2,
+  "largeur": 2,
+  "entree": {
+    "posX": 0,
+    "posY": 0,
+    "marque": 1,
+    "estParcourus": true,
+    "voisins": [
+      false,
+      true,
+      false,
+      false
+    ]
+  },
+  "sortie": {
+    "posX": 1,
+    "posY": 1,
+    "marque": 4,
+    "estParcourus": true,
+    "voisins": [
+      true,
+      false,
+      false,
+      true
+    ]
+  },
+  "sommets": [
+    {
+      "posX": 0,
+      "posY": 0,
+      "marque": 1,
+      "estParcourus": true,
+      "voisins": [
+        false,
+        true,
+        false,
+        false
+      ]
+    },
+    {
+      "posX": 1,
+      "posY": 0,
+      "marque": 2,
+      "estParcourus": true,
+      "voisins": [
+        false,
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "posX": 0,
+      "posY": 1,
+      "marque": 3,
+      "estParcourus": true,
+      "voisins": [
+        false,
+        true,
+        false,
+        false
+      ]
+    },
+    {
+      "posX": 1,
+      "posY": 1,
+      "marque": 4,
+      "estParcourus": true,
+      "voisins": [
+        true,
+        false,
+        false,
+        true
+      ]
+    }
+  ],
+  "arcs": [
+    [
+      {
+        "posX": 0,
+        "posY": 0,
+        "marque": 1,
+        "estParcourus": true,
+        "voisins": [
+          false,
+          true,
+          false,
+          false
+        ]
+      },
+      {
+        "posX": 1,
+        "posY": 0,
+        "marque": 2,
+        "estParcourus": true,
+        "voisins": [
+          false,
+          false,
+          true,
+          true
+        ]
+      }
+    ],
+    [
+      {
+        "posX": 1,
+        "posY": 0,
+        "marque": 2,
+        "estParcourus": true,
+        "voisins": [
+          false,
+          false,
+          true,
+          true
+        ]
+      },
+      {
+        "posX": 1,
+        "posY": 1,
+        "marque": 4,
+        "estParcourus": true,
+        "voisins": [
+          true,
+          false,
+          false,
+          true
+        ]
+      }
+    ],
+    [
+      {
+        "posX": 1,
+        "posY": 1,
+        "marque": 4,
+        "estParcourus": true,
+        "voisins": [
+          true,
+          false,
+          false,
+          true
+        ]
+      },
+      {
+        "posX": 0,
+        "posY": 1,
+        "marque": 3,
+        "estParcourus": true,
+        "voisins": [
+          false,
+          true,
+          false,
+          false
+        ]
+      }
+    ]
+  ]
+}

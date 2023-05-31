@@ -364,7 +364,6 @@ public class Labyrinthe {
      * méthode ajouterArc
      */
     public void constructionBacktracking(){
-        System.out.println("Debut");
         setMarqueSommet();
         
         boolean[] sommetsVisites = new boolean[largeur * hauteur];
@@ -400,7 +399,7 @@ public class Labyrinthe {
                      int indiceVoisinRandom = (int)(Math.random() * (listeVoisins.length));
                      Sommet voisinRandom = listeVoisins[indiceVoisinRandom];
 
-                 	 if (!voisinRandom.estParcourus()) {
+                     if (!voisinRandom.estParcourus()) {
                          ajouterArrete(sommetCourant, voisinRandom);
                          pileSommets.empiler(voisinRandom);              
                          voisinRandom.setEstParcourus(true);
@@ -408,7 +407,7 @@ public class Labyrinthe {
                          sommetCourant = (Sommet) pileSommets.sommet();
                          sommetRandomTrouve = true;
                      }
-                } 
+                 } 
             }
         }
     }

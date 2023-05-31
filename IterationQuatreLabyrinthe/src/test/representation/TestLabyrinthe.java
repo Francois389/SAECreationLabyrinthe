@@ -165,10 +165,21 @@ class TestLabyrinthe {
     void testBacktracking() {
         Labyrinthe test = new Labyrinthe(10, 10);
         test.constructionBacktracking();
+        System.out.println("Fin");
         System.out.println(test);
         
-        System.out.println(OutilsTableau.tabVersString(test.parcoursMainDroite()));
         
-        System.out.println("Fin");
     }
+
+    @Test
+    void testMainDroite() {
+        Labyrinthe test = new Labyrinthe(10, 10);
+        test.constructionBacktracking();
+        System.out.println("Fin");
+        System.out.println(test);
+        System.out.println(OutilsTableau.tabVersString(test.parcoursMainDroite()));
+    }
+    
+    @Test
+    
 }
