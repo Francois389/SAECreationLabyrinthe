@@ -180,6 +180,5 @@ class TestLabyrinthe {
         System.out.println(OutilsTableau.tabVersString(test.parcoursMainDroite()));
     }
     
-    @Test
     
 }
