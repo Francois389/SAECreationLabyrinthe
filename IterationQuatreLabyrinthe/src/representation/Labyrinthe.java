@@ -2,7 +2,10 @@ package representation;
 
 import java.lang.Math;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
+import java.util.ArrayList;
+
 
 import org.hamcrest.Condition.Step;
 import outils.OutilsTableau;
@@ -60,13 +63,12 @@ public class Labyrinthe {
     
     /** liste de tous le sommets */
     private int hauteur;
- 
-     // TODO remettre private   
-    /** */
-    public Sommet[][] listeSommet;  
+   
+    /** liste des sommets du graphe */
+    private Sommet[][] listeSommet;  
     
-    /** lsite des arcs du graphe */
-    public Sommet[][] listeArcs;
+    /** liste des arcs du graphe */
+    private Sommet[][] listeArcs;
     
     /**
      * Créer un graphe composé 
@@ -84,25 +86,9 @@ public class Labyrinthe {
         genererLabirynthe(largeur, hauteur);
         entre = getListeSommet()[0][0];
         sortie = getListeSommet()[getListeSommet().length-1][getListeSommet()[0].length-1];
+        // TODO gerer l'entrée / sortie
     }
-    
-    /**
-     * Créer un graphe composé 
-     * @param largeur
-     * @param hauteur
-     * @throws IllegalArgumentException
-     */
-    public Labyrinthe(int hauteur, int largeur, boolean temp) {
-        super();
-        if (!(largeur > 0 && hauteur > 0)) {
-            throw new IllegalArgumentException("largeur ou hauteur invalide");
-        }
-        this.largeur = largeur;
-        this.hauteur = hauteur;
-        listeSommet = creerGrille(largeur, hauteur);
-   	}
-    
-    
+       
     
     
     /** 
@@ -216,37 +202,8 @@ public class Labyrinthe {
         return false;
     }
     
-    /**
-     * Construction du labyrinthe p création ascendante de chaines
-     */
-    public void chaineAscendante() {
-        boolean arreteCreer;
-        Sommet sommetTest;
-        int[][] coordonDejaGenerees = new int[hauteur * largeur][2];
-        
-        do {
-        	int indiceXSommetRandom = (int) (Math.random() * listeSommet.length);
-        	int indiceYSommetRandom = (int) (Math.random() * listeSommet[0].length);
-						
-			arreteCreer = false;
-            Sommet sommetChoisie = listeSommet[indiceXSommetRandom][indiceYSommetRandom];
-            for (int i = 0; i < listeSommet.length && !arreteCreer; i++) {
-                for (int j = 0; j < listeSommet[0].length && !arreteCreer; j++) {
-                    sommetTest = listeSommet[i][j];
-                    if (   sommetAdjacent(sommetChoisie, sommetTest) 
-                        && sommetChoisie.getMarque()!= sommetTest.getMarque()) {
-                        ajouterArrete(sommetTest, sommetChoisie);
-                        ajouterArrete(sommetChoisie, sommetTest);
-                        fusionnerMarques(sommetChoisie, sommetTest);
-                        arreteCreer = true;
-                    }
-                }
-            }
-            System.out.println("j'apelle");
-        } while (!ontTousLaMemeMarque());
-    }
     
-    public void chaineAscendante2() {
+    public void chaineAscendante() {
         int nbArcCreer;
         nbArcCreer = 0;  
 
@@ -260,31 +217,55 @@ public class Labyrinthe {
             
            
             if (sommetChoisie.getMarque() == -1 && sommetAAteindre.getMarque() == -1) {
-            	nbArcCreer++;  
-            	ajouterArrete(sommetChoisie, sommetAAteindre);
+            	nbArcCreer++;     
             	sommetChoisie.setMarque(nbArcCreer);
             	sommetAAteindre.setMarque(nbArcCreer);
+            	ajouterArrete(sommetChoisie, sommetAAteindre);
             } else if (sommetAAteindre.getMarque() != sommetChoisie.getMarque()) {
             	if (sommetChoisie.getMarque() == -1) {
             		nbArcCreer++; 
-            		ajouterArrete(sommetChoisie, sommetAAteindre);
             		sommetChoisie.setMarque(sommetAAteindre.getMarque());
+            		ajouterArrete(sommetChoisie, sommetAAteindre);
             	} else if (sommetAAteindre.getMarque() == -1) {
             		nbArcCreer++; 
-            		ajouterArrete(sommetChoisie, sommetAAteindre);
             		sommetAAteindre.setMarque(sommetChoisie.getMarque());
+            		ajouterArrete(sommetChoisie, sommetAAteindre);
             	} else {
                 	nbArcCreer++;   
-                	ajouterArrete(sommetChoisie, sommetAAteindre);
                 	fusionnerMarques(sommetChoisie, sommetAAteindre);
-                    
+                	ajouterArrete(sommetChoisie, sommetAAteindre);               
                 }
-            }
-			
-           	
-			            
-         } while (nbArcCreer < this.hauteur * this.largeur) ;
+            }       			            
+         } while (nbArcCreer < this.hauteur * this.largeur - 1) ;
     }
+    
+    /** 
+     * permetr de récuperer les sommet connexes a un graphe passé en paramtres
+     * @param s sommet a récuperer sa connexitée
+     * @return liste de sommet connexe a s
+     */
+    private Sommet[] getConnexitée(Sommet s) {
+    	
+    	ArrayList<Sommet> sommetsConnexes = new ArrayList<>();
+    	 
+      	for (int i = 0; i < listeSommet.length; i++) {
+			for (int j = 0; j < listeSommet[i].length; j++) {
+				if (listeSommet[i][j].getMarque() == s.getMarque()) {
+					sommetsConnexes.add(listeSommet[i][j]);
+				}
+			}
+		}
+    	
+    	Sommet[] retour = new Sommet[sommetsConnexes.size()];
+    	
+    	for (int i = 0; i < sommetsConnexes.size(); i++) {
+			retour[i] = sommetsConnexes.get(i);
+		}
+    	
+		return retour;    	
+    }
+
+    
     /**
      * Vérifie si tous les sommets de la grille on la même marque.
      * @return true s'ils ont tous la même et false sinon 
@@ -323,12 +304,11 @@ public class Labyrinthe {
      * @param s2
      */
     public void fusionnerMarques(Sommet sommetEcrasant, Sommet sommetEcrase) {
-        Sommet[] voisins = getSommetsVoisins(sommetEcrase);
+        Sommet[] connexitée = getConnexitée(sommetEcrase);
         
-        for (int i = 0; i < voisins.length; i++) {
-			voisins[i].setMarque(sommetEcrasant.getMarque());
+        for (int i = 0; i < connexitée.length; i++) {
+			connexitée[i].setMarque(sommetEcrasant.getMarque());
 		}
-        		
     } 
     
     
@@ -449,7 +429,7 @@ public class Labyrinthe {
     public String toString() {
         String affichage;
         affichage = "";
-        //  TODO rajouter numero de case calcule comme i*j
+
         for (int hauteur = 0 ; hauteur < this.hauteur ; hauteur++){ 
             for (int j = 0 ; j < this.largeur ; j++ ) {
                 if (this.listeSommet[hauteur][j].getVoisins()[HAUT]) {
