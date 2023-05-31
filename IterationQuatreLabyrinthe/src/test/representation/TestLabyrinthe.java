@@ -129,7 +129,7 @@ class TestLabyrinthe {
 
     @Test
     void testProfondeur() {
-        Labyrinthe test = new Labyrinthe(2, 2);
+        Labyrinthe test = new Labyrinthe(5, 5);
         test.constructionBacktracking();
         System.out.println("Fin");
         System.out.println(test);
