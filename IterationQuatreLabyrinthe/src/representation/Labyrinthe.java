@@ -231,7 +231,9 @@ public class Labyrinthe {
         return false;
     }
     
-    
+    /** 
+     * Algorithme de construction du labyrinthe par chaine ascendante
+     */
     public void chaineAscendante() {
         int nbArcCreer;
         nbArcCreer = 0;  
