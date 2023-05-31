@@ -89,6 +89,33 @@ public class Labyrinthe {
         sortie = getListeSommet()[getListeSommet().length-1][getListeSommet()[0].length-1];
         // TODO gerer l'entrée / sortie
     }
+    
+    /**
+     * Constructeur utilisé pour la construction d'un labyrinthe 
+     * issu d'un fichier .json
+     * TODO commenter
+     * @param hauteur
+     * @param largeur
+     * @param listeSommet
+     * @param listeArcs
+     * @param entree
+     * @param sortie
+     */
+    public Labyrinthe(int hauteur, int largeur, 
+                      Sommet[][] listeSommet,
+                      Sommet[][] listeArcs,
+                      Sommet entree, Sommet sortie) {
+        super();
+        if (!(largeur > 0 && hauteur > 0)) {
+            throw new IllegalArgumentException("largeur ou hauteur invalide");
+        }
+        this.largeur = largeur;
+        this.hauteur = hauteur;
+        this.listeSommet = listeSommet;
+        this.listeArcs = listeArcs;
+        this.entre = entree;
+        this.sortie = sortie;
+    }
        
     
     
@@ -382,6 +409,23 @@ public class Labyrinthe {
                 } 
             }
         }
+    }
+    
+    /**
+     * Mes des marques unique sur les sommets du labyrinthe
+     * Les marques commencent à 1
+     */
+    public void setMarqueSommet() {
+        int marque;
+        
+        marque = 0;
+        for (int i = 0; i < listeSommet.length; i++) {
+            for (int j = 0; j < listeSommet[0].length; j++) {
+                marque++;
+                Sommet s = listeSommet[i][j];
+                s.setMarque(marque);
+            }
+        }  
     }
 
     /**
