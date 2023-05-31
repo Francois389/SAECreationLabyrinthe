@@ -341,23 +341,7 @@ public class Labyrinthe {
         for (int i = 0; i < connexitée.length; i++) {
 			connexitée[i].setMarque(sommetEcrasant.getMarque());
 		}
-    } 
-    
-    /**
-     * @param tab un tableaud de booleen
-     * @return true si tous les elements sont true
-     *         false sinon
-     */
-    private boolean sontTousVisites(boolean[] tab) {
-         for (boolean b : tab) {
-             if (!b) {
-                  return false;
-             } 
-         }
-         
-         return true;
     }
-    
     
     /**
      * Construction par backtracking avec une pile
@@ -367,20 +351,17 @@ public class Labyrinthe {
     public void constructionBacktracking(){
         setMarqueSommet();
         
-        boolean[] sommetsVisites = new boolean[largeur * hauteur];
-        
         PileContigue pileSommets = new PileContigue();
         
         int indiceXSommetRandom = (int)(Math.random() * (listeSommet.length-1));
         int indiceYSommetRandom = (int)(Math.random() * (listeSommet[0].length-1)); 
         Sommet sommetCourant = listeSommet[indiceXSommetRandom][indiceYSommetRandom];
         //On marque le sommet comme parcourue
-        sommetsVisites[getIndice(indiceXSommetRandom, indiceYSommetRandom)] = true;
         sommetCourant.setEstParcourus(true);
         //On empile le sommet pris au hasard
         pileSommets.empiler(sommetCourant);
         
-        while (!pileSommets.estVide() && !sontTousVisites(sommetsVisites)) {
+        while (!pileSommets.estVide()) {
             Sommet[] listeVoisins = getSommetsVoisins(sommetCourant);
             
             for (int i = 0; i < listeVoisins.length; i++ ) {
@@ -404,7 +385,6 @@ public class Labyrinthe {
                          ajouterArrete(sommetCourant, voisinRandom);
                          pileSommets.empiler(voisinRandom);              
                          voisinRandom.setEstParcourus(true);
-                         sommetsVisites[voisinRandom.getMarque() - 1] = true;
                          sommetCourant = (Sommet) pileSommets.sommet();
                          sommetRandomTrouve = true;
                      }
@@ -429,18 +409,6 @@ public class Labyrinthe {
             }
         }  
     }
-
-    /**
-     * 
-     * @param x
-     * @param y
-     * @return
-     */
-    private int getIndice(int x, int y) {
-        return y * largeur + x + 1;
-    }
-    
-    
     
     /**
      * Renvoie la liste des voisins d'un sommet

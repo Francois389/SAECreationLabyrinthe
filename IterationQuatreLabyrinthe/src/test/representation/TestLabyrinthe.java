@@ -119,10 +119,10 @@ class TestLabyrinthe {
     @Test
     void testBacktracking() {
         System.out.println("Debut");
-        Labyrinthe test = new Labyrinthe(200, 200);
+        Labyrinthe test = new Labyrinthe(2,8);
         test.constructionBacktracking();
         System.out.println("Fin");
-//        System.out.println(test);
+        System.out.println(test);
         
         
     }
