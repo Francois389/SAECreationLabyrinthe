@@ -22,25 +22,16 @@ import outils.OutilsTableau;
 public class Labyrinthe {
 
      /** Affichage du haut d'une case */
-     private static final String HAUT_CASE = "+-----";
+     private static final String HAUT_CASE = "+-----+";
      
      /** Mur du haut vide */
-     private static final String HAUT_CASE_VIDE = "+     ";     
+     private static final String HAUT_CASE_VIDE = "+     +";     
      
      /** Affichage des bord d'une case*/
      private static final String BORD_CASE = "|";
      
      /** Chaine vide pour l'espace a l'interieur des cases */ 
      private static final String CHAINE_VIDE = "     ";
-     
-     /** Chaine vide pour l'espace a l'interieur des cases avec sa marque si c'est une unitée */ 
-     private static final String CHAINE_VIDE_MARQUE_UNITE = "  %d  ";
-     
-     /** Chaine vide pour l'espace a l'interieur des cases avec sa marque si c'est une dizaine */ 
-     private static final String CHAINE_VIDE_MARQUE_DIZAINE = " %d  ";
-     
-     /** Chaine vide pour l'espace a l'interieur des cases avec sa marque si c'est une centaine */ 
-     private static final String CHAINE_VIDE_MARQUE_CENTAINE = " %d ";
      
      /** Affichage d'un bord vide'*/
      private static final String BORD_VIDE = " ";
@@ -480,8 +471,45 @@ public class Labyrinthe {
      * @return
      */
     private boolean existeArete(Sommet s1, Sommet s2) {
-       
-        return true; // stub
+        if (s1.getPosX() == s2.getPosX()) {
+            if (s1.getPosY() < s2.getPosY()) {
+                return s1.getVoisins()[2]; // voisin du bas
+            } else {
+                return s1.getVoisins()[0]; // voisin du haut
+            }
+        } else if (s1.getPosY() == s2.getPosY()) {
+            if (s1.getPosX() < s2.getPosX()) {
+                return s1.getVoisins()[1]; // voisin de droite
+            } else {
+                return s1.getVoisins()[3]; // voisin de gauche
+            }
+        }
+        
+        return false;
+    }
+    
+    private Sommet[] getVoisinsAvecArete(Sommet sommet) {
+        int indice;
+        Sommet[] retour = new Sommet[4];
+        
+        indice = 0;
+        for (Sommet[] liste : listeSommet) {
+            for (Sommet s : liste) {
+                if (existeArete(sommet, s)) {
+                    retour[indice] = s;
+                    indice++;
+                }
+            }
+        }
+        
+        if (indice != 4) {
+            Sommet[] nouveauTableau = new Sommet[indice];
+            for (int i = 0; i < indice; i++) {
+                nouveauTableau[i] = retour[i];
+            }
+            retour = nouveauTableau;
+        }
+        return retour;
     }
     
     
@@ -496,7 +524,7 @@ public class Labyrinthe {
         indice = 0;
         for (Sommet[] liste : listeSommet) {
             for (Sommet s : liste) {
-                if (existeArete(sommet, s)) {
+                if (sommetAdjacent(sommet, s)) {
                     retour[indice] = s;
                     indice++;
                 }
@@ -531,7 +559,7 @@ public class Labyrinthe {
         
         while (!sommetCourant.equals(sortie)) {
             
-            Sommet[] listeVoisins = getSommetsVoisins(sommetCourant);
+            Sommet[] listeVoisins = getVoisinsAvecArete(sommetCourant);
             
             for (int i = 0; i < listeVoisins.length; i++ ) {
                 if (listeVoisins[i].estParcourus()) {
@@ -562,7 +590,7 @@ public class Labyrinthe {
     public String toString() {
         String affichage;
         affichage = "";
-        this.setMarqueSommet();
+
         for (int hauteur = 0 ; hauteur < this.hauteur ; hauteur++){ 
             for (int j = 0 ; j < this.largeur ; j++ ) {
                 if (this.listeSommet[hauteur][j].getVoisins()[HAUT]) {
@@ -571,63 +599,42 @@ public class Labyrinthe {
                 else {
                     affichage += HAUT_CASE;
                 }  
-                if (j == this.largeur -1 ) {
-            		affichage += "+";
-            	}
             }    
             for (int i = 0; i < HAUTEUR_CASE ; i++) {
                 affichage += "\n";        
                    for (int j = 0; j < this.largeur; j++) {
-	                    if (this.listeSommet[hauteur][j].getVoisins()[GAUCHE]) {
-	                        affichage += BORD_VIDE; 
-	                    } else {
-	                        affichage += BORD_CASE;
-	                    }
+                    if (this.listeSommet[hauteur][j].getVoisins()[GAUCHE]) {
+                        affichage += BORD_VIDE; 
+                    } else {
+                        affichage += BORD_CASE;
+                    }
                     	
-	                    // on n'affiche E et S pour marquer la sortie
                     	if (this.listeSommet[hauteur][j].equals(entree) && i == 1) {
                     		affichage += "  E  ";
                     	} else if (this.listeSommet[hauteur][j].equals(sortie) && i == 1) {
                     		affichage += "  S  ";
                     	} else {
-                    		// si c'est le milieu de la case
-                    		if (i == 1) {
-                    			// differement de la longeur de la marque on n'affiche pas le meme contenue de case
-                    			if (listeSommet[hauteur][j].getMarque() < 10) {
-                    				affichage += String.format(CHAINE_VIDE_MARQUE_UNITE, listeSommet[hauteur][j].getMarque());
-                    			} else if (listeSommet[hauteur][j].getMarque() < 100) {
-                    				affichage += String.format(CHAINE_VIDE_MARQUE_DIZAINE, listeSommet[hauteur][j].getMarque());
-                    			} else if (listeSommet[hauteur][j].getMarque() < 1000) {
-                    				affichage += String.format(CHAINE_VIDE_MARQUE_CENTAINE, listeSommet[hauteur][j].getMarque());
-                    			} else {
-                    				// si la marque dépasse 999 on ne l'affiche pas par manque de place dans la case
-                    				affichage += CHAINE_VIDE;
-                    			}
-                    		} else {
-                    			affichage += CHAINE_VIDE;
-                    		}
-                    		
+                    		affichage += CHAINE_VIDE;
                     	}
-                    	// on affiche le bord droit quand c'est la derniere colonne
-                    	if (j == this.largeur -1 ) {
-                    		affichage.substring(0, affichage.length() - 1);
-                    		affichage += BORD_CASE;
-                    	}
+                    	
+                       
+                       if (this.listeSommet[hauteur][j].getVoisins()[DROITE]){
+                        affichage += BORD_VIDE;   
+                    } else {
+                        affichage += BORD_CASE; 
+                    }
+                       
                 }
             }
             affichage += "\n";
-            // on affiche la dernier ligne
-            if (hauteur == this.hauteur -1 ) {
-            	for (int j = 0 ; j < this.largeur ; j++ ) {
-            		affichage += HAUT_CASE;
-            		if (j == this.largeur -1 ) {
-                		affichage += "+";
-                	}
-                }
+            for (int j = 0 ; j < this.largeur ; j++ ) {
+                if (this.listeSommet[hauteur][j].getVoisins()[BAS]){
+                        affichage += HAUT_CASE_VIDE;   
+                } else {
+                    affichage += HAUT_CASE; 
+                }     
             }
-            
-            
-            
+            affichage += "\n";
         }
         return affichage;
     }

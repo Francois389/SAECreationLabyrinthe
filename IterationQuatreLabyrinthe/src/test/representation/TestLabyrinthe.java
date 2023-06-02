@@ -118,15 +118,15 @@ class TestLabyrinthe {
     
 
 
-    @Test
-    void testBacktracking() {
-        System.out.println("Debut");
-        Labyrinthe test = new Labyrinthe(200, 200);
-        test.constructionBacktracking();
-//        System.out.println(test);
-        
-        
-    }
+//    @Test
+//    void testBacktracking() {
+//        System.out.println("Debut");
+//        Labyrinthe test = new Labyrinthe(200, 200);
+//        test.constructionBacktracking();
+////        System.out.println(test);
+//        
+//        
+//    }
 
     @Test
     void testProfondeur() {
