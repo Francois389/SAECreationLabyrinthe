@@ -5,9 +5,8 @@
 package representation;
 
 /**
- * //TODO Commenter la responsabilités de la classe Jeux
+ * Gère la présence d'un joueur dans un labyrinthe
  * @author de Saint Palais François
- *
  */
 public class Jeux extends Labyrinthe {
 
@@ -54,5 +53,12 @@ public class Jeux extends Labyrinthe {
         this.posYJoueur = posYJoueur;
     }
 
-    
+    /**
+     * Indique si le joueur est sorti du labyrinthe
+     * @return true si le joueur est à la sorti false sinon
+     */
+    public boolean estSorti() {
+        return    getSortie().getPosX() == posXJoueur 
+               && getSortie().getPosY() == posYJoueur;
+    }
 }
