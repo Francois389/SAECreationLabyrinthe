@@ -608,7 +608,7 @@ public class Labyrinthe {
             
             
         }
-        return affichage;
+        return affichage + "\n";
     }
 
     /**
