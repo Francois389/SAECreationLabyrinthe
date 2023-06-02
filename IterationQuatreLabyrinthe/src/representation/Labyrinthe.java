@@ -684,7 +684,7 @@ public class Labyrinthe {
             }
             affichage += "\n";
         }
-        return affichage;
+        return affichage + "\n";
     }
 
     /**
