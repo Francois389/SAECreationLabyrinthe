@@ -84,7 +84,7 @@ public class Labyrinthe {
         this.hauteur = hauteur;
 
         listeArcs = new Sommet[0][0];
-        entre = new Sommet(0, 0);
+        entree = new Sommet(0, 0);
         sortie = new Sommet(largeur - 1, hauteur - 1);
         genererLabirynthe();
     }
@@ -104,7 +104,7 @@ public class Labyrinthe {
         this.hauteur = hauteur;
 
         listeArcs = new Sommet[0][0];
-        this.entre = entre;
+        this.entree = entre;
         this.sortie = sortie;
         genererLabirynthe();
     }
@@ -147,7 +147,7 @@ public class Labyrinthe {
     private void genererLabirynthe() {
           listeSommet = creerGrille(largeur, hauteur);
           
-          if (entre.equals(sortie)) {
+          if (entree.equals(sortie)) {
         	  throw new IllegalArgumentException("entrée et sortie confondue");
           }      
     }
@@ -464,6 +464,16 @@ public class Labyrinthe {
         return y * largeur + x + 1;
     }
     
+    /**
+     * 
+     * @param s1
+     * @param s2
+     * @return
+     */
+    private boolean existeArete(Sommet s1, Sommet s2) {
+       
+        return true; // stub
+    }
     
     
     /**
@@ -477,7 +487,7 @@ public class Labyrinthe {
         indice = 0;
         for (Sommet[] liste : listeSommet) {
             for (Sommet s : liste) {
-                if (sommetAdjacent(sommet, s)) {
+                if (existeArete(sommet, s)) {
                     retour[indice] = s;
                     indice++;
                 }
@@ -500,12 +510,10 @@ public class Labyrinthe {
      * a partir du sommet defini comme entree
      * @return le parcours en profondeur a partir de l'entree
      */
-    public void parcoursProfondeur() {
+    public PileContigue parcoursProfondeur() {
         
         setMarqueSommet();
         
-        Sommet[] sommetsParcourus = new Sommet[largeur * hauteur]; 
-
         PileContigue pileSommets = new PileContigue();
         pileSommets.empiler(entree);
         entree.setEstParcourus(true);
@@ -536,7 +544,7 @@ public class Labyrinthe {
             
         }
         
-        System.out.println(pileSommets);
+        return pileSommets;
         
     }
     
@@ -564,7 +572,7 @@ public class Labyrinthe {
                         affichage += BORD_CASE;
                     }
                     	
-                    	if (this.listeSommet[hauteur][j].equals(entre) && i == 1) {
+                    	if (this.listeSommet[hauteur][j].equals(entree) && i == 1) {
                     		affichage += "  E  ";
                     	} else if (this.listeSommet[hauteur][j].equals(sortie) && i == 1) {
                     		affichage += "  S  ";
