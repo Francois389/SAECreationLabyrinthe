@@ -568,12 +568,15 @@ public class Labyrinthe {
 	                        affichage += BORD_CASE;
 	                    }
                     	
+	                    // on n'affiche E et S pour marquer la sortie
                     	if (this.listeSommet[hauteur][j].equals(entree) && i == 1) {
                     		affichage += "  E  ";
                     	} else if (this.listeSommet[hauteur][j].equals(sortie) && i == 1) {
                     		affichage += "  S  ";
                     	} else {
+                    		// si c'est le milieu de la case
                     		if (i == 1) {
+                    			// differement de la longeur de la marque on n'affiche pas le meme contenue de case
                     			if (listeSommet[hauteur][j].getMarque() < 10) {
                     				affichage += String.format(CHAINE_VIDE_MARQUE_UNITE, listeSommet[hauteur][j].getMarque());
                     			} else if (listeSommet[hauteur][j].getMarque() < 100) {
@@ -581,6 +584,7 @@ public class Labyrinthe {
                     			} else if (listeSommet[hauteur][j].getMarque() < 1000) {
                     				affichage += String.format(CHAINE_VIDE_MARQUE_CENTAINE, listeSommet[hauteur][j].getMarque());
                     			} else {
+                    				// si la marque dépasse 999 on ne l'affiche pas par manque de place dans la case
                     				affichage += CHAINE_VIDE;
                     			}
                     		} else {
@@ -588,7 +592,7 @@ public class Labyrinthe {
                     		}
                     		
                     	}
-                    	
+                    	// on affiche le bord droit quand c'est la derniere colonne
                     	if (j == this.largeur -1 ) {
                     		affichage.substring(0, affichage.length() - 1);
                     		affichage += BORD_CASE;
@@ -596,6 +600,7 @@ public class Labyrinthe {
                 }
             }
             affichage += "\n";
+            // on affiche la dernier ligne
             if (hauteur == this.hauteur -1 ) {
             	for (int j = 0 ; j < this.largeur ; j++ ) {
             		affichage += HAUT_CASE;

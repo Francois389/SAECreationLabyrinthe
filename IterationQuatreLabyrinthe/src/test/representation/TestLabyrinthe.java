@@ -73,7 +73,7 @@ class TestLabyrinthe {
     void testToString() {
  
         {
-            Labyrinthe aAfficher = new Labyrinthe(20,20);
+            Labyrinthe aAfficher = new Labyrinthe(12,15);
             aAfficher.chaineAscendante();
             System.out.print(aAfficher);
         }
