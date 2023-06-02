@@ -82,11 +82,31 @@ public class Labyrinthe {
         }
         this.largeur = largeur;
         this.hauteur = hauteur;
-        listeSommet = creerGrille(largeur, hauteur);
+
         listeArcs = new Sommet[0][0];
-        entree = getListeSommet()[0][0];
-        sortie = getListeSommet()[getListeSommet().length-1][getListeSommet()[0].length-1];
-        // TODO gerer l'entrée / sortie
+        entre = new Sommet(0, 0);
+        sortie = new Sommet(largeur - 1, hauteur - 1);
+        genererLabirynthe();
+    }
+    
+    /**
+     * Créer un graphe composé 
+     * @param largeur
+     * @param hauteur
+     * @throws IllegalArgumentException
+     */
+    public Labyrinthe(int hauteur, int largeur, Sommet entre, Sommet sortie) {
+        super();
+        if (!(largeur > 0 && hauteur > 0)) {
+            throw new IllegalArgumentException("largeur ou hauteur invalide");
+        }
+        this.largeur = largeur;
+        this.hauteur = hauteur;
+
+        listeArcs = new Sommet[0][0];
+        this.entre = entre;
+        this.sortie = sortie;
+        genererLabirynthe();
     }
     
     /**
@@ -124,8 +144,12 @@ public class Labyrinthe {
      * @param largeur La largeur voulue pour la grille/ le labyrinthe
      * @param hauteur La hauteur voulue pour la grille/ le labyrinthe
      */
-    private void genererLabirynthe(int largeur, int hauteur) {
+    private void genererLabirynthe() {
           listeSommet = creerGrille(largeur, hauteur);
+          
+          if (entre.equals(sortie)) {
+        	  throw new IllegalArgumentException("entrée et sortie confondue");
+          }      
     }
 
 
@@ -539,8 +563,15 @@ public class Labyrinthe {
                     } else {
                         affichage += BORD_CASE;
                     }
-                
-                       affichage += CHAINE_VIDE;
+                    	
+                    	if (this.listeSommet[hauteur][j].equals(entre) && i == 1) {
+                    		affichage += "  E  ";
+                    	} else if (this.listeSommet[hauteur][j].equals(sortie) && i == 1) {
+                    		affichage += "  S  ";
+                    	} else {
+                    		affichage += CHAINE_VIDE;
+                    	}
+                    	
                        
                        if (this.listeSommet[hauteur][j].getVoisins()[DROITE]){
                         affichage += BORD_VIDE;   
