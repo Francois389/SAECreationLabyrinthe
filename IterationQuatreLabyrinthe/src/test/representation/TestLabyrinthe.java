@@ -73,7 +73,7 @@ class TestLabyrinthe {
     void testToString() {
  
         {
-            Labyrinthe aAfficher = new Labyrinthe(10,10);
+            Labyrinthe aAfficher = new Labyrinthe(20,20);
             aAfficher.chaineAscendante();
             System.out.print(aAfficher);
         }
@@ -121,7 +121,6 @@ class TestLabyrinthe {
         System.out.println("Debut");
         Labyrinthe test = new Labyrinthe(200, 200);
         test.constructionBacktracking();
-        System.out.println("Fin");
 //        System.out.println(test);
         
         
@@ -131,7 +130,6 @@ class TestLabyrinthe {
     void testMainDroite() {
         Labyrinthe test = new Labyrinthe(10, 10);
         test.constructionBacktracking();
-        System.out.println("Fin");
         System.out.println(test);
         System.out.println(OutilsTableau.tabVersString(test.parcoursMainDroite()));
     }
