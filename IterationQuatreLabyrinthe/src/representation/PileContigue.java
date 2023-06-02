@@ -148,7 +148,7 @@ public class PileContigue {
     
     @Override
     public String toString() {
-        String resultat = "+---------------+ <- haut de la pile\n";
+        String resultat = "+-----------------------+ <- haut de la pile\n";
 
         String ligne = "|%s\t\t|\n";
 
@@ -156,7 +156,7 @@ public class PileContigue {
             resultat += String.format(ligne, elementsEmpiles[i].toString());
         }
       
-        resultat += "+---------------+";
+        resultat += "+-----------------------+";
 
         return resultat;
         

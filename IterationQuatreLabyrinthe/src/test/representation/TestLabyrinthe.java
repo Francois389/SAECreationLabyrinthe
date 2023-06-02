@@ -121,7 +121,7 @@ class TestLabyrinthe {
     @Test
     void testBacktracking() {
         System.out.println("Debut");
-        Labyrinthe test = new Labyrinthe(200, 200);
+        Labyrinthe test = new Labyrinthe(20, 20);
         test.constructionBacktracking();
 //        System.out.println(test);
         
@@ -130,7 +130,7 @@ class TestLabyrinthe {
 
     @Test
     void testProfondeur() {
-        Labyrinthe test = new Labyrinthe(4, 3);
+        Labyrinthe test = new Labyrinthe(5, 5);
         test.constructionBacktracking();
         System.out.println(test);
         PileContigue parcours = test.parcoursProfondeur();

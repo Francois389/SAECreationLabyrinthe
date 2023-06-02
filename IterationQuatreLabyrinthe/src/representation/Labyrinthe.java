@@ -472,17 +472,7 @@ public class Labyrinthe {
     private int getIndice(int x, int y) {
         return y * largeur + x + 1;
     }
-    
-    /**
-     * 
-     * @param s1
-     * @param s2
-     * @return
-     */
-    private boolean existeArete(Sommet s1, Sommet s2) {
-       
-        return true; // stub
-    }
+   
     
     
     /**
@@ -496,7 +486,7 @@ public class Labyrinthe {
         indice = 0;
         for (Sommet[] liste : listeSommet) {
             for (Sommet s : liste) {
-                if (existeArete(sommet, s)) {
+                if (sommetAdjacent(sommet, s)) {
                     retour[indice] = s;
                     indice++;
                 }
@@ -512,6 +502,54 @@ public class Labyrinthe {
         }
         return retour;
     }    
+    
+    
+    
+    /**
+     * Permet de verifier la prÃ©sence d'un arc entre deux sommets
+     * dans les deux sens.
+     * @param sommet1
+     * @param sommet2
+     * @return true si un arc existe entre les deux sommets, false sinon
+     */
+    private boolean sontRelies (Sommet sommet1, Sommet sommet2) {
+        return    existeArcEntre(sommet1, sommet2) 
+               || existeArcEntre(sommet2, sommet1);
+    }
+    
+    private boolean existeArcEntre(Sommet sommet1, Sommet sommet2) {
+        for (int i = 0; i < listeArcs.length; i++) {
+            if (listeArcs[i][0].equals(sommet1) && listeArcs[i][1].equals(sommet2)) {
+                return true;
+            }  
+        }
+        return false;
+    }
+   
+    
+    private Sommet[] getVoisinsAvecArc(Sommet sommet) {
+        int indice;
+        Sommet[] retour = new Sommet[4];
+        
+        indice = 0;
+        for (Sommet[] liste : listeSommet) {
+            for (Sommet s : liste) {
+                if (sontRelies(sommet, s)) {
+                    retour[indice] = s;
+                    indice++;
+                }
+            }
+        }
+        
+        if (indice != 4) {
+            Sommet[] nouveauTableau = new Sommet[indice];
+            for (int i = 0; i < indice; i++) {
+                nouveauTableau[i] = retour[i];
+            }
+            retour = nouveauTableau;
+        }
+        return retour;
+    }
     
     
     /** 
@@ -531,7 +569,7 @@ public class Labyrinthe {
         
         while (!sommetCourant.equals(sortie)) {
             
-            Sommet[] listeVoisins = getSommetsVoisins(sommetCourant);
+            Sommet[] listeVoisins = getVoisinsAvecArc(sommetCourant);
             
             for (int i = 0; i < listeVoisins.length; i++ ) {
                 if (listeVoisins[i].estParcourus()) {
