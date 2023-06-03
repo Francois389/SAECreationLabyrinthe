@@ -1,15 +1,14 @@
 package representation;
 
 import java.lang.Math;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Random;
 import java.util.ArrayList;
 
+import java.util.Arrays;
+import java.util.Objects;
 
-import org.hamcrest.Condition.Step;
-import outils.OutilsTableau;
 import representation.PileContigue;
+import outils.OutilsTableau;
 
 /**
  * 
@@ -22,20 +21,30 @@ import representation.PileContigue;
  */
 public class Labyrinthe {
 
-     /** Affichage du haut d'une case */
-     private static final String HAUT_CASE = "+-----+";
-     
-     /** Mur du haut vide */
-     private static final String HAUT_CASE_VIDE = "+     +";     
-     
-     /** Affichage des bord d'une case*/
-     private static final String BORD_CASE = "|";
-     
-     /** Chaine vide pour l'espace a l'interieur des cases */ 
-     private static final String CHAINE_VIDE = "     ";
-     
-     /** Affichage d'un bord vide'*/
-     private static final String BORD_VIDE = " ";
+    /** Affichage du haut d'une case */
+    private static final String HAUT_CASE = "+-----";
+    
+    /** Mur du haut vide */
+    private static final String HAUT_CASE_VIDE = "+     ";     
+    
+    /** Affichage des bord d'une case*/
+    private static final String BORD_CASE = "|";
+    
+    /** Affichage d'un bord vide'*/
+    private static final String BORD_VIDE = " ";
+    
+    /** Chaine vide pour l'espace a l'interieur des cases */ 
+    private static final String CHAINE_VIDE = "     ";
+    
+    /** Chaine vide pour l'espace a l'interieur des cases avec sa marque si c'est une unitée */ 
+    private static final String CHAINE_VIDE_MARQUE_UNITE = "  %d  ";
+    
+    /** Chaine vide pour l'espace a l'interieur des cases avec sa marque si c'est une dizaine */ 
+    private static final String CHAINE_VIDE_MARQUE_DIZAINE = " %d  ";
+    
+    /** Chaine vide pour l'espace a l'interieur des cases avec sa marque si c'est une centaine */ 
+    private static final String CHAINE_VIDE_MARQUE_CENTAINE = " %d ";
+    
      
      /** indice pour la liste des voisins du sommet corrsepondant a haut */
      private static final int HAUT = 0;
@@ -53,7 +62,7 @@ public class Labyrinthe {
      private static final int HAUTEUR_CASE = 3;
     
      
-     private Sommet entre;
+     private Sommet entree;
      
      private Sommet sortie;
      
@@ -83,11 +92,31 @@ public class Labyrinthe {
         }
         this.largeur = largeur;
         this.hauteur = hauteur;
-        listeSommet = creerGrille(largeur, hauteur);
+
         listeArcs = new Sommet[0][0];
-        entre = getListeSommet()[0][0];
-        sortie = getListeSommet()[getListeSommet().length-1][getListeSommet()[0].length-1];
-        // TODO gerer l'entrée / sortie
+        entree = new Sommet(0, 0);
+        sortie = new Sommet(largeur - 1, hauteur - 1);
+        genererLabirynthe();
+    }
+    
+    /**
+     * Créer un graphe composé 
+     * @param largeur
+     * @param hauteur
+     * @throws IllegalArgumentException
+     */
+    public Labyrinthe(int hauteur, int largeur, Sommet entre, Sommet sortie) {
+        super();
+        if (!(largeur > 0 && hauteur > 0)) {
+            throw new IllegalArgumentException("largeur ou hauteur invalide");
+        }
+        this.largeur = largeur;
+        this.hauteur = hauteur;
+
+        listeArcs = new Sommet[0][0];
+        this.entree = entre;
+        this.sortie = sortie;
+        genererLabirynthe();
     }
     
     /**
@@ -113,7 +142,7 @@ public class Labyrinthe {
         this.hauteur = hauteur;
         this.listeSommet = listeSommet;
         this.listeArcs = listeArcs;
-        this.entre = entree;
+        this.entree = entree;
         this.sortie = sortie;
     }
        
@@ -125,8 +154,12 @@ public class Labyrinthe {
      * @param largeur La largeur voulue pour la grille/ le labyrinthe
      * @param hauteur La hauteur voulue pour la grille/ le labyrinthe
      */
-    private void genererLabirynthe(int largeur, int hauteur) {
+    private void genererLabirynthe() {
           listeSommet = creerGrille(largeur, hauteur);
+          
+          if (entree.equals(sortie)) {
+        	  throw new IllegalArgumentException("entrée et sortie confondue");
+          }      
     }
 
 
@@ -231,7 +264,9 @@ public class Labyrinthe {
         return false;
     }
     
-    
+    /** 
+     * Algorithme de construction du labyrinthe par chaine ascendante
+     */
     public void chaineAscendante() {
         int nbArcCreer;
         nbArcCreer = 0;  
@@ -345,14 +380,15 @@ public class Labyrinthe {
      * @return true si tous les elements sont true
      *         false sinon
      */
-    private boolean sontTousVisites(boolean[] tab) {
-         for (boolean b : tab) {
-             if (!b) {
-                  return false;
-             } 
-         }
-         
-         return true;
+    private boolean sontTousVisites(Sommet[] tab) {
+        
+        for (Sommet s : tab) {
+            if (!s.estParcourus()) {
+                return false;
+            }
+        }
+        return true;
+        
     }
     
     
@@ -362,7 +398,6 @@ public class Labyrinthe {
      * méthode ajouterArc
      */
     public void constructionBacktracking(){
-        System.out.println("Debut");
         setMarqueSommet();
         
         boolean[] sommetsVisites = new boolean[largeur * hauteur];
@@ -378,7 +413,7 @@ public class Labyrinthe {
         //On empile le sommet pris au hasard
         pileSommets.empiler(sommetCourant);
         
-        while (!pileSommets.estVide() && !sontTousVisites(sommetsVisites)) {
+        while (!pileSommets.estVide()) {
             Sommet[] listeVoisins = getSommetsVoisins(sommetCourant);
             
             for (int i = 0; i < listeVoisins.length; i++ ) {
@@ -398,7 +433,7 @@ public class Labyrinthe {
                      int indiceVoisinRandom = (int)(Math.random() * (listeVoisins.length));
                      Sommet voisinRandom = listeVoisins[indiceVoisinRandom];
 
-                 	 if (!voisinRandom.estParcourus()) {
+                     if (!voisinRandom.estParcourus()) {
                          ajouterArrete(sommetCourant, voisinRandom);
                          pileSommets.empiler(voisinRandom);              
                          voisinRandom.setEstParcourus(true);
@@ -406,14 +441,14 @@ public class Labyrinthe {
                          sommetCourant = (Sommet) pileSommets.sommet();
                          sommetRandomTrouve = true;
                      }
-                } 
+                 } 
             }
         }
     }
     
     /**
      * Mes des marques unique sur les sommets du labyrinthe
-     * Les marques commencent à 1
+     * Les marques commencent à 0
      */
     public void setMarqueSommet() {
         int marque;
@@ -424,6 +459,7 @@ public class Labyrinthe {
                 marque++;
                 Sommet s = listeSommet[i][j];
                 s.setMarque(marque);
+                s.setEstParcourus(false);
             }
         }  
     }
@@ -437,7 +473,6 @@ public class Labyrinthe {
     private int getIndice(int x, int y) {
         return y * largeur + x + 1;
     }
-    
     
     
     /**
@@ -469,41 +504,95 @@ public class Labyrinthe {
     }    
     
     
+    
+    /**
+     * Permet de verifier la prÃ©sence d'un arc entre deux sommets
+     * dans les deux sens.
+     * @param sommet1
+     * @param sommet2
+     * @return true si un arc existe entre les deux sommets, false sinon
+     */
+    private boolean sontRelies (Sommet sommet1, Sommet sommet2) {
+        return    existeArcEntre(sommet1, sommet2) 
+               || existeArcEntre(sommet2, sommet1);
+    }
+    
+    private boolean existeArcEntre(Sommet sommet1, Sommet sommet2) {
+        for (int i = 0; i < listeArcs.length; i++) {
+            if (listeArcs[i][0].equals(sommet1) && listeArcs[i][1].equals(sommet2)) {
+                return true;
+            }  
+        }
+        return false;
+    }
+   
+    
+    private Sommet[] getVoisinsAvecArc(Sommet sommet) {
+        int indice;
+        Sommet[] retour = new Sommet[4];
+        
+        indice = 0;
+        for (Sommet[] liste : listeSommet) {
+            for (Sommet s : liste) {
+                if (sontRelies(sommet, s)) {
+                    retour[indice] = s;
+                    indice++;
+                }
+            }
+        }
+        
+        if (indice != 4) {
+            Sommet[] nouveauTableau = new Sommet[indice];
+            for (int i = 0; i < indice; i++) {
+                nouveauTableau[i] = retour[i];
+            }
+            retour = nouveauTableau;
+        }
+        return retour;
+    }
+    
+    
     /** 
      * effectue le parcours en main droite (profondeur)
      * a partir du sommet defini comme entree
      * @return le parcours en profondeur a partir de l'entree
      */
-    public Sommet[] parcoursMainDroite() {
+    public PileContigue parcoursProfondeur() {
         
-        Sommet[] sommetsParcourus = new Sommet[largeur * hauteur]; 
-        int indice;
+        setMarqueSommet();
         
         PileContigue pileSommets = new PileContigue();
-        pileSommets.empiler(entre);
+        pileSommets.empiler(entree);
+        entree.setEstParcourus(true);
         
-        indice = 0;
-        while (!pileSommets.estVide()) {
-            Sommet sommetCourant = (Sommet) pileSommets.sommet();
-            pileSommets.depiler();
+        Sommet sommetCourant = (Sommet) pileSommets.sommet();
+        
+        while (!sommetCourant.equals(sortie)) {
             
-            if (!OutilsTableau.contient(sommetsParcourus, sommetCourant)) {
-                sommetsParcourus[indice] = sommetCourant;
-                indice++;
-                
-                if (sommetCourant.equals(sortie)) {
-                    return sommetsParcourus;
-                } else {
-                    for (Sommet voisin : getSommetsVoisins(sommetCourant)) {
-                        if (!OutilsTableau.contient(sommetsParcourus, voisin)) {
-							pileSommets.empiler(voisin);
-						}
-                    }
+            Sommet[] listeVoisins = getVoisinsAvecArc(sommetCourant);
+            
+            for (int i = 0; i < listeVoisins.length; i++ ) {
+                if (listeVoisins[i].estParcourus()) {
+                    listeVoisins[i] = null;
                 }
             }
+            listeVoisins = OutilsTableau.copieSaufNull(listeVoisins);
+            
+            if (sontTousVisites(listeVoisins)) {
+                pileSommets.depiler();
+                if (!pileSommets.estVide()) {
+                    sommetCourant = (Sommet) pileSommets.sommet();
+                } 
+            } else {
+                sommetCourant = listeVoisins[0];
+                sommetCourant.setEstParcourus(true);
+                pileSommets.empiler(sommetCourant);
+            }
+            
         }
         
-        return sommetsParcourus;
+        return pileSommets;
+        
     }
     
     
@@ -511,7 +600,7 @@ public class Labyrinthe {
     public String toString() {
         String affichage;
         affichage = "";
-
+        this.setMarqueSommet();
         for (int hauteur = 0 ; hauteur < this.hauteur ; hauteur++){ 
             for (int j = 0 ; j < this.largeur ; j++ ) {
                 if (this.listeSommet[hauteur][j].getVoisins()[HAUT]) {
@@ -520,37 +609,60 @@ public class Labyrinthe {
                 else {
                     affichage += HAUT_CASE;
                 }  
+                if (j == this.largeur -1 ) {
+            		affichage += "+";
+            	}
             }    
             for (int i = 0; i < HAUTEUR_CASE ; i++) {
                 affichage += "\n";        
                    for (int j = 0; j < this.largeur; j++) {
-                    if (this.listeSommet[hauteur][j].getVoisins()[GAUCHE]) {
-                        affichage += BORD_VIDE; 
-                    } else {
-                        affichage += BORD_CASE;
-                    }
-                
-                       affichage += CHAINE_VIDE;
-                       
-                       if (this.listeSommet[hauteur][j].getVoisins()[DROITE]){
-                        affichage += BORD_VIDE;   
-                    } else {
-                        affichage += BORD_CASE; 
-                    }
-                       
+	                    if (this.listeSommet[hauteur][j].getVoisins()[GAUCHE]) {
+	                        affichage += BORD_VIDE; 
+	                    } else {
+	                        affichage += BORD_CASE;
+	                    }
+                    	
+                    	if (this.listeSommet[hauteur][j].equals(entree) && i == 1) {
+                    		affichage += "  E  ";
+                    	} else if (this.listeSommet[hauteur][j].equals(sortie) && i == 1) {
+                    		affichage += "  S  ";
+                    	} else {
+                    		if (i == 1) {
+                    			if (listeSommet[hauteur][j].getMarque() < 10) {
+                    				affichage += String.format(CHAINE_VIDE_MARQUE_UNITE, listeSommet[hauteur][j].getMarque());
+                    			} else if (listeSommet[hauteur][j].getMarque() < 100) {
+                    				affichage += String.format(CHAINE_VIDE_MARQUE_DIZAINE, listeSommet[hauteur][j].getMarque());
+                    			} else if (listeSommet[hauteur][j].getMarque() < 1000) {
+                    				affichage += String.format(CHAINE_VIDE_MARQUE_CENTAINE, listeSommet[hauteur][j].getMarque());
+                    			} else {
+                    				affichage += CHAINE_VIDE;
+                    			}
+                    		} else {
+                    			affichage += CHAINE_VIDE;
+                    		}
+                    		
+                    	}
+                    	
+                    	if (j == this.largeur -1 ) {
+                    		affichage.substring(0, affichage.length() - 1);
+                    		affichage += BORD_CASE;
+                    	}
                 }
             }
             affichage += "\n";
-            for (int j = 0 ; j < this.largeur ; j++ ) {
-                if (this.listeSommet[hauteur][j].getVoisins()[BAS]){
-                        affichage += HAUT_CASE_VIDE;   
-                } else {
-                    affichage += HAUT_CASE; 
-                }     
+            if (hauteur == this.hauteur -1 ) {
+            	for (int j = 0 ; j < this.largeur ; j++ ) {
+            		affichage += HAUT_CASE;
+            		if (j == this.largeur -1 ) {
+                		affichage += "+";
+                	}
+                }
             }
-            affichage += "\n";
+            
+            
+            
         }
-        return affichage;
+        return affichage + "\n";
     }
 
     /**
@@ -568,17 +680,17 @@ public class Labyrinthe {
     } 
     
         /**
-     * @return la valeur de entre
+     * @return la valeur de entree
      */
     public Sommet getEntre() {
-        return entre;
+        return entree;
     }
 
     /**
-     * @param entre modifie la valeur de entre
+     * @param entree modifie la valeur de entree
      */
     public void setEntre(Sommet entre) {
-        this.entre = entre;
+        this.entree = entre;
     }
 
     /**
@@ -605,4 +717,19 @@ public class Labyrinthe {
         return largeur;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Labyrinthe other = (Labyrinthe) obj;
+        return Objects.equals(entree, other.entree) && hauteur == other.hauteur && largeur == other.largeur
+                && Arrays.deepEquals(listeArcs, other.listeArcs) && Arrays.deepEquals(listeSommet, other.listeSommet)
+                && Objects.equals(sortie, other.sortie);
+    }
+
+    
 }

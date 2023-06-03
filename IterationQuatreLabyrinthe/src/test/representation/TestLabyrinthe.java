@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 
 
 import representation.Labyrinthe;
+import representation.PileContigue;
 import representation.Sommet;
 
 
@@ -73,9 +74,9 @@ class TestLabyrinthe {
     void testToString() {
  
         {
-            Labyrinthe aAfficher = new Labyrinthe(10,10);
+            Labyrinthe aAfficher = new Labyrinthe(12,15);
             aAfficher.chaineAscendante();
-            System.out.print(aAfficher);
+            //System.out.print(aAfficher);
         }
     }
     
@@ -99,4 +100,41 @@ class TestLabyrinthe {
         }
         assertTrue(g.ontTousLaMemeMarque());
     }
+
+    
+    @Test
+    void testFusionnerMarques() {
+        Labyrinthe g = new Labyrinthe(2,2);
+        Sommet s = new Sommet(3,3);
+        for (Sommet[] sommets : g.getListeSommet()) {
+            for (Sommet sTest : sommets) {
+                System.out.print("Avant: "+sTest.getMarque());
+                g.fusionnerMarques(s,sTest);
+                System.out.println("Apres " + sTest.getMarque()+"\n");
+            }
+        }
+        assertTrue(g.ontTousLaMemeMarque());
+    }
+    
+
+
+    @Test
+    void testBacktracking() {
+        System.out.println("Debut");
+        Labyrinthe test = new Labyrinthe(20, 20);
+        test.constructionBacktracking();
+//        System.out.println(test);
+        
+        
+    }
+
+    @Test
+    void testProfondeur() {
+        Labyrinthe test = new Labyrinthe(5, 5);
+        test.constructionBacktracking();
+        System.out.println(test);
+        PileContigue parcours = test.parcoursProfondeur();
+        System.out.println(parcours);
+    }
+    
 }

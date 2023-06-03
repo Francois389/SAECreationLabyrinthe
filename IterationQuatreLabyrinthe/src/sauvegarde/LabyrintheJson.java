@@ -1,7 +1,7 @@
 /*
  * //TODO comentez
  */
-package lecture;
+package sauvegarde;
 
 import representation.Labyrinthe;
 import representation.Sommet;
@@ -24,58 +24,12 @@ import java.util.ArrayList;
 /**
  * 
  * //TODO Commenter la responsabilités de la classe LabyrintheJson
- * @author Lenovo
+ * @author Denamiel Clément
  *
  */
 public class LabyrintheJson {
 
-    /**
-     * //TODO commentez
-     * @return
-     */
-    private static Labyrinthe getLabyrinthe() {
-        Labyrinthe retour = new Labyrinthe(5,7);
-        retour.ajouterArrete(retour.listeSommet[0][0], retour.listeSommet[0][1]);
-        retour.ajouterArrete(retour.listeSommet[0][1], retour.listeSommet[0][2]);
-        retour.ajouterArrete(retour.listeSommet[0][2], retour.listeSommet[0][3]);
-        retour.ajouterArrete(retour.listeSommet[0][2], retour.listeSommet[1][2]);
-        retour.ajouterArrete(retour.listeSommet[0][3], retour.listeSommet[0][4]);
-        retour.ajouterArrete(retour.listeSommet[0][5], retour.listeSommet[0][6]);
-        retour.ajouterArrete(retour.listeSommet[0][5], retour.listeSommet[1][5]);
-        retour.ajouterArrete(retour.listeSommet[1][0], retour.listeSommet[1][1]);
-        retour.ajouterArrete(retour.listeSommet[1][1], retour.listeSommet[1][2]);
-        retour.ajouterArrete(retour.listeSommet[1][3], retour.listeSommet[1][4]);
-        retour.ajouterArrete(retour.listeSommet[1][5], retour.listeSommet[1][6]);
-        retour.ajouterArrete(retour.listeSommet[1][0], retour.listeSommet[2][0]);
-        retour.ajouterArrete(retour.listeSommet[1][2], retour.listeSommet[2][2]);
-        retour.ajouterArrete(retour.listeSommet[2][1], retour.listeSommet[3][1]);
-        retour.ajouterArrete(retour.listeSommet[1][4], retour.listeSommet[2][4]);
-        retour.ajouterArrete(retour.listeSommet[1][3], retour.listeSommet[2][3]);
-        retour.ajouterArrete(retour.listeSommet[3][1], retour.listeSommet[3][2]);
-        retour.ajouterArrete(retour.listeSommet[3][2], retour.listeSommet[3][3]);
-        retour.ajouterArrete(retour.listeSommet[2][0], retour.listeSommet[3][0]);
-        retour.ajouterArrete(retour.listeSommet[2][3], retour.listeSommet[3][3]);
-        retour.ajouterArrete(retour.listeSommet[1][5], retour.listeSommet[2][5]);
-        retour.ajouterArrete(retour.listeSommet[1][6], retour.listeSommet[2][6]);
-        retour.ajouterArrete(retour.listeSommet[2][4], retour.listeSommet[3][4]);
-        retour.ajouterArrete(retour.listeSommet[4][0], retour.listeSommet[3][0]);
-        retour.ajouterArrete(retour.listeSommet[4][0], retour.listeSommet[4][1]);
-        retour.ajouterArrete(retour.listeSommet[4][1], retour.listeSommet[4][2]);
-        retour.ajouterArrete(retour.listeSommet[4][2], retour.listeSommet[4][3]);
-        retour.ajouterArrete(retour.listeSommet[4][3], retour.listeSommet[3][3]);
-        retour.ajouterArrete(retour.listeSommet[4][4], retour.listeSommet[4][5]);
-        retour.ajouterArrete(retour.listeSommet[4][4], retour.listeSommet[3][4]);
-        retour.ajouterArrete(retour.listeSommet[4][5], retour.listeSommet[4][6]);
-        retour.ajouterArrete(retour.listeSommet[4][6], retour.listeSommet[3][6]);
-        retour.ajouterArrete(retour.listeSommet[3][4], retour.listeSommet[3][5]);
-        retour.ajouterArrete(retour.listeSommet[2][5], retour.listeSommet[3][5]);
-        retour.listeSommet[0][0].setVoisin(true, 3);
-        retour.listeSommet[2][6].setVoisin(true, 1);
-        retour.setEntre(retour.listeSommet[0][0]);
-        retour.setSortie(retour.listeSommet[2][6]);
-        
-        return retour;
-    }
+    private final static String CHEMIN_FICHIER = "src/sauvegardes/labyrinthe.json";
     
     private static Sommet getSommetFromJSON(JsonElement element) {
         JsonObject sommet = element.getAsJsonObject();
@@ -83,6 +37,7 @@ public class LabyrintheJson {
         int x = sommet.get("posX").getAsInt(); 
         int y = sommet.get("posY").getAsInt();
         int marque = sommet.get("marque").getAsInt();
+        boolean estParcouru = sommet.get("estParcourus").getAsBoolean();
         boolean[] voisins = new boolean[4];
         
         JsonArray listeVoisins = sommet.get("voisins").getAsJsonArray();
@@ -93,10 +48,17 @@ public class LabyrintheJson {
         }
         
         Sommet s = new Sommet(x, y); 
-        
+        s.setEstParcourus(estParcouru);
+		s.setMarque(marque);
+		s.setVoisin(voisins);
+		        
         return s;
     }
     
+    /**
+     * TODO Commenter
+     * @param laby
+     */
     public static void enregistrerLabyrinthe(Labyrinthe laby) {
         
         
@@ -115,7 +77,7 @@ public class LabyrintheJson {
      
         JsonArray listeSommets = new Gson().toJsonTree(listeSommetsLabyrinthe).getAsJsonArray();
         JsonArray listeArcs    = new Gson().toJsonTree(listeArcsLabyrinthe).getAsJsonArray();
-        
+       
         JsonElement hauteur = new Gson().toJsonTree(laby.getHauteur());
         JsonElement largeur = new Gson().toJsonTree(laby.getLargeur());
         
@@ -132,7 +94,7 @@ public class LabyrintheJson {
      
         Gson test = new GsonBuilder().setPrettyPrinting().create();
         
-        try (FileWriter fichier = new FileWriter("src/lecture/labyrinthe.json")) {
+        try (FileWriter fichier = new FileWriter(CHEMIN_FICHIER)) {
             test.toJson(labyrintheJSON, fichier);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -142,7 +104,7 @@ public class LabyrintheJson {
     
     public static Labyrinthe chargerLabyrinthe() {
         
-        File fichierLabyrinthe = new File("src/lecture/labyrinthe.json");
+        File fichierLabyrinthe = new File(CHEMIN_FICHIER);
         
         
         try {
@@ -189,22 +151,14 @@ public class LabyrintheJson {
             Labyrinthe charge = new Labyrinthe(
                     hauteur, largeur, tableauSommet, tableauArcs, entree, sortie);
             
+            return charge;
+            
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         }
         
-        return getLabyrinthe(); // stub
-        
+        return null; //stub
         
     }
-    
-    
-    public static void main(String[] args) {
-        Labyrinthe l = getLabyrinthe();
-        
-        enregistrerLabyrinthe(l);
-        
-        Labyrinthe charge = chargerLabyrinthe();
-        System.out.println(charge);
-    }
+
 }

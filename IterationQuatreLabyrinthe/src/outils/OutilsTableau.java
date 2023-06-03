@@ -43,7 +43,9 @@ public class OutilsTableau {
             return false;
         }
         for (int i = 0; i < liste.length; i++) {
-            if (liste[i].equals(element) ) {
+            if (liste[i] == null) {
+                return false;
+            } else if (liste[i].equals(element) ) {
                 return true;
             }
         }
