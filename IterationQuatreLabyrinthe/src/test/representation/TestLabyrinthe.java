@@ -14,6 +14,7 @@ import org.junit.jupiter.api.BeforeEach;
 
 
 import representation.Labyrinthe;
+import representation.PileContigue;
 import representation.Sommet;
 
 
@@ -73,9 +74,9 @@ class TestLabyrinthe {
     void testToString() {
  
         {
-            Labyrinthe aAfficher = new Labyrinthe(10,10);
+            Labyrinthe aAfficher = new Labyrinthe(12,15);
             aAfficher.chaineAscendante();
-            System.out.print(aAfficher);
+            //System.out.print(aAfficher);
         }
     }
     
@@ -116,24 +117,23 @@ class TestLabyrinthe {
     }
     
 
+
     @Test
     void testBacktracking() {
         System.out.println("Debut");
-        Labyrinthe test = new Labyrinthe(2,8);
+        Labyrinthe test = new Labyrinthe(20, 20);
         test.constructionBacktracking();
-        System.out.println("Fin");
-        System.out.println(test);
-        
+//        System.out.println(test);        
         
     }
 
     @Test
-    void testMainDroite() {
-        Labyrinthe test = new Labyrinthe(10, 10);
+    void testProfondeur() {
+        Labyrinthe test = new Labyrinthe(5, 5);
         test.constructionBacktracking();
-        System.out.println("Fin");
         System.out.println(test);
-        System.out.println(OutilsTableau.tabVersString(test.parcoursMainDroite()));
+        PileContigue parcours = test.parcoursProfondeur();
+        System.out.println(parcours);
     }
     
 }
