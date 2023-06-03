@@ -38,6 +38,20 @@ public class Main {
                 0. Quitter
             +---------------------------------------------+
             """;
+    private static final String INFO_JEUX 
+    = """
+      +------------------------------------------------------------------+
+          Voici le labyrinthe.
+          Vous êtes à l'emplacement indiquer par la lettre "J".
+          La sorti ce situe à la lettre "S".
+          Bonne chance !
+      +------------------------------------------------------------------+
+      """
+    ;
+    private static final char HAUT = 'H';
+    private static final char DROITE = 'D';
+    private static final char BAS = 'B';
+    private static final char GAUCHE = 'G';
     
     private static Scanner analyseurChoix;
     
@@ -62,7 +76,7 @@ public class Main {
         quitter = false;
         do {
             System.out.println(MENU);
-            System.out.println("Entrez votre choix : ");
+            System.out.print("Entrez votre choix : ");
             if (!analyseurChoix.hasNextInt()) {
                 analyseurChoix.nextLine();
             } else {
@@ -126,7 +140,7 @@ public class Main {
                     break;
                 }
             }
-        } while (! quitter);
+        } while (!quitter);
         analyseurChoix.close();
     }
 
@@ -134,6 +148,22 @@ public class Main {
      * Créer un labyrinthe par défaut
      */
     private static void chargerLabyrintheParDefaut() {
+        /* Doit représenter ce labyrinthe :
+         *   X  0     1     2
+         * Y +-----+-----+-----+
+         *   |     |           |
+         * 0 |  E  |  2     3  |
+         *   |     |           |
+         *   +     +-----+     +
+         *   |                 |
+         * 1 |  4     5     6  |
+         *   |                 |
+         *   +     +-----+     +
+         *   |           |     |
+         * 2 |  7     8  |  S  |
+         *   |           |     |
+         *   +-----+-----+-----+
+         */
         int hauteur, largeur;
         hauteur = largeur = 3;
         Sommet[][] listeSommet = {
@@ -149,25 +179,27 @@ public class Main {
                  new Sommet(1, 2),
                  new Sommet(2, 2)}
         };
-        listeSommet[0][0].setVoisin(true,2);
+        listeSommet[0][0].setVoisin(new boolean[]{false, false, true, false});
+        listeSommet[0][1].setVoisin(new boolean[]{false, true, false, false});
+        listeSommet[0][2].setVoisin(new boolean[]{false, false, true, true});
+
         listeSommet[1][0].setVoisin(new boolean[]{true, true, true, false});
-        listeSommet[2][0].setVoisin(true,0);
-        listeSommet[2][0].setVoisin(true,1);
-        listeSommet[0][1].setVoisin(true,1);
-        listeSommet[1][1].setVoisin(true,1);
-        listeSommet[1][1].setVoisin(true,3);
-        listeSommet[2][1].setVoisin(true,3);
-        listeSommet[0][2].setVoisin(true,2);
-        listeSommet[0][2].setVoisin(true,3);
-        listeSommet[1][2].setVoisin(new boolean[] {true, false, true, true});
-        listeSommet[2][2].setVoisin(true,0);
+        listeSommet[1][1].setVoisin(new boolean[]{false, true, false, true});
+        listeSommet[1][2].setVoisin(new boolean[]{true, false, true, true});
+        
+        listeSommet[2][0].setVoisin(new boolean[]{false, false, true, true});
+        listeSommet[2][1].setVoisin(new boolean[]{false, false, false, true});
+        listeSommet[2][2].setVoisin(new boolean[]{true, false, false, false});
         
         Sommet[][] listeArrete = {
                 {listeSommet[0][0],listeSommet[0][1]},
                 {listeSommet[0][1],listeSommet[1][1]},
                 {listeSommet[0][1],listeSommet[0][2]},
-                {listeSommet[1][1],listeSommet[2][1]},
+                {listeSommet[0][1],listeSommet[0][0]},
+                {listeSommet[0][2],listeSommet[0][1]},
                 {listeSommet[0][2],listeSommet[1][2]},
+                
+                {listeSommet[1][1],listeSommet[2][1]},
                 {listeSommet[2][1],listeSommet[2][0]},
                 {listeSommet[2][1],listeSommet[2][2]},
                 {listeSommet[2][0],listeSommet[1][0]},
@@ -188,42 +220,68 @@ public class Main {
         boolean hauteurValide ,
                 largeurValide;
         
-        int [] DimensionChoisi = new int[2];
+        int [] DimensionChoisi;
         analyseurChoix = new Scanner(System.in);
         hauteurValide = largeurValide = false ;
         do {
+            System.out.println();
+            DimensionChoisi = new int[2];
+            
             System.out.print("Entrez la hauteur souhaité : ");
             if (analyseurChoix.hasNextInt()) {
                 DimensionChoisi[0] = analyseurChoix.nextInt();
-                analyseurChoix.nextLine();
-                hauteurValide = true ;
+                hauteurValide = true;
                 System.out.println("Hauteur choisi : " + DimensionChoisi[0]);
             } else {
-                System.out.println("Hauteur invalide !");
+                System.out.println("Erreur : Hauteur invalide !");
+                hauteurValide = false;
             }
+            analyseurChoix.nextLine();
+            
             System.out.print("Entrez la largeur souhaité : ");
             if (analyseurChoix.hasNextInt()) {
                 DimensionChoisi[1] = analyseurChoix.nextInt();
-                analyseurChoix.nextLine();
-                largeurValide = true ;
+                largeurValide = true;
                 System.out.println("Largeur choisi : " + DimensionChoisi[1]);
             } else {
-                System.out.println("Largeur invalide !");
+                System.out.println("Erreur : Largeur invalide !");
+                largeurValide = false;
             }
+            analyseurChoix.nextLine();
+            
         } while (!hauteurValide || !largeurValide);
         System.out.println("Choix fais");
-//        analyseurChoix.nextLine();
-        return DimensionChoisi;
-    }
-    
-    /**
-     * La boucle de jeux.
+        return DimensionChoisi;                          
+    }                                                    
+                                                         
+    /**                                                  
+     * La boucle de jeux.                                
      * Demande au joueur quel déplacement veut-il réaliser.
      * Propose également au joueur de quitter le jeux pour retourner au menu.
      * @param partie
      */
     private static void boucleJeux(Jeux partie) {
-        //TODO
+        //TODO Écrire le corps
+        boolean sortiAtteinte;
+        boolean quitter;
+        char choix;
+        sortiAtteinte = quitter = false;
+        System.out.println(INFO_JEUX);
+        
+        do {
+            System.out.println(partie);
+            System.out.print("Entrez votre déplacement : ");
+            choix = Character.toUpperCase(analyseurChoix.next().charAt(0));
+            analyseurChoix.nextLine();
+            System.err.println(choix);
+            try {
+                partie.bougerJoueur(choix);
+            } catch (Exception e) {
+                System.out.println("Attention : Vous devez choisir parmi H, D, B et G");
+            }
+            //TODO condition de victoire
+            
+        } while (!sortiAtteinte && !quitter);
     }
 
 }

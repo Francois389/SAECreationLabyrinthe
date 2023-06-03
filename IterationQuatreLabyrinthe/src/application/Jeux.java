@@ -124,6 +124,47 @@ public class Jeux extends Labyrinthe {
         }
     }
     
+    /**
+     * 
+     * @param mouvement
+     */
+    public void bougerJoueur(char mouvement) {
+        mouvement = Character.toUpperCase(mouvement);
+        if (deplacementValide(mouvement)) {
+            switch (mouvement) {
+            case 'H': {
+                setPosYJoueur(getPosYJoueur() - 1);
+                System.err.println("Monter");
+                break;
+            }
+            case 'B': {
+                setPosYJoueur(getPosYJoueur() + 1);
+                System.err.println("Descendre");
+                break;
+            }
+            case 'D': {
+                System.err.println("X : " + posXJoueur + " | Y : " + posYJoueur);
+                setPosXJoueur(getPosXJoueur() + 1);
+                System.err.println("X : " + posXJoueur + " | Y : " + posYJoueur);
+                System.err.println("Droite");
+                break;
+            }
+            case 'G': {
+                setPosXJoueur(getPosYJoueur() - 1);
+                System.err.println("Gauche");
+                break;
+            }
+            default : {
+                System.err.println(mouvement + " lettre invalide");
+                break;
+            }
+            }
+        } else {
+            System.err.println("Mouvement impossible");
+        }
+
+    }
+    
     @Override
     public String toString() {
         String affichage;
