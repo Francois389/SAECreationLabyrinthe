@@ -4,12 +4,16 @@
  */
 package test.application;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import application.Jeux;
-import representation.Labyrinthe;
 import representation.Sommet;
 
 /**
@@ -18,52 +22,11 @@ import representation.Sommet;
  *
  */
 class TestJeux {
+    
+    private Jeux labyrinthe;
 
-    /**
-     * Test method for {@link application.Jeux#getPosXJoueur()}.
-     */
-    @Test
-    void testGetPosXJoueur() {
-        fail("Not yet implemented"); // TODO
-    }
-
-    /**
-     * Test method for {@link application.Jeux#getPosYJoueur()}.
-     */
-    @Test
-    void testGetPosYJoueur() {
-        fail("Not yet implemented"); // TODO
-    }
-
-    /**
-     * Test method for {@link application.Jeux#setPosXJoueur(int)}.
-     */
-    @Test
-    void testSetPosXJoueur() {
-        fail("Not yet implemented"); // TODO
-    }
-
-    /**
-     * Test method for {@link application.Jeux#setPosYJoueur(int)}.
-     */
-    @Test
-    void testSetPosYJoueur() {
-        fail("Not yet implemented"); // TODO
-    }
-
-    /**
-     * Test method for {@link application.Jeux#estSorti()}.
-     */
-    @Test
-    void testEstSorti() {
-        fail("Not yet implemented"); // TODO
-    }
-
-    /**
-     * Test method for {@link application.Jeux#deplacementValide(char)}.
-     */
-    @Test
-    void testDeplacementValide() {
+    @BeforeEach
+    void genererJeuxTest() {
         int hauteur, largeur;
         hauteur = largeur = 3;
         Sommet[][] listeSommet = {
@@ -104,11 +67,75 @@ class TestJeux {
         };
         Sommet entree = listeSommet[0][0];
         Sommet sortie = listeSommet[2][2];
-        Jeux labyrinthe 
+        labyrinthe 
         = new Jeux(hauteur, largeur, listeSommet, listeArrete, 
                    entree, sortie, 0, 0);
-        System.out.println(labyrinthe);
+    }
 
+    /**
+     * Test method for {@link application.Jeux#getPosXJoueur()}.
+     */
+    @Test
+    void testGetPosXJoueur() {
+        assertEquals(0, labyrinthe.getPosXJoueur());
+    }
+
+    /**
+     * Test method for {@link application.Jeux#getPosYJoueur()}.
+     */
+    @Test
+    void testGetPosYJoueur() {
+        assertEquals(0, labyrinthe.getPosYJoueur());
+    }
+
+    /**
+     * Test method for {@link application.Jeux#setPosXJoueur(int)}.
+     */
+    @Test
+    void testSetPosXJoueur() {
+        assertDoesNotThrow(()->labyrinthe.setPosXJoueur(1));
+        assertEquals(1, labyrinthe.getPosXJoueur());
+        
+        /* Il n'existe pas de pièce aux coordonnée 3 */
+        assertThrows(IllegalArgumentException.class,()-> labyrinthe.setPosXJoueur(3));
+
+        /* Il n'existe pas de pièce aux coordonnée -1 */
+        assertThrows(IllegalArgumentException.class,()-> labyrinthe.setPosXJoueur(-1));
+    }
+
+    /**
+     * Test method for {@link application.Jeux#setPosYJoueur(int)}.
+     */
+    @Test
+    void testSetPosYJoueur() {
+        assertDoesNotThrow(()->labyrinthe.setPosYJoueur(1));
+        assertEquals(1, labyrinthe.getPosYJoueur());
+        
+        /* Il n'existe pas de pièce aux coordonnée 3 */
+        assertThrows(IllegalArgumentException.class,()-> labyrinthe.setPosYJoueur(3));
+
+        /* Il n'existe pas de pièce aux coordonnée -1 */
+        assertThrows(IllegalArgumentException.class,()-> labyrinthe.setPosYJoueur(-1));
+    }
+
+    /**
+     * Test method for {@link application.Jeux#estSorti()}.
+     */
+    @Test
+    void testEstSorti() {
+        assertFalse(labyrinthe.estSorti());
+        
+        labyrinthe.setPosXJoueur(2);
+        labyrinthe.setPosYJoueur(2);
+        assertTrue(labyrinthe.estSorti());
+    }
+
+    /**
+     * Test method for {@link application.Jeux#deplacementValide(char)}.
+     */
+    @Test
+    void testDeplacementValide() {
+        System.out.println(labyrinthe);
         assertTrue(labyrinthe.deplacementValide('B'));
         assertTrue(labyrinthe.deplacementValide('b'));
         assertFalse(labyrinthe.deplacementValide('H'));
@@ -117,6 +144,10 @@ class TestJeux {
         assertFalse(labyrinthe.deplacementValide('d'));
         assertFalse(labyrinthe.deplacementValide('G'));
         assertFalse(labyrinthe.deplacementValide('g'));
+        
+        labyrinthe.setPosXJoueur(1);
+        labyrinthe.setPosYJoueur(1);
+        System.out.println(labyrinthe);
         assertThrows(IllegalArgumentException.class,()->labyrinthe.deplacementValide('a'));
     }
 

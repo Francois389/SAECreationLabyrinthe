@@ -60,18 +60,26 @@ public class Jeux extends Labyrinthe {
     }
 
     /**
-     * @param posXJoueur modifie la valeur de posXJoueur
+     * @param x modifie la valeur de posXJoueur
      */
-    public void setPosXJoueur(int posXJoueur) {
-        this.posXJoueur = posXJoueur;
+    public void setPosXJoueur(int x) {
+        if (x < 0 || getHauteur() <= x) {
+            throw new IllegalArgumentException("Erreur : La coordonnée saisie "
+                    + "est en dehors du labyrinthe");
+        }
+        this.posXJoueur = x;
     }
 
 
     /**
-     * @param posYJoueur modifie la valeur de posYJoueur
+     * @param y modifie la valeur de posYJoueur
      */
-    public void setPosYJoueur(int posYJoueur) {
-        this.posYJoueur = posYJoueur;
+    public void setPosYJoueur(int y) {
+        if (y < 0 || getHauteur() <= y) {
+            throw new IllegalArgumentException("Erreur : La coordonnée saisie "
+                    + "est en dehors du labyrinthe");
+        }
+        this.posYJoueur = y;
     }
 
     /**
@@ -90,6 +98,7 @@ public class Jeux extends Labyrinthe {
      * @return
      */
     public boolean deplacementValide(char mouvement) {
+        mouvement = Character.toUpperCase(mouvement);
         if (!"HDBG".contains(mouvement + "")) {
             throw new IllegalArgumentException(
                     String.format("Erreur : %c n'est pas un mouvement valide", 
@@ -97,7 +106,22 @@ public class Jeux extends Labyrinthe {
             );
         }
         //TODO Écrire le corps
-        return false;
+        switch (mouvement) {
+        case 'H': {
+            return getListeSommet()[posXJoueur][posYJoueur].getVoisins()[0];
+        }
+        case 'D': {
+            return getListeSommet()[posXJoueur][posYJoueur].getVoisins()[1];
+        }
+        case 'B': {
+            return getListeSommet()[posXJoueur][posYJoueur].getVoisins()[2];
+        }
+        case 'G': {
+            return getListeSommet()[posXJoueur][posYJoueur].getVoisins()[3];
+        }
+        default:
+            throw new IllegalArgumentException("Unexpected value: " + mouvement);
+        }
     }
     
     @Override
@@ -128,8 +152,10 @@ public class Jeux extends Labyrinthe {
                         
                         /* Affichage de l'entrée, de la sortie 
                          * ou de la marque du sommet */
-                        //TODO ajouter le joueur
-                        if (this.getListeSommet()[hauteur][j].equals(entree) && i == 1) {
+                        if (   this.getListeSommet()[hauteur][j].getPosX() == posXJoueur 
+                            && this.getListeSommet()[hauteur][j].getPosY() == posYJoueur && i == 1) {
+                         affichage += "  J  ";
+                        } else if (this.getListeSommet()[hauteur][j].equals(entree) && i == 1) {
                             affichage += "  E  ";
                         } else if (this.getListeSommet()[hauteur][j].equals(sortie) && i == 1) {
                             affichage += "  S  ";
