@@ -2,7 +2,10 @@
  * Jeux.java                       31 mai 2023
  * IUT de Rodez, pas de copyleft, pas de copyright
  */
-package representation;
+package application;
+
+import representation.Labyrinthe;
+import representation.Sommet;
 
 /**
  * Gère la présence d'un joueur dans un labyrinthe
@@ -10,7 +13,6 @@ package representation;
  */
 public class Jeux extends Labyrinthe {
 
-    //TODO position joueur
     /** La position en X du joueur dans le labyrinthe */
     private int posXJoueur;
     
@@ -20,8 +22,27 @@ public class Jeux extends Labyrinthe {
     public Jeux(int hauteur, int largeur) {
         super(hauteur, largeur);
         // TODO Auto-generated constructor stub
-        setPosXJoueur(this.getEntre().getPosX());
-        setPosYJoueur(this.getEntre().getPosY());
+        posXJoueur = this.getEntre().getPosX();
+        posYJoueur = this.getEntre().getPosY();
+    }
+
+    /**
+     * Constructeur utilisé lors du chargement d'un Json
+     * @param hauteur
+     * @param largeur
+     * @param listeSommet
+     * @param listeArrete
+     * @param entree
+     * @param sortie
+     * @param x
+     * @param y
+     */
+    public Jeux(int hauteur, int largeur, Sommet[][] listeSommet, Sommet[][] listeArrete, Sommet entree,
+            Sommet sortie, int x, int y) {
+        super(hauteur,largeur,listeSommet, listeArrete, entree, sortie);
+        // TODO Auto-generated constructor stub
+        posXJoueur = x;
+        posYJoueur = y;
     }
 
     /**
@@ -60,5 +81,22 @@ public class Jeux extends Labyrinthe {
     public boolean estSorti() {
         return    getSortie().getPosX() == posXJoueur 
                && getSortie().getPosY() == posYJoueur;
+    }
+    
+    /**
+     * Vérifie si le mouvement joueur par le joueur est valide
+     * S'il y a un mur, c'est invalide.
+     * @param mouvement Une lettre parrmi H, D, B et G
+     * @return
+     */
+    public boolean deplacementValide(char mouvement) {
+        if (!"HDBG".contains(mouvement + "")) {
+            throw new IllegalArgumentException(
+                    String.format("Erreur : %c n'est pas un mouvement valide", 
+                                  mouvement)
+            );
+        }
+        //TODO Écrire le corps
+        return false;
     }
 }

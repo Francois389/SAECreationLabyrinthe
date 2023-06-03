@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 class TestJeux {
 
     /**
-     * Test method for {@link representation.Jeux#Jeux(int, int)}.
+     * Test method for {@link application.Jeux#Jeux(int, int)}.
      */
     @Test
     void testJeux() {
@@ -24,7 +24,7 @@ class TestJeux {
     }
 
     /**
-     * Test method for {@link representation.Jeux#getPosXJoueur()}.
+     * Test method for {@link application.Jeux#getPosXJoueur()}.
      */
     @Test
     void testGetPosXJoueur() {
@@ -32,7 +32,7 @@ class TestJeux {
     }
 
     /**
-     * Test method for {@link representation.Jeux#getPosYJoueur()}.
+     * Test method for {@link application.Jeux#getPosYJoueur()}.
      */
     @Test
     void testGetPosYJoueur() {
@@ -40,7 +40,7 @@ class TestJeux {
     }
 
     /**
-     * Test method for {@link representation.Jeux#setPosXJoueur(int)}.
+     * Test method for {@link application.Jeux#setPosXJoueur(int)}.
      */
     @Test
     void testSetPosXJoueur() {
@@ -48,7 +48,7 @@ class TestJeux {
     }
 
     /**
-     * Test method for {@link representation.Jeux#setPosYJoueur(int)}.
+     * Test method for {@link application.Jeux#setPosYJoueur(int)}.
      */
     @Test
     void testSetPosYJoueur() {

@@ -43,16 +43,16 @@ public class Labyrinthe {
     private static final String CHAINE_VIDE_MARQUE_CENTAINE = " %d ";
     
      
-     /** indice pour la liste des voisins du sommet corrsepondant a haut */
+     /** indice pour la liste des voisins du sommet correspondant a haut */
      private static final int HAUT = 0;
  
-     /** indice pour la liste des voisins du sommet corrsepondant a droite */    
+     /** indice pour la liste des voisins du sommet correspondant a droite */    
      private static final int DROITE = 1;
  
-     /** indice pour la liste des voisins du sommet corrsepondant a bas */    
+     /** indice pour la liste des voisins du sommet correspondant a bas */    
      private static final int BAS = 2;
  
-     /** indice pour la liste des voisins du sommet corrsepondant a gauche */    
+     /** indice pour la liste des voisins du sommet correspondant a gauche */    
      private static final int GAUCHE = 3;
      
      /** Hauteur en ligne dans la console texte */
