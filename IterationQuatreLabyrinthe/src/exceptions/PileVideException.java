@@ -5,7 +5,12 @@ package exceptions;
  */
 public class PileVideException extends RuntimeException {
 
-	public PileVideException() {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+    public PileVideException() {
 		super();
 	}
 
