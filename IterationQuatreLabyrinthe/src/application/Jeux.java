@@ -99,4 +99,76 @@ public class Jeux extends Labyrinthe {
         //TODO Écrire le corps
         return false;
     }
+    
+    @Override
+    public String toString() {
+        String affichage;
+        affichage = "";
+        this.setMarqueSommet();
+        for (int hauteur = 0 ; hauteur < this.getHauteur() ; hauteur++){ 
+            for (int j = 0 ; j < this.getLargeur() ; j++ ) {
+                if (this.getListeSommet()[hauteur][j].getVoisins()[HAUT]) {
+                    affichage += HAUT_CASE_VIDE; 
+                }
+                else {
+                    affichage += HAUT_CASE;
+                }  
+                if (j == this.getLargeur() -1 ) {
+                    affichage += "+";
+                }
+            }    
+            for (int i = 0; i < HAUTEUR_CASE ; i++) {
+                affichage += "\n";        
+                   for (int j = 0; j < this.getLargeur(); j++) {
+                        if (this.getListeSommet()[hauteur][j].getVoisins()[GAUCHE]) {
+                            affichage += BORD_VIDE; 
+                        } else {
+                            affichage += BORD_CASE;
+                        }
+                        
+                        /* Affichage de l'entrée, de la sortie 
+                         * ou de la marque du sommet */
+                        //TODO ajouter le joueur
+                        if (this.getListeSommet()[hauteur][j].equals(entree) && i == 1) {
+                            affichage += "  E  ";
+                        } else if (this.getListeSommet()[hauteur][j].equals(sortie) && i == 1) {
+                            affichage += "  S  ";
+                        } else {
+                            if (i == 1) {
+                                if (getListeSommet()[hauteur][j].getMarque() < 10) {
+                                    affichage += String.format(CHAINE_VIDE_MARQUE_UNITE, getListeSommet()[hauteur][j].getMarque());
+                                } else if (getListeSommet()[hauteur][j].getMarque() < 100) {
+                                    affichage += String.format(CHAINE_VIDE_MARQUE_DIZAINE, getListeSommet()[hauteur][j].getMarque());
+                                } else if (getListeSommet()[hauteur][j].getMarque() < 1000) {
+                                    affichage += String.format(CHAINE_VIDE_MARQUE_CENTAINE, getListeSommet()[hauteur][j].getMarque());
+                                } else {
+                                    affichage += CHAINE_VIDE;
+                                }
+                            } else {
+                                affichage += CHAINE_VIDE;
+                            }
+                            
+                        }
+                        
+                        if (j == this.getLargeur() -1 ) {
+                            affichage.substring(0, affichage.length() - 1);
+                            affichage += BORD_CASE;
+                        }
+                }
+            }
+            affichage += "\n";
+            if (hauteur == this.getHauteur() -1 ) {
+                for (int j = 0 ; j < this.getLargeur() ; j++ ) {
+                    affichage += HAUT_CASE;
+                    if (j == this.getLargeur() -1 ) {
+                        affichage += "+";
+                    }
+                }
+            }
+            
+            
+            
+        }
+        return affichage + "\n";
+    }
 }
