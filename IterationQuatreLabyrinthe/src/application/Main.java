@@ -6,6 +6,8 @@ package application;
 
 import java.util.Scanner;
 
+import representation.Labyrinthe;
+
 /**
  * Menu principal du jeu de labyrinthe
  * @author Descriaud Lucas
@@ -38,30 +40,31 @@ public class Main {
         int choix;
         boolean quitter;
         
-        int[] DimensionLabyrinthe;
+        int[] DimensionLabyrinthe = {0 , 0};
         
         choix = 0;
         quitter = false;
         do {
             System.out.println(MENU);
-            System.out.println("Quelle type de constrution souhaitez vous ?");
+            System.out.println("Veuillez taper votre choix");
             if (analyseurChoix.hasNextInt()) {
                 choix = analyseurChoix.nextInt();
                 switch (choix) {
-                case 1: {
+                case CHOIX_DIMENSION: {
                     DimensionLabyrinthe = choixDimensions();
                     System.out.println("Hauteur : " + DimensionLabyrinthe[0]  
                                        + " \nLargeur : " + DimensionLabyrinthe[1]);      
                     break;
                 }
-                case 2: {
-                    System.out.println("chaine ascendante");
+                case CHOIX_CHAINE_ASCENDANTE: {
+                    creationChaineAscendante(DimensionLabyrinthe);
                     break;
                 }
-                case 3: {
+                case CHOIX_BACKTRACKING: {
+                    creationBacktracking(DimensionLabyrinthe);
                     System.out.println("backtracking");
                 }
-                case 4: {
+                case CHOIX_QUITTER: {
                     quitter = true ;
                     break;
                 }
@@ -73,6 +76,32 @@ public class Main {
             analyseurChoix.nextLine();
         } while (! quitter);
     }
+
+
+    private static void creationBacktracking(int[] dimensionLabyrinthe) {
+        try {
+            Labyrinthe labyrintheJoueur = new Labyrinthe(dimensionLabyrinthe[0], 
+                                                         dimensionLabyrinthe[1]);
+            labyrintheJoueur.constructionBacktracking();
+            System.out.println(labyrintheJoueur);
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void creationChaineAscendante(int[] dimensionLabyrinthe) {
+        try {
+            Labyrinthe labyrintheJoueur = new Labyrinthe(dimensionLabyrinthe[0], 
+                                                         dimensionLabyrinthe[1]);
+            labyrintheJoueur.chaineAscendante();
+            System.out.println(labyrintheJoueur);
+            
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 
     private static int[] choixDimensions() {
 
