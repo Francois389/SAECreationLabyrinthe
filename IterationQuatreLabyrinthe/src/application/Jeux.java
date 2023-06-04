@@ -35,17 +35,18 @@ public class Jeux extends Labyrinthe {
 
     /**
      * Constructeur utilisé lors du chargement d'un Json
-     * @param hauteur
-     * @param largeur
-     * @param listeSommet
-     * @param listeArrete
-     * @param entree
-     * @param sortie
-     * @param x
-     * @param y
+     * @param hauteur La hauteur du labyrinthe
+     * @param largeur La largeur du labyrinthe
+     * @param listeSommet La liste des Sommet qui compose le labyrinthe
+     * @param listeArrete La liste des arcs qui compose le labyrinthe
+     * @param entree Le Sommet qui marque l'entrée du labyrinthe
+     * @param sortie Le Sommet qui marque la sortie du labyrinthe
+     * @param x La position en X du joueur
+     * @param y La position en Y du joueur
      */
-    public Jeux(int hauteur, int largeur, Sommet[][] listeSommet, Sommet[][] listeArrete, Sommet entree,
-            Sommet sortie, int x, int y) {
+    public Jeux(int hauteur, int largeur, Sommet[][] listeSommet, 
+                Sommet[][] listeArrete, Sommet entree,
+                Sommet sortie, int x, int y) {
         super(hauteur,largeur,listeSommet, listeArrete, entree, sortie);
         // TODO Auto-generated constructor stub
         posXJoueur = x;
@@ -113,16 +114,16 @@ public class Jeux extends Labyrinthe {
             );
         }
         switch (mouvement) {
-        case 'H': {
+        case Main.HAUT: {
             return getListeSommet()[posYJoueur][posXJoueur].getVoisins()[0];
         }
-        case 'D': {
+        case Main.DROITE: {
             return getListeSommet()[posYJoueur][posXJoueur].getVoisins()[1];
         }
-        case 'B': {
+        case Main.BAS: {
             return getListeSommet()[posYJoueur][posXJoueur].getVoisins()[2];
         }
-        case 'G': {
+        case Main.GAUCHE: {
             return getListeSommet()[posYJoueur][posXJoueur].getVoisins()[3];
         }
         default:
@@ -131,26 +132,26 @@ public class Jeux extends Labyrinthe {
     }
     
     /**
-     * 
+     * Bouge le joueur dans la direction indiqué, d'une case
      * @param mouvement
      */
     public void bougerJoueur(char mouvement) {
         mouvement = Character.toUpperCase(mouvement);
         if (deplacementValide(mouvement)) {
             switch (mouvement) {
-            case 'H': {
+            case Main.HAUT: {
                 setPosYJoueur(getPosYJoueur() - 1);
                 break;
             }
-            case 'B': {
+            case Main.BAS: {
                 setPosYJoueur(getPosYJoueur() + 1);
                 break;
             }
-            case 'D': {
+            case Main.DROITE: {
                 setPosXJoueur(getPosXJoueur() + 1);
                 break;
             }
-            case 'G': {
+            case Main.GAUCHE: {
                 setPosXJoueur(getPosXJoueur() - 1);
                 break;
             }
