@@ -83,7 +83,7 @@ public class Sommet {
     @Override
     public String toString() {
         
-        return "(" + posX + "; " + posY + ")  -> "+marque;
+        return "(" + posX + "; " + posY + ")  marque : "+marque;
     }
 
     @Override

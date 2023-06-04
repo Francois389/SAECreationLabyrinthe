@@ -41,13 +41,25 @@ public class Main {
     private static final String INFO_JEUX 
     = """
       +------------------------------------------------------------------+
+      
           Voici le labyrinthe.
           Vous êtes à l'emplacement indiquer par la lettre "J".
           La sorti ce situe à la lettre "S".
           Bonne chance !
+          Entrez Q pour quitter
+          
       +------------------------------------------------------------------+
-      """
-    ;
+      """;
+    
+    private static final String MESSAGE_VICTOIRE 
+    = """
+            +------------------------------------------+
+                                                       
+              Félicitation vous avez atteint la sortie 
+                                                       
+            +------------------------------------------+
+      """;
+    
     private static final char HAUT = 'H';
     private static final char DROITE = 'D';
     private static final char BAS = 'B';
@@ -68,12 +80,13 @@ public class Main {
         Jeux partie = null;
         boolean labyrintheConstruit = false;
         
-        chargerLabyrintheParDefaut();
+        genererLabyrintheParDefaut();
         
         
         analyseurChoix = new Scanner(System.in);
         choix = 0;
         quitter = false;
+
         do {
             System.out.println(MENU);
             System.out.print("Entrez votre choix : ");
@@ -113,6 +126,7 @@ public class Main {
                     if (!labyrintheConstruit) {
                         System.out.println("Aucun graphe n'a été construit. Nous prenons celui par défaut");
                         partie = labyrintheParDefaut;
+                        System.out.println(partie.parcoursProfondeur());
                         boucleJeux(partie);
                     } else {
                         boucleJeux(partie);
@@ -147,7 +161,7 @@ public class Main {
     /**
      * Créer un labyrinthe par défaut
      */
-    private static void chargerLabyrintheParDefaut() {
+    private static void genererLabyrintheParDefaut() {
         /* Doit représenter ce labyrinthe :
          *   X  0     1     2
          * Y +-----+-----+-----+
@@ -179,6 +193,7 @@ public class Main {
                  new Sommet(1, 2),
                  new Sommet(2, 2)}
         };
+        //                                          H      D     B      G
         listeSommet[0][0].setVoisin(new boolean[]{false, false, true, false});
         listeSommet[0][1].setVoisin(new boolean[]{false, true, false, false});
         listeSommet[0][2].setVoisin(new boolean[]{false, false, true, true});
@@ -187,22 +202,35 @@ public class Main {
         listeSommet[1][1].setVoisin(new boolean[]{false, true, false, true});
         listeSommet[1][2].setVoisin(new boolean[]{true, false, true, true});
         
-        listeSommet[2][0].setVoisin(new boolean[]{false, false, true, true});
+        listeSommet[2][0].setVoisin(new boolean[]{true, true, false, false});
         listeSommet[2][1].setVoisin(new boolean[]{false, false, false, true});
         listeSommet[2][2].setVoisin(new boolean[]{true, false, false, false});
         
         Sommet[][] listeArrete = {
-                {listeSommet[0][0],listeSommet[0][1]},
-                {listeSommet[0][1],listeSommet[1][1]},
-                {listeSommet[0][1],listeSommet[0][2]},
-                {listeSommet[0][1],listeSommet[0][0]},
-                {listeSommet[0][2],listeSommet[0][1]},
-                {listeSommet[0][2],listeSommet[1][2]},
-                
-                {listeSommet[1][1],listeSommet[2][1]},
-                {listeSommet[2][1],listeSommet[2][0]},
-                {listeSommet[2][1],listeSommet[2][2]},
+                {listeSommet[0][0],listeSommet[1][0]},
+                {listeSommet[1][0],listeSommet[0][0]},
+
+                {listeSommet[1][0],listeSommet[1][1]},
+                {listeSommet[1][1],listeSommet[1][0]},
+
+                {listeSommet[1][0],listeSommet[2][0]},
                 {listeSommet[2][0],listeSommet[1][0]},
+                
+                {listeSommet[2][0],listeSommet[2][1]},
+                {listeSommet[2][1],listeSommet[2][0]},
+                
+                {listeSommet[1][1],listeSommet[1][2]},
+                {listeSommet[1][2],listeSommet[1][1]},
+                
+                {listeSommet[0][2],listeSommet[1][2]},
+                {listeSommet[1][2],listeSommet[0][2]},
+                
+                {listeSommet[1][2],listeSommet[2][2]},
+                {listeSommet[2][2],listeSommet[1][2]},
+
+                {listeSommet[0][2],listeSommet[0][1]},
+                {listeSommet[0][1],listeSommet[0][2]},
+                
         };
         Sommet entree = listeSommet[0][0];
         Sommet sortie = listeSommet[2][2];
@@ -266,22 +294,38 @@ public class Main {
         boolean quitter;
         char choix;
         sortiAtteinte = quitter = false;
+
+        partie.joueurAuDebut();
+        
         System.out.println(INFO_JEUX);
         
+        System.out.println(partie);
         do {
-            System.out.println(partie);
+            
             System.out.print("Entrez votre déplacement : ");
             choix = Character.toUpperCase(analyseurChoix.next().charAt(0));
             analyseurChoix.nextLine();
-            System.err.println(choix);
-            try {
-                partie.bougerJoueur(choix);
-            } catch (Exception e) {
-                System.out.println("Attention : Vous devez choisir parmi H, D, B et G");
+            
+            quitter = (choix - 'Q') == CHOIX_QUITTER;
+            if (!quitter) {
+                try {
+                    partie.bougerJoueur(choix);
+                } catch (Exception e) {
+                    System.out.println("Attention : Vous devez choisir parmi H, D, B et G");
+                }
             }
-            //TODO condition de victoire
+            
+            sortiAtteinte = partie.estSorti();
+            System.out.println(partie);
             
         } while (!sortiAtteinte && !quitter);
+        
+        if (sortiAtteinte) {
+            System.out.println(MESSAGE_VICTOIRE);
+        } else {
+            //TODO créer une constante
+            System.out.println("Vous avez quitter la partie en cours");
+        }
     }
 
 }

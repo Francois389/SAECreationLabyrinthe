@@ -13,6 +13,13 @@ import representation.Sommet;
  */
 public class Jeux extends Labyrinthe {
 
+    private static final String MOUVEMENT_IMPOSSIBLE 
+    = """
+              --------
+         Mouvement impossible
+              --------
+      """;
+
     /** La position en X du joueur dans le labyrinthe */
     private int posXJoueur;
     
@@ -94,7 +101,7 @@ public class Jeux extends Labyrinthe {
     /**
      * Vérifie si le mouvement joueur par le joueur est valide
      * S'il y a un mur, c'est invalide.
-     * @param mouvement Une lettre parrmi H, D, B et G
+     * @param mouvement Une lettre parmi H, D, B et G
      * @return
      */
     public boolean deplacementValide(char mouvement) {
@@ -105,19 +112,18 @@ public class Jeux extends Labyrinthe {
                                   mouvement)
             );
         }
-        //TODO Écrire le corps
         switch (mouvement) {
         case 'H': {
-            return getListeSommet()[posXJoueur][posYJoueur].getVoisins()[0];
+            return getListeSommet()[posYJoueur][posXJoueur].getVoisins()[0];
         }
         case 'D': {
-            return getListeSommet()[posXJoueur][posYJoueur].getVoisins()[1];
+            return getListeSommet()[posYJoueur][posXJoueur].getVoisins()[1];
         }
         case 'B': {
-            return getListeSommet()[posXJoueur][posYJoueur].getVoisins()[2];
+            return getListeSommet()[posYJoueur][posXJoueur].getVoisins()[2];
         }
         case 'G': {
-            return getListeSommet()[posXJoueur][posYJoueur].getVoisins()[3];
+            return getListeSommet()[posYJoueur][posXJoueur].getVoisins()[3];
         }
         default:
             throw new IllegalArgumentException("Unexpected value: " + mouvement);
@@ -134,24 +140,18 @@ public class Jeux extends Labyrinthe {
             switch (mouvement) {
             case 'H': {
                 setPosYJoueur(getPosYJoueur() - 1);
-                System.err.println("Monter");
                 break;
             }
             case 'B': {
                 setPosYJoueur(getPosYJoueur() + 1);
-                System.err.println("Descendre");
                 break;
             }
             case 'D': {
-                System.err.println("X : " + posXJoueur + " | Y : " + posYJoueur);
                 setPosXJoueur(getPosXJoueur() + 1);
-                System.err.println("X : " + posXJoueur + " | Y : " + posYJoueur);
-                System.err.println("Droite");
                 break;
             }
             case 'G': {
-                setPosXJoueur(getPosYJoueur() - 1);
-                System.err.println("Gauche");
+                setPosXJoueur(getPosXJoueur() - 1);
                 break;
             }
             default : {
@@ -160,9 +160,16 @@ public class Jeux extends Labyrinthe {
             }
             }
         } else {
-            System.err.println("Mouvement impossible");
+            System.out.println(MOUVEMENT_IMPOSSIBLE);
         }
-
+    }
+    
+    /**
+     * Met le joueur à l'entrée du labyrinthe    
+     */
+    public void joueurAuDebut() {
+        posXJoueur = getEntre().getPosX();
+        posYJoueur = getEntre().getPosY();
     }
     
     @Override
