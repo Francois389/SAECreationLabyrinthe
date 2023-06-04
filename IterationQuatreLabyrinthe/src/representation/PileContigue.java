@@ -5,8 +5,6 @@
 
 package representation;
 
-import representation.PileVideException;
-
 /**
  * classe permettant de représenter une pile
  * @author clement denamiel
@@ -150,7 +148,7 @@ public class PileContigue {
     public String toString() {
         String resultat = "+-----------------------+ <- haut de la pile\n";
 
-        String ligne = "|%s\t\t|\n";
+        String ligne = "|%s\t|\n";
 
         for (int i = 0; i < elementsEmpiles.length && elementsEmpiles[i] != null; i++) {
             resultat += String.format(ligne, elementsEmpiles[i].toString());
