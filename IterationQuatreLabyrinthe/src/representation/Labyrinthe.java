@@ -1,13 +1,10 @@
 package representation;
 
-import java.lang.Math;
-import java.util.Random;
 import java.util.ArrayList;
-
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Random;
 
-import representation.PileContigue;
 import outils.OutilsTableau;
 
 /**
@@ -22,49 +19,49 @@ import outils.OutilsTableau;
 public class Labyrinthe {
 
     /** Affichage du haut d'une case */
-    private static final String HAUT_CASE = "+-----";
+    protected static final String HAUT_CASE = "+-----";
     
     /** Mur du haut vide */
-    private static final String HAUT_CASE_VIDE = "+     ";     
+    protected static final String HAUT_CASE_VIDE = "+     ";     
     
     /** Affichage des bord d'une case*/
-    private static final String BORD_CASE = "|";
+    protected static final String BORD_CASE = "|";
     
     /** Affichage d'un bord vide'*/
-    private static final String BORD_VIDE = " ";
+    protected static final String BORD_VIDE = " ";
     
     /** Chaine vide pour l'espace a l'interieur des cases */ 
-    private static final String CHAINE_VIDE = "     ";
+    protected static final String CHAINE_VIDE = "     ";
     
     /** Chaine vide pour l'espace a l'interieur des cases avec sa marque si c'est une unitée */ 
-    private static final String CHAINE_VIDE_MARQUE_UNITE = "  %d  ";
+    protected static final String CHAINE_VIDE_MARQUE_UNITE = "  %d  ";
     
     /** Chaine vide pour l'espace a l'interieur des cases avec sa marque si c'est une dizaine */ 
-    private static final String CHAINE_VIDE_MARQUE_DIZAINE = " %d  ";
+    protected static final String CHAINE_VIDE_MARQUE_DIZAINE = " %d  ";
     
     /** Chaine vide pour l'espace a l'interieur des cases avec sa marque si c'est une centaine */ 
-    private static final String CHAINE_VIDE_MARQUE_CENTAINE = " %d ";
+    protected static final String CHAINE_VIDE_MARQUE_CENTAINE = " %d ";
     
      
-     /** indice pour la liste des voisins du sommet corrsepondant a haut */
-     private static final int HAUT = 0;
+    /** indice pour la liste des voisins du sommet correspondant a haut */
+    protected static final int HAUT = 0;
  
-     /** indice pour la liste des voisins du sommet corrsepondant a droite */    
-     private static final int DROITE = 1;
+    /** indice pour la liste des voisins du sommet correspondant a droite */    
+    protected static final int DROITE = 1;
  
-     /** indice pour la liste des voisins du sommet corrsepondant a bas */    
-     private static final int BAS = 2;
+    /** indice pour la liste des voisins du sommet correspondant a bas */    
+    protected static final int BAS = 2;
  
-     /** indice pour la liste des voisins du sommet corrsepondant a gauche */    
-     private static final int GAUCHE = 3;
+    /** indice pour la liste des voisins du sommet correspondant a gauche */    
+    protected static final int GAUCHE = 3;
      
-     /** Hauteur en ligne dans la console texte */
-     private static final int HAUTEUR_CASE = 3;
+    /** Hauteur en ligne dans la console texte */
+    protected static final int HAUTEUR_CASE = 3;
     
      
-     private Sommet entree;
+    protected Sommet entree;
      
-     private Sommet sortie;
+    protected Sommet sortie;
      
 
     /** liste de tous le sommets */
@@ -616,6 +613,8 @@ public class Labyrinthe {
 	                        affichage += BORD_CASE;
 	                    }
                     	
+	                    /* Affichage de l'entrée, de la sortie 
+	                     * ou de la marque du sommet */
                     	if (this.listeSommet[hauteur][j].equals(entree) && i == 1) {
                     		affichage += "  E  ";
                     	} else if (this.listeSommet[hauteur][j].equals(sortie) && i == 1) {

@@ -83,7 +83,7 @@ public class Sommet {
     @Override
     public String toString() {
         
-        return "(" + posX + "; " + posY + ")  -> "+marque;
+        return "(" + posX + "; " + posY + ")  marque : "+marque;
     }
 
     @Override
@@ -131,11 +131,12 @@ public class Sommet {
     }
 
 	/**
-	 *
+	 * Met à jour le tableau des voisins. 
+	 * @param indice De 0 à 3
 	 */
     public void setVoisin(boolean voisin, int indice) {
         if (indice < 0 || voisins.length <= indice) {
-            throw new IllegalArgumentException("Erreur : Indice ");
+            throw new IllegalArgumentException("Erreur : Indice invalide");
         }
         this.voisins[indice] = voisin ; 
     }
