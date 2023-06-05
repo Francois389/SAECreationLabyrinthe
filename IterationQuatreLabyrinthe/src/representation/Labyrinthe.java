@@ -454,17 +454,6 @@ public class Labyrinthe {
             }
         }  
     }
-
-
-    /**
-     * 
-     * @param x
-     * @param y
-     * @return
-     */
-    private int getIndice(int x, int y) {
-        return y * largeur + x + 1;
-    }
     
     /**
      * Renvoie la liste des voisins d'un sommet
