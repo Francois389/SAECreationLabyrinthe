@@ -98,6 +98,9 @@ public class PileContigue {
     	if (estPleine()) {
         	elementsEmpiles = augmenterTableau(elementsEmpiles.length + nbElements);
         }
+        if (estVide()) {
+            elementsEmpiles = augmenterTableau(10);
+        }
         
     	elementsEmpiles[nbElements] = element;
     	
@@ -148,7 +151,7 @@ public class PileContigue {
     
     @Override
     public String toString() {
-        String resultat = "+-----------------------+ <- haut de la pile\n";
+        String resultat = "\n+-----------------------+ <- haut de la pile\n";
 
         String ligne = "|%s\t|\n";
 
@@ -161,4 +164,58 @@ public class PileContigue {
         return resultat;
         
     }
+    
+    @Override
+    public boolean equals(Object arg) {
+        if (arg == null) {
+            return false;
+        }
+        
+        if (!(arg instanceof PileContigue)) {
+            return false;
+        }
+        
+        PileContigue autre = (PileContigue) arg;
+        PileContigue stockage = new PileContigue();
+                
+        Object elt1;
+        Object elt2;
+        
+        boolean elementsEgaux = true;
+        boolean memeTailleEtNonVide = true;
+                
+        while (memeTailleEtNonVide && elementsEgaux) {
+			elt1 = autre.sommet();
+            stockage.empiler(elt1);
+            autre.depiler();
+            
+            elt2 = sommet();
+            stockage.empiler(elt2);
+            depiler();
+            
+            if (elt1.equals(elt2)) {
+                stockage.empiler(elt1);
+                stockage.empiler(elt2);
+            } else {
+				elementsEgaux = false;
+            }
+            
+            memeTailleEtNonVide = !autre.estVide() && !estVide();
+        }
+        
+        while (!stockage.estVide()) {
+            empiler(stockage.sommet());
+            stockage.depiler();
+            
+            autre.empiler(stockage.sommet());
+            stockage.depiler();
+        }
+               
+        boolean tailleOk = !memeTailleEtNonVide;
+         
+        return tailleOk && elementsEgaux;
+            
+    }
+    
+    
 }

@@ -88,39 +88,17 @@ public class Labyrinthe {
      */
     public Labyrinthe(int hauteur, int largeur) {
         super();
-        if (!(largeur > 0 && hauteur > 0)) {
+        if (!(largeur > 1 && hauteur > 1)) {
             throw new IllegalArgumentException("largeur ou hauteur invalide");
         }
         this.largeur = largeur;
         this.hauteur = hauteur;
-
         listeArcs = new Sommet[0][0];
-        entree = new Sommet(0, 0);
-        sortie = new Sommet(largeur - 1, hauteur - 1);
+        
         genererLabirynthe();
-    }
-    
-    /**
-     * Constructeur de  d'un objet de type Labyrinthe 
-     * a partir d'une hauteur et d'une largeur , d'une entree et d'une sortie
-     * @param largeur largeur du labyrinthe a creer
-     * @param hauteur hauteur du labyrinthe a creer 
-     * @param entre  entree du labyrinthe a creer
-     * @param sortie sortie du labyrinthe a creer
-     * @throws IllegalArgumentException si hauteur ou longueur negative 
-     */
-    public Labyrinthe(int hauteur, int largeur, Sommet entre, Sommet sortie) {
-        super();
-        if (!(largeur > 0 && hauteur > 0)) {
-            throw new IllegalArgumentException("largeur ou hauteur invalide");
-        }
-        this.largeur = largeur;
-        this.hauteur = hauteur;
-
-        listeArcs = new Sommet[0][0];
-        this.entree = entre;
-        this.sortie = sortie;
-        genererLabirynthe();
+        
+        entree = listeSommet[0][0];
+        sortie = listeSommet[hauteur - 1][largeur - 1];
     }
     
     /**
@@ -147,6 +125,9 @@ public class Labyrinthe {
         this.listeArcs = listeArcs;
         this.entree = entree;
         this.sortie = sortie;
+        if (entree.equals(sortie)) {
+            throw new IllegalArgumentException("entrée et sortie confondue");
+        }  
     }
        
     
@@ -158,11 +139,7 @@ public class Labyrinthe {
      * @param hauteur La hauteur voulue pour la grille/ le labyrinthe
      */
     private void genererLabirynthe() {
-          listeSommet = creerGrille(largeur, hauteur);
-          
-          if (entree.equals(sortie)) {
-        	  throw new IllegalArgumentException("entrée et sortie confondue");
-          }      
+          listeSommet = creerGrille(largeur, hauteur);    
     }
 
 
