@@ -3,23 +3,21 @@
  */
 package sauvegarde;
 
-import representation.Labyrinthe;
-import representation.Sommet;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.ArrayList;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileDescriptor;
-import java.io.FileReader;
-import java.io.FileWriter;
-
-import java.util.ArrayList;
+import application.Jeux;
+import representation.Sommet;
 
 /**
  * 
@@ -59,7 +57,7 @@ public class LabyrintheJson {
      * TODO Commenter
      * @param laby
      */
-    public static void enregistrerLabyrinthe(Labyrinthe laby) {
+    public static void enregistrerLabyrinthe(Jeux laby) {
         
         
         ArrayList<Sommet> listeSommetsLabyrinthe = new ArrayList<>(10);
@@ -84,6 +82,10 @@ public class LabyrintheJson {
         JsonElement entree = new Gson().toJsonTree(laby.getEntre());
         JsonElement sortie = new Gson().toJsonTree(laby.getSortie());
         
+        JsonElement joueurPosX = new Gson().toJsonTree(laby.getPosXJoueur());
+        JsonElement joueurPosY = new Gson().toJsonTree(laby.getPosYJoueur());
+        
+        
         JsonObject labyrintheJSON = new JsonObject();
         labyrintheJSON.add("hauteur", hauteur);
         labyrintheJSON.add("largeur", largeur);
@@ -91,6 +93,8 @@ public class LabyrintheJson {
         labyrintheJSON.add("sortie", sortie);
         labyrintheJSON.add("sommets", listeSommets);
         labyrintheJSON.add("arcs", listeArcs);
+        labyrintheJSON.add("posXJoueur", joueurPosX);
+        labyrintheJSON.add("posYJoueur", joueurPosY);
      
         Gson test = new GsonBuilder().setPrettyPrinting().create();
         
@@ -102,7 +106,7 @@ public class LabyrintheJson {
         
     }
     
-    public static Labyrinthe chargerLabyrinthe() {
+    public static Jeux chargerLabyrinthe() {
         
         File fichierLabyrinthe = new File(CHEMIN_FICHIER);
         
@@ -114,6 +118,9 @@ public class LabyrintheJson {
             
             int hauteur = objetLabyrinthe.get("hauteur").getAsInt();
             int largeur = objetLabyrinthe.get("largeur").getAsInt();
+
+            int joueurPosX = objetLabyrinthe.get("posXJoueur").getAsInt();
+            int joueurPosY = objetLabyrinthe.get("posYJoueur").getAsInt();
             
             JsonArray listeSommet = objetLabyrinthe.get("sommets").getAsJsonArray();
             JsonArray listeArcs = objetLabyrinthe.get("arcs").getAsJsonArray();
@@ -148,8 +155,9 @@ public class LabyrintheJson {
                 
             }
             
-            Labyrinthe charge = new Labyrinthe(
-                    hauteur, largeur, tableauSommet, tableauArcs, entree, sortie);
+            Jeux charge = new Jeux(
+                    hauteur, largeur, tableauSommet, tableauArcs, entree, 
+                    sortie, joueurPosX, joueurPosY);
             
             return charge;
             
