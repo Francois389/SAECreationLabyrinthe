@@ -14,6 +14,8 @@ import outils.OutilsTableau;
  * une liste de liste de deux sommets représentant les arcs
  * @author Quentin Costes
  * @author François de Saint Palais
+ * @author Denamiel Clement
+ * @author Descriaud Lucas
  *
  */
 public class Labyrinthe {
@@ -58,16 +60,17 @@ public class Labyrinthe {
     /** Hauteur en ligne dans la console texte */
     protected static final int HAUTEUR_CASE = 3;
     
-     
+    /** entree du labyrinthe */
     protected Sommet entree;
-     
+    
+    /** sortie du labyrinthe */
     protected Sommet sortie;
      
 
-    /** liste de tous le sommets */
+    /** largeur du labyrinthe */
     private int largeur;
     
-    /** liste de tous le sommets */
+    /** hauteur du labyrinthe */
     private int hauteur;
    
     /** liste des sommets du graphe */
@@ -77,10 +80,11 @@ public class Labyrinthe {
     private Sommet[][] listeArcs;
     
     /**
-     * Créer un graphe composé 
-     * @param largeur
-     * @param hauteur
-     * @throws IllegalArgumentException
+     * Constructeur de  d'un objet de type Labyrinthe 
+     * a partir d'une hauteur et d'une largeur
+     * @param largeur largeur du labyrinthe a creer
+     * @param hauteur hauteur du labyrinthe a creer 
+     * @throws IllegalArgumentException hauteur ou largeur negative 
      */
     public Labyrinthe(int hauteur, int largeur) {
         super();
@@ -97,10 +101,13 @@ public class Labyrinthe {
     }
     
     /**
-     * Créer un graphe composé 
-     * @param largeur
-     * @param hauteur
-     * @throws IllegalArgumentException
+     * Constructeur de  d'un objet de type Labyrinthe 
+     * a partir d'une hauteur et d'une largeur , d'une entree et d'une sortie
+     * @param largeur largeur du labyrinthe a creer
+     * @param hauteur hauteur du labyrinthe a creer 
+     * @param entre  entree du labyrinthe a creer
+     * @param sortie sortie du labyrinthe a creer
+     * @throws IllegalArgumentException si hauteur ou longueur negative 
      */
     public Labyrinthe(int hauteur, int largeur, Sommet entre, Sommet sortie) {
         super();
@@ -119,13 +126,12 @@ public class Labyrinthe {
     /**
      * Constructeur utilisé pour la construction d'un labyrinthe 
      * issu d'un fichier .json
-     * TODO commenter
-     * @param hauteur
-     * @param largeur
-     * @param listeSommet
-     * @param listeArcs
-     * @param entree
-     * @param sortie
+     * @param hauteur hauteur du labyrinthe 
+     * @param largeur largeur du labyrinthe
+     * @param listeSommet liste des pieces du labyrinthe
+     * @param listeArcs liste des portes du labyrinthe
+     * @param entree entree du labyrinthe
+     * @param sortie sortie du labyrinthe
      */
     public Labyrinthe(int hauteur, int largeur, 
                       Sommet[][] listeSommet,
@@ -147,7 +153,7 @@ public class Labyrinthe {
     
     /** 
      * Créer une grille de taille largeur x hauteur
-     * Est marque les sommet avec une marque unique
+     * Et marque les sommets avec une marque unique
      * @param largeur La largeur voulue pour la grille/ le labyrinthe
      * @param hauteur La hauteur voulue pour la grille/ le labyrinthe
      */
@@ -248,6 +254,7 @@ public class Labyrinthe {
     
     /**
      * Vérifie qu'un sommet ce trouve dans un graphe
+     * @param sommet dont on souhaite verifier la presence
      * @return true si sommet est dans graphe false sinon
      */
     public boolean estPresent(Sommet sommet) {
@@ -301,11 +308,11 @@ public class Labyrinthe {
     }
     
     /** 
-     * permetr de récuperer les sommet connexes a un graphe passé en paramtres
+     * permet de récuperer les sommet connexes a un graphe passé en paramtres
      * @param s sommet a récuperer sa connexitée
      * @return liste de sommet connexe a s
      */
-    private Sommet[] getConnexitée(Sommet s) {
+    private Sommet[] getConnexitee(Sommet s) {
     	
     	ArrayList<Sommet> sommetsConnexes = new ArrayList<>();
     	 
@@ -344,6 +351,9 @@ public class Labyrinthe {
     }
     
     /**
+     * Verifie si deux sommets sont adjacent 
+     * @param sChoisie sommet choisis
+     * @param sTeste sommet dont on souhaite verifier l'adjacence a sChoisie
      * @return true si les deux sommet sont adjacent dans la grille false sinon.
      */
     private static boolean sommetAdjacent(Sommet sChoisie, Sommet sTeste) {
@@ -359,13 +369,14 @@ public class Labyrinthe {
                   );
     }
     
-    /** 
-     * Fusionne les marques de tous les sommets connexes aux sommet s1 et s2
-     * @param s1 
-     * @param s2
+   
+    /**
+     * Fusionne les marques entre deux sommets
+     * @param sommetEcrasant sommet dont on garde la marque a applique 
+     * @param sommetEcrase sommet qui va etre marque avec la marque ecrasante
      */
     public void fusionnerMarques(Sommet sommetEcrasant, Sommet sommetEcrase) {
-        Sommet[] connexitée = getConnexitée(sommetEcrase);
+        Sommet[] connexitée = getConnexitee(sommetEcrase);
         
         for (int i = 0; i < connexitée.length; i++) {
 			connexitée[i].setMarque(sommetEcrasant.getMarque());
@@ -373,8 +384,10 @@ public class Labyrinthe {
     } 
     
     /**
-     * @param tab un tableaud de booleen
-     * @return true si tous les elements sont true
+     * Verifie si tous les sommets du graphe on ete parcourus 
+     * lors de la creation de labyrinthe
+     * @param tab la liste des sommets du graphe
+     * @return true si tous les elements sont visités
      *         false sinon
      */
     private boolean sontTousVisites(Sommet[] tab) {
@@ -400,9 +413,7 @@ public class Labyrinthe {
         int indiceXSommetRandom = (int)(Math.random() * (listeSommet.length-1));
         int indiceYSommetRandom = (int)(Math.random() * (listeSommet[0].length-1)); 
         Sommet sommetCourant = listeSommet[indiceXSommetRandom][indiceYSommetRandom];
-        //On marque le sommet comme parcourue
         sommetCourant.setEstParcourus(true);
-        //On empile le sommet pris au hasard
         pileSommets.empiler(sommetCourant);
         
         while (!pileSommets.estVide()) {
@@ -438,8 +449,8 @@ public class Labyrinthe {
     }
     
     /**
-     * Mes des marques unique sur les sommets du labyrinthe
-     * Les marques commencent à 0
+     * Met des marques uniques sur les sommets du labyrinthe
+     * Les marques commencent à 0 et se finissent au nombre de sommet -1
      */
     public void setMarqueSommet() {
         int marque;
@@ -454,21 +465,11 @@ public class Labyrinthe {
             }
         }  
     }
-
-
-    /**
-     * 
-     * @param x
-     * @param y
-     * @return
-     */
-    private int getIndice(int x, int y) {
-        return y * largeur + x + 1;
-    }
     
     /**
-     * Renvoie la liste des voisins d'un sommet
+     * Obtention des voisins d'un sommet. 
      * @param sommet le sommet dont on veut avoir les voisins
+     * @return la liste des voisins d'un sommet
      */
     private Sommet[] getSommetsVoisins(Sommet sommet) {
         int indice;
@@ -497,17 +498,22 @@ public class Labyrinthe {
     
     
     /**
-     * Permet de verifier la prÃ©sence d'un arc entre deux sommets
-     * dans les deux sens.
-     * @param sommet1
-     * @param sommet2
-     * @return true si un arc existe entre les deux sommets, false sinon
+     * Permet de verifier la présence d'une arrete entre deux sommets
+     * @param sommet1 sommet1
+     * @param sommet2 sommet2
+     * @return true si une arrete existe entre les deux sommets, false sinon
      */
     private boolean sontRelies (Sommet sommet1, Sommet sommet2) {
         return    existeArcEntre(sommet1, sommet2) 
                || existeArcEntre(sommet2, sommet1);
     }
     
+    /**
+     * 
+     * @param sommet1
+     * @param sommet2
+     * @return
+     */
     private boolean existeArcEntre(Sommet sommet1, Sommet sommet2) {
         for (int i = 0; i < listeArcs.length; i++) {
             if (listeArcs[i][0].equals(sommet1) && listeArcs[i][1].equals(sommet2)) {
@@ -517,7 +523,11 @@ public class Labyrinthe {
         return false;
     }
    
-    
+    /**
+     * 
+     * @param sommet
+     * @return
+     */
     private Sommet[] getVoisinsAvecArc(Sommet sommet) {
         int indice;
         Sommet[] retour = new Sommet[4];
@@ -700,12 +710,16 @@ public class Labyrinthe {
         this.sortie = sortie;
     }
     
-    /** */
+    /**
+     * @return la hauteur du labyrinthe
+     */
     public int getHauteur() {
         return hauteur;
     }
     
-    /** */
+    /** 
+     * @return la largeur du labyrinthe
+     */
     public int getLargeur() {
         return largeur;
     }
