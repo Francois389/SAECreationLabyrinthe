@@ -259,48 +259,7 @@ public class Main {
                    entree, sortie, 0, 0);
     }
 
-    /**
-     * 
-     * @return
-     */
-    private static int[] choixDimensions() {
-
-        boolean hauteurValide ,
-                largeurValide;
-        
-        int [] DimensionChoisi;
-        analyseurChoix = new Scanner(System.in);
-        hauteurValide = largeurValide = false ;
-        do {
-            System.out.println();
-            DimensionChoisi = new int[2];
-            
-            System.out.print("Entrez la hauteur souhaité : ");
-            if (analyseurChoix.hasNextInt()) {
-                DimensionChoisi[0] = analyseurChoix.nextInt();
-                hauteurValide = true;
-                System.out.println("Hauteur choisi : " + DimensionChoisi[0]);
-            } else {
-                System.out.println("Erreur : Hauteur invalide !");
-                hauteurValide = false;
-            }
-            analyseurChoix.nextLine();
-            
-            System.out.print("Entrez la largeur souhaité : ");
-            if (analyseurChoix.hasNextInt()) {
-                DimensionChoisi[1] = analyseurChoix.nextInt();
-                largeurValide = true;
-                System.out.println("Largeur choisi : " + DimensionChoisi[1]);
-            } else {
-                System.out.println("Erreur : Largeur invalide !");
-                largeurValide = false;
-            }
-            analyseurChoix.nextLine();
-            
-        } while (!hauteurValide || !largeurValide);
-        System.out.println("Choix fait");
-        return DimensionChoisi;                          
-    }                                                    
+                                                  
                                                          
     /**
      * Lancement du menu
