@@ -180,7 +180,6 @@ public class Labyrinthe {
     }
    
 
-	// TODO remettre private
     /** 
      * permet d'ajouter une arrete au graphe
      * @param sommet1 1 de l'arrete
@@ -188,7 +187,7 @@ public class Labyrinthe {
      * @throws IllegalArgumentException si les sommet ne sont pas dans le graphe
      *                                     ou si l'arrete existe deja
      */
-    public void ajouterArrete(Sommet sommet1, Sommet sommet2) {
+    private void ajouterArrete(Sommet sommet1, Sommet sommet2) {
         boolean sommet1Valide,
                 sommet2Valide;
         
