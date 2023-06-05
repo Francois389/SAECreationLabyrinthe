@@ -1,4 +1,4 @@
-/**
+    /**
  * Main.java                       25 mai 2023
  * IUT de Rodez, pas de copyleft, pas de copyright
  */
@@ -17,13 +17,21 @@ import sauvegarde.LabyrintheJson;
 
 public class Main {
     
+    /** Deplacement sur la droite du joueur*/
     public static final char DROITE = 'D';
+    
+    /** Deplacement vers le bas du joueur*/
     public static final char BAS = 'S';
+    
+    /** Deplacement vers la gauche du joueur*/
     public static final char GAUCHE = 'Q';
+    
+    /** Deplacement vers le haut du joueur*/
     public static final char HAUT = 'Z';
     
     private static Scanner analyseurChoix;
    
+    /* Lettre correspondante au choix du menu */
     private final static char CHOIX_BACKTRACKING = 'B' ;
     private final static char CHOIX_CHAINE_ASCENDANTE = 'C' ;
     private static final char CHOIX_CHARGER = 'L';
@@ -33,8 +41,13 @@ public class Main {
     private static final char CHOIX_SAUVEGARDER = 'S';
     private static final char CHOIX_AFFICHER = 'A';
     private static final char CHOIX_REPONSE = 'R';
+    private static final char CHOIX_ABANDONNER_PARTIE = 'F' ;
     
+    /** Labyrinthe utilisé par defaut si absence de dimension 
+     *  ou absence de construction de la part de l'utilisateur
+     */
     private static Jeux labyrintheParDefaut;
+    
     
     private static final String INFO_JEUX 
     = """
@@ -44,9 +57,14 @@ public class Main {
           Voici le labyrinthe.
           Vous êtes à l'emplacement indiquer par la lettre "J".
           La sorti ce situe à la lettre "S".
-          Bonne chance !
-          Entrez Q pour quitter
+                Commandes :
+                      - Z : vers le haut
+                      - S : vers le bas 
+                      - Q : vers la droite
+                      - D : vers la gauche
+                      - F : abandonner la partie
           
+          Bonne chance !
       +------------------------------------------------------------------+
       """;
     
@@ -86,16 +104,30 @@ public class Main {
                  
             +-------------------------------------------+
       """;
+    
+    private static final String ABANDON_PARTIE 
+    = "Vous avez quitter la partie en cours" ;
 
-
+    private static final String ERREUR_COMMANDE
+    = """           
+      +------------------------------------------------------------------+
+            Rappel des commandes :
+              - %c : vers le haut
+              - %c : vers le bas 
+              - %c : vers la droite
+              - %c : vers la gauche
+              - %c : abandonner la partie
+              
+      +------------------------------------------------------------------+
+      """;
+    
     /**                                                  
      * La boucle de jeux.                                
      * Demande au joueur quel déplacement veut-il réaliser.
      * Propose également au joueur de quitter le jeux pour retourner au menu.
-     * @param partie
+     * @param partie partie en cours
      */
     private static void boucleJeux(Jeux partie) {
-        //TODO Écrire le corps
         boolean sortiAtteinte;
         boolean quitter;
         char choix;
@@ -110,13 +142,13 @@ public class Main {
             choix = Character.toUpperCase(analyseurChoix.next().charAt(0));
             analyseurChoix.nextLine();
             
-            //TODO Faire mieux
-            quitter = (choix == 'F');
+            quitter = (choix == CHOIX_ABANDONNER_PARTIE);
             if (!quitter) {
                 try {
                     partie.bougerJoueur(choix);
                 } catch (Exception e) {
-                    System.out.println("Attention : Vous devez choisir parmi H, D, B et G");
+                    System.out.printf(ERREUR_COMMANDE , HAUT , BAS , DROITE ,
+                                      GAUCHE , CHOIX_ABANDONNER_PARTIE );
                 }
             }
             
@@ -128,14 +160,15 @@ public class Main {
         if (sortiAtteinte) {
             System.out.println(MESSAGE_VICTOIRE);
         } else {
-            //TODO créer une constante
-            System.out.println("Vous avez quitter la partie en cours");
+            System.out.println(ABANDON_PARTIE);
         }
     }
     
     /**
      * Demande à l'utilisateur les dimensions du labyrinthe qu'il veut.
-     * @return
+     * @return un tableau de deux entier dont le premier est la hauteur
+     *         et le deuxieme la largeur 
+     * 
      */
     private static int[] choixDimensions() {
 
@@ -216,7 +249,7 @@ public class Main {
                  new Sommet(1, 2),
                  new Sommet(2, 2)}
         };
-        //                                          H      D     B      G
+        //                                         haut  droite  Bas  Gauche
         listeSommet[0][0].setVoisin(new boolean[]{false, false, true, false});
         listeSommet[0][1].setVoisin(new boolean[]{false, true, false, false});
         listeSommet[0][2].setVoisin(new boolean[]{false, false, true, true});
@@ -307,23 +340,18 @@ public class Main {
                     break;
                 }
                 case CHOIX_CHAINE_ASCENDANTE: {
-                    System.out.println("Chaine ascendante");
                     partie = new Jeux(dimensionLabyrinthe[0], dimensionLabyrinthe[1]);
                     partie.chaineAscendante();
                     labyrintheConstruit = true;
                     break;
                 }
                 case CHOIX_BACKTRACKING: {
-                    System.out.println("backtracking");
                     partie = new Jeux(dimensionLabyrinthe[0], dimensionLabyrinthe[1]);
                     partie.constructionBacktracking();
                     labyrintheConstruit = true;
                     break;
                 }
                 case CHOIX_JOUER: {
-                    System.out.println("Jouer");
-                    //TODO créer une nouvelle partie avec le graphe créer 
-                    //ou le graphe par défaut si n'y a pas de graphe créer
                     if (!labyrintheConstruit) {
                         System.out.println("Aucun graphe n'a été construit. Nous prenons celui par défaut");
                         partie = labyrintheParDefaut;
@@ -347,17 +375,14 @@ public class Main {
                 }
                 
                 case CHOIX_SAUVEGARDER: {
-                    System.out.println("Sauvegarde");
                     if (labyrintheConstruit) {
                         LabyrintheJson.enregistrerLabyrinthe(partie);
                     } else {
-                        //TODO Créer une constante
                         System.err.println(ERREUR_LABYRINTHE_PAS_CONSTRUIT);
                     }
                     break;
                 }
                 case CHOIX_CHARGER: {
-                    System.out.println("Charger");
                     partie = LabyrintheJson.chargerLabyrinthe();
                     labyrintheConstruit = true;
                     break;
@@ -365,13 +390,13 @@ public class Main {
                 
 
                 case CHOIX_QUITTER: {
+                    //TODO demander confirmation
                     quitter = true ;
                     break;
                 }
                 default:
                     System.out.println("Choix incorrect");
                     //TODO meilleur affichage d'erreur
-                    //TODO demander confirmation
                     break;
                 }
             }

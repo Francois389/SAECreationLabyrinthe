@@ -28,7 +28,6 @@ public class Jeux extends Labyrinthe {
     
     public Jeux(int hauteur, int largeur) {
         super(hauteur, largeur);
-        // TODO Auto-generated constructor stub
         posXJoueur = this.getEntre().getPosX();
         posYJoueur = this.getEntre().getPosY();
     }
@@ -48,7 +47,6 @@ public class Jeux extends Labyrinthe {
                 Sommet[][] listeArrete, Sommet entree,
                 Sommet sortie, int x, int y) {
         super(hauteur,largeur,listeSommet, listeArrete, entree, sortie);
-        // TODO Auto-generated constructor stub
         posXJoueur = x;
         posYJoueur = y;
     }
@@ -102,17 +100,16 @@ public class Jeux extends Labyrinthe {
     /**
      * Vérifie si le mouvement joueur par le joueur est valide
      * S'il y a un mur, c'est invalide.
-     * @param mouvement Une lettre parmi H, D, B et G
-     * @return
+     * @param mouvement un char qui definit le prochaine mouvenement du joueur
+     * @return true si un deplacement est possible dans la direction mouvement,
+     *         false sinon
+     * @throws IllegalArgumentException si mouvement n'est pas un de ses quatre
+     *         caractere : Z haut , S bas , Q gauche , D droite 
+     * 
      */
     public boolean deplacementValide(char mouvement) {
         mouvement = Character.toUpperCase(mouvement);
-        if (!(""+Main.BAS+Main.DROITE+Main.GAUCHE+Main.HAUT).contains(mouvement + "")) {
-            throw new IllegalArgumentException(
-                    String.format("Erreur : %c n'est pas un mouvement valide", 
-                                  mouvement)
-            );
-        }
+        
         switch (mouvement) {
         case Main.HAUT: {
             return getListeSommet()[posYJoueur][posXJoueur].getVoisins()[0];
@@ -127,13 +124,15 @@ public class Jeux extends Labyrinthe {
             return getListeSommet()[posYJoueur][posXJoueur].getVoisins()[3];
         }
         default:
-            throw new IllegalArgumentException("Unexpected value: " + mouvement);
+            throw new IllegalArgumentException(String.
+                      format("Erreur : %c n'est pas un mouvement valide",
+                      mouvement));
         }
     }
     
     /**
      * Bouge le joueur dans la direction indiqué, d'une case
-     * @param mouvement
+     * @param mouvement un char qui definit le prochaine mouvenement du joueur
      */
     public void bougerJoueur(char mouvement) {
         mouvement = Character.toUpperCase(mouvement);

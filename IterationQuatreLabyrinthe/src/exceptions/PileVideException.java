@@ -2,6 +2,7 @@ package exceptions;
 
 /** 
  * exception levee si une pile est vide
+ * @author Denamiel Clement
  */
 public class PileVideException extends RuntimeException {
 

@@ -1,12 +1,11 @@
 package test.representation;
 
 import representation.PileContigue;
-import representation.PileVideException;
+import exceptions.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
-
 class TestPileContigue {
 
 	@Test
