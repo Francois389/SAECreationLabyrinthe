@@ -182,7 +182,7 @@ public class Labyrinthe {
             }
         }
 
-        return grilleRetour; // stub
+        return grilleRetour; 
     }
    
     /** 
