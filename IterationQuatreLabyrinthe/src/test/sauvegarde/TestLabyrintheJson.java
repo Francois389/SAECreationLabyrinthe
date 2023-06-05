@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import application.Jeux;
+
 /**
  * //TODO Commenter la responsabilités de la classe TestLabyrintheJson
  * @author francois
@@ -21,12 +23,12 @@ import org.junit.jupiter.api.Test;
  */
 class TestLabyrintheJson {
     
-    private static ArrayList<Labyrinthe> labyrinthe;
+    private static ArrayList<Jeux> labyrinthe;
 
     @BeforeAll
-    void creerJeuxTest() {
+    static void creerJeuxTest() {
         labyrinthe = new ArrayList<>();
-        Labyrinthe test = new Labyrinthe(10, 10);
+        Jeux test = new Jeux(10, 10);
         test.constructionBacktracking();
         labyrinthe.add(test);
     }
@@ -46,7 +48,6 @@ class TestLabyrintheJson {
     void testChargerLabyrinthe() {
 		Labyrinthe test = LabyrintheJson.chargerLabyrinthe();
 		assertEquals(labyrinthe.get(0), test);
-		System.out.println(test);
     }
 
 }

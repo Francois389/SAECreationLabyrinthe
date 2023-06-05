@@ -6,8 +6,8 @@ package application;
 
 import java.util.Scanner;
 
-import representation.Labyrinthe;
 import representation.Sommet;
+import sauvegarde.LabyrintheJson;
 
 /**
  * Menu principal à la console du jeu de labyrinthe
@@ -17,30 +17,27 @@ import representation.Sommet;
 
 public class Main {
     
-    private final static int CHOIX_DIMENSION = 1;
-    private final static int CHOIX_CHAINE_ASCENDANTE = 2 ;
-    private final static int CHOIX_BACKTRACKING = 3 ;
-    private final static int CHOIX_JOUER = 4;
-    private final static int CHOIX_QUITTER = 0;
-    private static final int CHOIX_SAUVEGARDER = 5;
-    private static final int CHOIX_CHARGER = 6;
+    public static final char DROITE = 'D';
+    public static final char BAS = 'S';
+    public static final char GAUCHE = 'Q';
+    public static final char HAUT = 'Z';
     
-    private static final String MENU = 
-            """
-            +---------------------------------------------+
-                1. Choix dimension labyrinthe
-                2. Construction par chaîne Ascendante
-                3. Construction par backtracking
-                
-                4. Jouer
-
-                5. Sauvegarder graphe
-                6. Charger graphe
-                0. Quitter
-            +---------------------------------------------+
-            """;
+    private static Scanner analyseurChoix;
+   
+    private final static char CHOIX_BACKTRACKING = 'B' ;
+    private final static char CHOIX_CHAINE_ASCENDANTE = 'C' ;
+    private static final char CHOIX_CHARGER = 'L';
+    private final static char CHOIX_DIMENSION = 'D';
+    private final static char CHOIX_JOUER = 'J';
+    private final static char CHOIX_QUITTER = 'Q';
+    private static final char CHOIX_SAUVEGARDER = 'S';
+    private static final char CHOIX_AFFICHER = 'A';
+    
+    private static Jeux labyrintheParDefaut;
+    
     private static final String INFO_JEUX 
     = """
+            
       +------------------------------------------------------------------+
       
           Voici le labyrinthe.
@@ -52,112 +49,135 @@ public class Main {
       +------------------------------------------------------------------+
       """;
     
+    private static final String MENU = 
+            """
+            
+            +---------------------------------------------+
+                A. Afficher le labyrinthe
+                D. Choix Dimension labyrinthe
+                C. Construction par Chaîne ascendante
+                B. Construction par Backtracking              
+                J. Jouer
+
+                S. Sauvegarder graphe
+                L. Charger graphe
+                Q. Quitter
+            +---------------------------------------------+
+            """;
+    
     private static final String MESSAGE_VICTOIRE 
     = """
+            
             +------------------------------------------+
                                                        
               Félicitation vous avez atteint la sortie 
                                                        
             +------------------------------------------+
       """;
-    
-    private static final char HAUT = 'H';
-    private static final char DROITE = 'D';
-    private static final char BAS = 'B';
-    private static final char GAUCHE = 'G';
-    
-    private static Scanner analyseurChoix;
-    
-    private static Jeux labyrintheParDefaut;
+    private static final String ERREUR_LABYRINTHE_PAS_CONSTRUIT 
+    = """
+            
+            +-------------------------------------------+
+            
+                 Aucun labyrinthe n'est construit
+                 
+            +-------------------------------------------+
+      """;
 
-    /**
-     * Lancement du menu
-     * @param non utilisé      
+
+    /**                                                  
+     * La boucle de jeux.                                
+     * Demande au joueur quel déplacement veut-il réaliser.
+     * Propose également au joueur de quitter le jeux pour retourner au menu.
+     * @param partie
      */
-    public static void main(String[] args) {
-        int choix;
+    private static void boucleJeux(Jeux partie) {
+        //TODO Écrire le corps
+        boolean sortiAtteinte;
         boolean quitter;
-        int[] dimensionLabyrinthe = {5,5};
-        Jeux partie = null;
-        boolean labyrintheConstruit = false;
-        
-        genererLabyrintheParDefaut();
-        
-        
-        analyseurChoix = new Scanner(System.in);
-        choix = 0;
-        quitter = false;
+        char choix;
+        sortiAtteinte = quitter = false;
 
+        System.out.println(INFO_JEUX);
+        
+        System.out.println(partie);
         do {
-            System.out.println(MENU);
-            System.out.print("Entrez votre choix : ");
-            if (!analyseurChoix.hasNextInt()) {
-                analyseurChoix.nextLine();
-            } else {
-                choix = analyseurChoix.nextInt();
-                switch (choix) {
-                case CHOIX_DIMENSION: {
-                    dimensionLabyrinthe = choixDimensions();
-                    System.out.println(  "Hauteur : " + dimensionLabyrinthe[0]  
-                                       + "\nLargeur : " + dimensionLabyrinthe[1]);
-                    partie = null;
-                    labyrintheConstruit = false;
-                    break;
-                }
-                case CHOIX_CHAINE_ASCENDANTE: {
-                    System.out.println("Chaine ascendante");
-                    //TODO Créer un graphe par chaîne ascendante avec les dimension donné
-                    partie = new Jeux(dimensionLabyrinthe[0], dimensionLabyrinthe[1]);
-                    partie.chaineAscendante();
-                    labyrintheConstruit = true;
-                    break;
-                }
-                case CHOIX_BACKTRACKING: {
-                    System.out.println("backtracking");
-                    //TODO Créer un graphe par backtracking avec les dimension donné
-                    partie = new Jeux(dimensionLabyrinthe[0], dimensionLabyrinthe[1]);
-                    partie.constructionBacktracking();
-                    labyrintheConstruit = true;
-                    break;
-                }
-                case CHOIX_JOUER: {
-                    System.out.println("Jouer");
-                    //TODO créer une nouvelle partie avec le graphe créer 
-                    //ou le graphe par défaut si n'y a pas de graphe créer
-                    if (!labyrintheConstruit) {
-                        System.out.println("Aucun graphe n'a été construit. Nous prenons celui par défaut");
-                        partie = labyrintheParDefaut;
-                        System.out.println(partie.parcoursProfondeur());
-                        boucleJeux(partie);
-                    } else {
-                        boucleJeux(partie);
-                    }
-                    break;
-                }
-                case CHOIX_SAUVEGARDER: {
-                    System.out.println("Sauvegarde");
-                    //TODO Sauvegarde le graphe s'il a été construit
-                    break;
-                }
-                case CHOIX_CHARGER: {
-                    System.out.println("Charger");
-                    //TODO Charger le graphe mis en sauvegarde
-                    break;
-                }
-                case CHOIX_QUITTER: {
-                    quitter = true ;
-                    break;
-                }
-                default:
-                    System.out.println("Choix incorrect");
-                    //TODO meilleur affichage d'erreur
-                    //TODO demander confirmation
-                    break;
+            
+            System.out.print("Entrez votre déplacement : ");
+            choix = Character.toUpperCase(analyseurChoix.next().charAt(0));
+            analyseurChoix.nextLine();
+            
+            //TODO Faire mieux
+            quitter = (choix == 'F');
+            if (!quitter) {
+                try {
+                    partie.bougerJoueur(choix);
+                } catch (Exception e) {
+                    System.out.println("Attention : Vous devez choisir parmi H, D, B et G");
                 }
             }
-        } while (!quitter);
-        analyseurChoix.close();
+            
+            sortiAtteinte = partie.estSorti();
+            System.out.println(partie);
+            
+        } while (!sortiAtteinte && !quitter);
+        
+        if (sortiAtteinte) {
+            System.out.println(MESSAGE_VICTOIRE);
+        } else {
+            //TODO créer une constante
+            System.out.println("Vous avez quitter la partie en cours");
+        }
     }
+    
+    /**
+     * Demande à l'utilisateur les dimensions du labyrinthe qu'il veut.
+     * @return
+     */
+    private static int[] choixDimensions() {
+
+        boolean hauteurValide ,
+                largeurValide;
+        
+        int [] dimensionChoisi;
+        analyseurChoix = new Scanner(System.in);
+        hauteurValide = largeurValide = false ;
+        do {
+            System.out.println();
+            dimensionChoisi = new int[2];
+            
+            //TODO Extraire méthode
+            System.out.print("Entrez la hauteur souhaité : ");
+            if (analyseurChoix.hasNextInt()) {
+                dimensionChoisi[0] = analyseurChoix.nextInt();
+                hauteurValide = 1 < dimensionChoisi[0];
+            } else {
+                hauteurValide = false;
+            }
+            if (hauteurValide) {
+                System.out.println("Hauteur choisi : " + dimensionChoisi[0]);                
+            } else {
+                System.out.println("Erreur : Hauteur invalide !");
+            }
+            
+            analyseurChoix.nextLine();
+            
+            System.out.print("Entrez la largeur souhaité : ");
+            if (analyseurChoix.hasNextInt()) {
+                dimensionChoisi[1] = analyseurChoix.nextInt();
+                largeurValide = 1 < dimensionChoisi[1];
+                System.out.println("Largeur choisi : " + dimensionChoisi[1]);
+            } else {
+                System.out.println("Erreur : Largeur invalide !");
+                largeurValide = false;
+            }
+            analyseurChoix.nextLine();
+            
+        } while (!hauteurValide || !largeurValide);
+        System.out.println("Choix fais");
+        return dimensionChoisi;                          
+    }
+
     /**
      * Créer un labyrinthe par défaut
      */
@@ -282,50 +302,105 @@ public class Main {
         return DimensionChoisi;                          
     }                                                    
                                                          
-    /**                                                  
-     * La boucle de jeux.                                
-     * Demande au joueur quel déplacement veut-il réaliser.
-     * Propose également au joueur de quitter le jeux pour retourner au menu.
-     * @param partie
+    /**
+     * Lancement du menu
+     * @param non utilisé      
      */
-    private static void boucleJeux(Jeux partie) {
-        //TODO Écrire le corps
-        boolean sortiAtteinte;
-        boolean quitter;
+    public static void main(String[] args) {
         char choix;
-        sortiAtteinte = quitter = false;
+        boolean quitter;
+        int[] dimensionLabyrinthe = {5,5};
+        Jeux partie = null;
+        boolean labyrintheConstruit = false;
+        
+        genererLabyrintheParDefaut();
+        
+        analyseurChoix = new Scanner(System.in);
+        choix = 0;
+        quitter = false;
 
-        partie.joueurAuDebut();
-        
-        System.out.println(INFO_JEUX);
-        
-        System.out.println(partie);
         do {
-            
-            System.out.print("Entrez votre déplacement : ");
-            choix = Character.toUpperCase(analyseurChoix.next().charAt(0));
-            analyseurChoix.nextLine();
-            
-            quitter = (choix - 'Q') == CHOIX_QUITTER;
-            if (!quitter) {
-                try {
-                    partie.bougerJoueur(choix);
-                } catch (Exception e) {
-                    System.out.println("Attention : Vous devez choisir parmi H, D, B et G");
+            System.out.println(MENU);
+            System.out.print("Entrez votre choix : ");
+            if (!analyseurChoix.hasNext()) {
+                analyseurChoix.nextLine();
+            } else {
+                choix = Character.toUpperCase(analyseurChoix.next().charAt(0));
+                
+                switch (choix) {
+                case CHOIX_AFFICHER: {
+                    if (labyrintheConstruit) {
+                        System.out.println(partie);
+                    } else {
+                        System.err.println(ERREUR_LABYRINTHE_PAS_CONSTRUIT);
+                    }
+                    break;
+                }
+                case CHOIX_DIMENSION: {
+                    dimensionLabyrinthe = choixDimensions();
+                    System.out.println(  "Hauteur : " + dimensionLabyrinthe[0]  
+                                       + "\nLargeur : " + dimensionLabyrinthe[1]);
+                    partie = null;
+                    labyrintheConstruit = false;
+                    break;
+                }
+                case CHOIX_CHAINE_ASCENDANTE: {
+                    System.out.println("Chaine ascendante");
+                    partie = new Jeux(dimensionLabyrinthe[0], dimensionLabyrinthe[1]);
+                    partie.chaineAscendante();
+                    labyrintheConstruit = true;
+                    break;
+                }
+                case CHOIX_BACKTRACKING: {
+                    System.out.println("backtracking");
+                    partie = new Jeux(dimensionLabyrinthe[0], dimensionLabyrinthe[1]);
+                    partie.constructionBacktracking();
+                    labyrintheConstruit = true;
+                    break;
+                }
+                case CHOIX_JOUER: {
+                    System.out.println("Jouer");
+                    //TODO créer une nouvelle partie avec le graphe créer 
+                    //ou le graphe par défaut si n'y a pas de graphe créer
+                    if (!labyrintheConstruit) {
+                        System.out.println("Aucun graphe n'a été construit. Nous prenons celui par défaut");
+                        partie = labyrintheParDefaut;
+                        boucleJeux(partie);
+                    } else {
+                        boucleJeux(partie);
+                    }
+                    break;
+                }
+                case CHOIX_SAUVEGARDER: {
+                    System.out.println("Sauvegarde");
+                    if (labyrintheConstruit) {
+                        LabyrintheJson.enregistrerLabyrinthe(partie);
+                    } else {
+                        //TODO Créer une constante
+                        System.err.println(ERREUR_LABYRINTHE_PAS_CONSTRUIT);
+                    }
+                    break;
+                }
+                case CHOIX_CHARGER: {
+                    System.out.println("Charger");
+                    partie = LabyrintheJson.chargerLabyrinthe();
+                    labyrintheConstruit = true;
+                    break;
+                }
+
+                case CHOIX_QUITTER: {
+                    quitter = true ;
+                    break;
+                }
+                default:
+                    System.out.println("Choix incorrect");
+                    //TODO meilleur affichage d'erreur
+                    //TODO demander confirmation
+                    break;
                 }
             }
-            
-            sortiAtteinte = partie.estSorti();
-            System.out.println(partie);
-            
-        } while (!sortiAtteinte && !quitter);
-        
-        if (sortiAtteinte) {
-            System.out.println(MESSAGE_VICTOIRE);
-        } else {
-            //TODO créer une constante
-            System.out.println("Vous avez quitter la partie en cours");
-        }
+        } while (!quitter);
+        analyseurChoix.close();
     }
 
 }
