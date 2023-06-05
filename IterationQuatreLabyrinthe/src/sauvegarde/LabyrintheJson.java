@@ -1,5 +1,6 @@
 /*
- * //TODO comentez
+ * LabyrintheJson.java                                   25 mai 2023
+ * IUT de Rodez, pas de copyleft, pas de copyright
  */
 package sauvegarde;
 
