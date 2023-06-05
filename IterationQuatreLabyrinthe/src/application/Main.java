@@ -18,9 +18,9 @@ import sauvegarde.LabyrintheJson;
 public class Main {
     
     public static final char DROITE = 'D';
-    public static final char BAS = 'B';
-    public static final char GAUCHE = 'G';
-    public static final char HAUT = 'H';
+    public static final char BAS = 'S';
+    public static final char GAUCHE = 'Q';
+    public static final char HAUT = 'Z';
     
     private static Scanner analyseurChoix;
    
@@ -107,7 +107,8 @@ public class Main {
             choix = Character.toUpperCase(analyseurChoix.next().charAt(0));
             analyseurChoix.nextLine();
             
-            quitter = (choix - 'Q') == CHOIX_QUITTER;
+            //TODO Faire mieux
+            quitter = (choix == 'F');
             if (!quitter) {
                 try {
                     partie.bougerJoueur(choix);
@@ -138,30 +139,34 @@ public class Main {
         boolean hauteurValide ,
                 largeurValide;
         
-        int [] DimensionChoisi;
+        int [] dimensionChoisi;
         analyseurChoix = new Scanner(System.in);
         hauteurValide = largeurValide = false ;
         do {
             System.out.println();
-            DimensionChoisi = new int[2];
+            dimensionChoisi = new int[2];
             
             //TODO Extraire méthode
             System.out.print("Entrez la hauteur souhaité : ");
             if (analyseurChoix.hasNextInt()) {
-                DimensionChoisi[0] = analyseurChoix.nextInt();
-                hauteurValide = true;
-                System.out.println("Hauteur choisi : " + DimensionChoisi[0]);
+                dimensionChoisi[0] = analyseurChoix.nextInt();
+                hauteurValide = 1 < dimensionChoisi[0];
             } else {
-                System.out.println("Erreur : Hauteur invalide !");
                 hauteurValide = false;
             }
+            if (hauteurValide) {
+                System.out.println("Hauteur choisi : " + dimensionChoisi[0]);                
+            } else {
+                System.out.println("Erreur : Hauteur invalide !");
+            }
+            
             analyseurChoix.nextLine();
             
             System.out.print("Entrez la largeur souhaité : ");
             if (analyseurChoix.hasNextInt()) {
-                DimensionChoisi[1] = analyseurChoix.nextInt();
-                largeurValide = true;
-                System.out.println("Largeur choisi : " + DimensionChoisi[1]);
+                dimensionChoisi[1] = analyseurChoix.nextInt();
+                largeurValide = 1 < dimensionChoisi[1];
+                System.out.println("Largeur choisi : " + dimensionChoisi[1]);
             } else {
                 System.out.println("Erreur : Largeur invalide !");
                 largeurValide = false;
@@ -170,7 +175,7 @@ public class Main {
             
         } while (!hauteurValide || !largeurValide);
         System.out.println("Choix fais");
-        return DimensionChoisi;                          
+        return dimensionChoisi;                          
     }
 
     /**

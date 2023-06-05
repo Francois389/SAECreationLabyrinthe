@@ -107,7 +107,7 @@ public class Jeux extends Labyrinthe {
      */
     public boolean deplacementValide(char mouvement) {
         mouvement = Character.toUpperCase(mouvement);
-        if (!"HDBG".contains(mouvement + "")) {
+        if (!(""+Main.BAS+Main.DROITE+Main.GAUCHE+Main.HAUT).contains(mouvement + "")) {
             throw new IllegalArgumentException(
                     String.format("Erreur : %c n'est pas un mouvement valide", 
                                   mouvement)
