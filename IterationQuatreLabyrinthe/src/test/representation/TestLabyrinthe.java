@@ -48,6 +48,29 @@ private ArrayList<Labyrinthe> labyrintheCorrecte;
         { /* grand labyrinthe */
             labyrintheCorrecte.add(new Labyrinthe(10, 20)); 
         }
+        Sommet[][] listeSommet = {
+                {new Sommet(0,0),
+                 new Sommet(1,0)},
+                {new Sommet(0,1),
+                 new Sommet(1,1)}
+        };
+        listeSommet[0][0].setVoisin(true, 1);
+        listeSommet[0][1].setVoisin(new boolean[] {false,false,true,true});
+        listeSommet[1][1].setVoisin(new boolean[] {true, false, false, true});
+        listeSommet[1][0].setVoisin(true, 1);
+        Sommet[][] listeArcs = {
+                {listeSommet[0][0],listeSommet[1][1]},
+                {listeSommet[0][1],listeSommet[0][0]},
+                {listeSommet[0][1],listeSommet[1][1]},
+                {listeSommet[1][1],listeSommet[0][1]},
+                {listeSommet[1][1],listeSommet[1][0]},
+                {listeSommet[1][0],listeSommet[1][1]}
+        };
+        Sommet entree = listeSommet[0][0];
+        Sommet sorti = listeSommet[1][0];
+        Labyrinthe laby = new Labyrinthe(2, 2, listeSommet, listeArcs, entree, sorti);
+        
+        labyrintheCorrecte.add(laby);
     }
     
     /**
@@ -221,8 +244,8 @@ private ArrayList<Labyrinthe> labyrintheCorrecte;
                 {listeSommet2[1][1],listeSommet2[1][0]},
                 {listeSommet2[1][0],listeSommet2[1][1]}
         };
-        Sommet entree2 = listeSommet1[0][0];
-        Sommet sorti2 = listeSommet1[1][0];
+        Sommet entree2 = listeSommet2[0][0];
+        Sommet sorti2 = listeSommet2[1][0];
         Labyrinthe laby1 = new Labyrinthe(2, 2, listeSommet1, listeArcs1, entree1, sorti1);
         Labyrinthe laby2 = new Labyrinthe(2, 2, listeSommet2, listeArcs2, entree2, sorti2);
         
@@ -243,9 +266,7 @@ private ArrayList<Labyrinthe> labyrintheCorrecte;
         Sommet s = new Sommet(3,3);
         for (Sommet[] sommets : g.getListeSommet()) {
             for (Sommet sTest : sommets) {
-                System.out.print("Avant: "+sTest.getMarque());
                 g.fusionnerMarques(s,sTest);
-                System.out.println("Apres " + sTest.getMarque()+"\n");
             }
         }
         assertTrue(g.ontTousLaMemeMarque());
@@ -287,7 +308,26 @@ private ArrayList<Labyrinthe> labyrintheCorrecte;
      */
     @Test
     void testGetListeArcs() {
-        fail("Not yet implemented"); // TODO
+        Sommet[][] listeSommet = {
+                {new Sommet(0,0),
+                 new Sommet(1,0)},
+                {new Sommet(0,1),
+                 new Sommet(1,1)}
+        };
+        listeSommet[0][0].setVoisin(true, 1);
+        listeSommet[0][1].setVoisin(new boolean[] {false,false,true,true});
+        listeSommet[1][1].setVoisin(new boolean[] {true, false, false, true});
+        listeSommet[1][0].setVoisin(true, 1);
+        Sommet[][] listeArcs = {
+                {listeSommet[0][0],listeSommet[1][1]},
+                {listeSommet[0][1],listeSommet[0][0]},
+                {listeSommet[0][1],listeSommet[1][1]},
+                {listeSommet[1][1],listeSommet[0][1]},
+                {listeSommet[1][1],listeSommet[1][0]},
+                {listeSommet[1][0],listeSommet[1][1]}
+        };
+        
+        assertArrayEquals(listeArcs, labyrintheCorrecte.get(3).getListeArcs());
     }
 
     /**
@@ -295,7 +335,13 @@ private ArrayList<Labyrinthe> labyrintheCorrecte;
      */
     @Test
     void testGetListeSommet() {
-        fail("Not yet implemented"); // TODO
+        Sommet[][] listeSommet = {
+                {new Sommet(0,0),
+                 new Sommet(1,0)},
+                {new Sommet(0,1),
+                 new Sommet(1,1)}
+        };
+        assertArrayEquals(listeSommet, labyrintheCorrecte.get(3).getListeSommet());
     }
 
     /**
@@ -303,7 +349,10 @@ private ArrayList<Labyrinthe> labyrintheCorrecte;
      */
     @Test
     void testGetSortie() {
-        fail("Not yet implemented"); // TODO
+        assertEquals(new Sommet(4,4), labyrintheCorrecte.get(0).getSortie());
+        assertEquals(new Sommet(29,29), labyrintheCorrecte.get(1).getSortie());
+        assertEquals(new Sommet(19,9), labyrintheCorrecte.get(2).getSortie());
+        assertEquals(new Sommet(0,1), labyrintheCorrecte.get(3).getSortie());
     }
 
     
@@ -311,14 +360,15 @@ private ArrayList<Labyrinthe> labyrintheCorrecte;
     @Test
     void testOntTousLaMemeMarque() {
         Labyrinthe g = new Labyrinthe(2,2);
-
-        assertFalse(g.ontTousLaMemeMarque());
+        int compteur = 0;
+        assertTrue(g.ontTousLaMemeMarque());
         for (Sommet[] sommets : g.getListeSommet()) {
             for (Sommet sTest : sommets) {
-                sTest.setMarque(1);
+                sTest.setMarque(compteur);
+                compteur++;
             }
         }
-        assertTrue(g.ontTousLaMemeMarque());
+        assertFalse(g.ontTousLaMemeMarque());
     }
 
     /**
@@ -404,7 +454,9 @@ private ArrayList<Labyrinthe> labyrintheCorrecte;
      */
     @Test
     void testSetEntre() {
-        fail("Not yet implemented"); // TODO
+        labyrintheCorrecte.get(0).setEntre(labyrintheCorrecte.get(0).getListeSommet()[1][3]);
+        assertEquals(labyrintheCorrecte.get(0).getListeSommet()[1][3], 
+                     labyrintheCorrecte.get(0).getEntre());
     }
 
     /**
@@ -413,18 +465,13 @@ private ArrayList<Labyrinthe> labyrintheCorrecte;
     @Test
     void testSetMarqueSommet() {
     	Labyrinthe lab = labyrintheCorrecte.get(0);
-    	lab.setMarqueSommet();
     	
-    	int marqueEntree = -1;
-    	int marqueAttendue = 0;
+    	int marque = 0;
     	for (Sommet[] listeSommets : lab.getListeSommet()) {
             for (Sommet s : listeSommets) {
-                if (s.equals(lab.getEntre())) {
-                    assertEquals(s.getMarque(), marqueEntree);
-                } else {
-                    assertEquals(s.getMarque(), marqueAttendue);
-                }
-                marqueAttendue++;
+                s.setMarque(marque);
+                assertEquals(marque, s.getMarque());
+                marque--;
             }
         }
     }
@@ -434,7 +481,9 @@ private ArrayList<Labyrinthe> labyrintheCorrecte;
      */
     @Test
     void testSetSortie() {
-        fail("Not yet implemented"); // TODO
+        labyrintheCorrecte.get(0).setSortie(labyrintheCorrecte.get(0).getListeSommet()[1][3]);
+        assertEquals(labyrintheCorrecte.get(0).getListeSommet()[1][3], 
+                     labyrintheCorrecte.get(0).getSortie());
     }
 
     @Test
@@ -444,7 +493,6 @@ private ArrayList<Labyrinthe> labyrintheCorrecte;
         {
             Labyrinthe aAfficher = new Labyrinthe(12,15);
             aAfficher.chaineAscendante();
-            //System.out.print(aAfficher);
         }
     }
 

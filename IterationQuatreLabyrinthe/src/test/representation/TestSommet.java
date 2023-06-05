@@ -128,7 +128,7 @@ class TestSommet {
         representation = "";
         for (int i = 0; i < sommetsValidesSansDoublon.size(); i++) {
             sommet = sommetsValidesSansDoublon.get(i);
-            representation = "(" + sommet.getPosX() + "; " + sommet.getPosY() + ")";
+            representation = "(" + sommet.getPosX() + "; " + sommet.getPosY() + ") marque : "+sommet.getMarque();
             assertEquals(representation, sommet.toString());
         } 
     }

@@ -36,7 +36,8 @@ public class Sommet {
     /**
      * Constructeur de la classe sommet
      * Un sommet est valide si ses coordonnées sont dans les entier naturels
-     * les paramètres x et y ne peuvent donc pas être négatifs
+     * les paramètres x et y ne peuvent donc pas être négatifs.
+     * La marque est initialisé à -1.
      * @param x position y du sommet
      * @param y position y du sommet
      * @throws IllegalArgumentException si les arguments sont invalides
@@ -80,7 +81,7 @@ public class Sommet {
     @Override
     public String toString() {
         
-        return "(" + posX + "; " + posY + ")  marque : "+marque;
+        return "(" + posX + "; " + posY + ") marque : "+marque;
     }
 
     @Override

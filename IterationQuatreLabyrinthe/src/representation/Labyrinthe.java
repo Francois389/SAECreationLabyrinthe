@@ -552,7 +552,6 @@ public class Labyrinthe {
             }
             listeVoisins = OutilsTableau.copieSaufNull(listeVoisins);
             
-            System.out.println(pileSommets);
             if (sontTousVisites(listeVoisins) && !pileSommets.estVide()) {
                 pileSommets.depiler();
                 if (!pileSommets.estVide()) {

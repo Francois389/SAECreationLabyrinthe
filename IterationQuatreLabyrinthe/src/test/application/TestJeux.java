@@ -14,11 +14,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import application.Jeux;
+import application.Main;
 import representation.Sommet;
 
 /**
- * //TODO Commenter la responsabilités de la classe TestJeux
- * @author de
+ * Test unitaire de la class {@link application.Jeux}
+ * @author de Saint Palais François
  *
  */
 class TestJeux {
@@ -135,19 +136,18 @@ class TestJeux {
      */
     @Test
     void testDeplacementValide() {
-        System.out.println(labyrinthe);
-        assertTrue(labyrinthe.deplacementValide('B'));
-        assertTrue(labyrinthe.deplacementValide('b'));
-        assertFalse(labyrinthe.deplacementValide('H'));
-        assertFalse(labyrinthe.deplacementValide('h'));
-        assertFalse(labyrinthe.deplacementValide('D'));
-        assertFalse(labyrinthe.deplacementValide('d'));
-        assertFalse(labyrinthe.deplacementValide('G'));
-        assertFalse(labyrinthe.deplacementValide('g'));
+        assertTrue(labyrinthe.deplacementValide(Main.BAS));
+        assertTrue(labyrinthe.deplacementValide(Character.toLowerCase(Main.BAS)));
+        assertFalse(labyrinthe.deplacementValide(Main.HAUT));                       
+        assertFalse(labyrinthe.deplacementValide(Character.toLowerCase(Main.HAUT)));
+        assertFalse(labyrinthe.deplacementValide(Main.GAUCHE));                       
+        assertFalse(labyrinthe.deplacementValide(Character.toLowerCase(Main.GAUCHE)));
+        assertFalse(labyrinthe.deplacementValide(Main.DROITE));                       
+        assertFalse(labyrinthe.deplacementValide(Character.toLowerCase(Main.DROITE)));
+        assertThrows(IllegalArgumentException.class,()-> labyrinthe.deplacementValide('r'));
         
         labyrinthe.setPosXJoueur(1);
         labyrinthe.setPosYJoueur(1);
-        System.out.println(labyrinthe);
         assertThrows(IllegalArgumentException.class,()->labyrinthe.deplacementValide('a'));
     }
 
