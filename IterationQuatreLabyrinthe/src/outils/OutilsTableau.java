@@ -7,18 +7,20 @@ package outils;
 import representation.Sommet;
 
 /**
- * //TODO Commenter la responsabilités de la classe OutilsListe
+ * Méthode utilitaire sur les tableau 
  * @author de Saint Palais François
+ * @author Costes Quentin
+ * @author Descriaud Luas
  *
  */
 public class OutilsTableau {
 
     /**
-     * Renvoie true si element est dans liste.
-     * False sinon.
-     * @param liste
-     * @param element
-     * @return
+     * Verifie l'appartenance d'un entier dans un tableau
+     * @param liste la liste a parcourir
+     * @param element l'entier recherché
+     * @return True si element est dans liste.
+     *         False sinon.
      */
     public static boolean contient(int[] liste, int element) {
         if (liste == null) {
@@ -32,11 +34,11 @@ public class OutilsTableau {
         return false;
     }
     /**
-     * Renvoie true si element est dans liste.
-     * False sinon.
-     * @param liste
-     * @param element
-     * @return
+     * Verifie l'appartenance d'un sommet dans un tableau
+     * @param liste liste la liste a parcourir
+     * @param element le Sommet recherché
+     * @return True si element est dans liste.
+     *         False sinon.
      */
     public static boolean contient(Sommet[] liste, Sommet element) {
         if (liste == null) {
@@ -54,9 +56,10 @@ public class OutilsTableau {
     
     
     /**
-     * Retourne la représentation humaine du tableau passer en paramètre.
+     * Creer une String avec les element d'un tableau 
      * @param liste Le tableau dont ont veux obtenir la représention
-     * @return
+     *              Le tableau peut contenir n'importe quel objet
+     * @return la représentation humaine du tableau passer en paramètre.
      */
     public static String tabVersString(Object[] liste) {
         String resulat = "[";
@@ -67,9 +70,10 @@ public class OutilsTableau {
     }
     
     /**
-     * Retourne la représentation humaine du tableau passer en paramètre.
+     * Creer une String avec les element d'un tableau 
      * @param liste Le tableau dont ont veux obtenir la représention
-     * @return
+     *              Le tableau ne contient que des boolean
+     * @return la représentation humaine du tableau passer en paramètre.
      */
     public static String tabVersString(boolean[] liste) {
         String resulat = "[";
@@ -80,10 +84,9 @@ public class OutilsTableau {
     }
     
     /**
-     * Renvoie un nouveau tableau en aillant retirer 
-     * l'élement à l'inice non voulue
-     * @param tab
-     * @return
+     * Retire les element nulles dans un tableau
+     * @param tab le tableau dont on souhaite retirer les element null
+     * @return une copie de tab sans les element null
      */
     public static Sommet[] copieSaufNull(Sommet[] tab) {
        
