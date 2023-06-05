@@ -58,9 +58,10 @@ public class Main {
                 C. Construction par Chaîne ascendante
                 B. Construction par Backtracking              
                 A. Afficher le labyrinthe
-                J. Jouer
-                R. Affichage de la reponse
                 
+                J. Jouer
+                
+                R. Affichage de la reponse
                 S. Sauvegarder graphe
                 L. Charger graphe
                 Q. Quitter
@@ -72,7 +73,7 @@ public class Main {
             
             +------------------------------------------+
                                                        
-              Félicitation vous avez atteint la sortie 
+              Félicitation vous avez atteint la sortie
                                                        
             +------------------------------------------+
       """;
