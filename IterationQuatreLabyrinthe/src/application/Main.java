@@ -32,6 +32,7 @@ public class Main {
     private final static char CHOIX_QUITTER = 'Q';
     private static final char CHOIX_SAUVEGARDER = 'S';
     private static final char CHOIX_AFFICHER = 'A';
+    private static final char CHOIX_REPONSE = 'R';
     
     private static Jeux labyrintheParDefaut;
     
@@ -53,12 +54,14 @@ public class Main {
             """
             
             +---------------------------------------------+
-                A. Afficher le labyrinthe
                 D. Choix Dimension labyrinthe
                 C. Construction par Chaîne ascendante
                 B. Construction par Backtracking              
+                A. Afficher le labyrinthe
+                
                 J. Jouer
-
+                
+                R. Affichage de la reponse
                 S. Sauvegarder graphe
                 L. Charger graphe
                 Q. Quitter
@@ -70,7 +73,7 @@ public class Main {
             
             +------------------------------------------+
                                                        
-              Félicitation vous avez atteint la sortie 
+              Félicitation vous avez atteint la sortie
                                                        
             +------------------------------------------+
       """;
@@ -259,48 +262,7 @@ public class Main {
                    entree, sortie, 0, 0);
     }
 
-    /**
-     * 
-     * @return
-     */
-    private static int[] choixDimensions() {
-
-        boolean hauteurValide ,
-                largeurValide;
-        
-        int [] DimensionChoisi;
-        analyseurChoix = new Scanner(System.in);
-        hauteurValide = largeurValide = false ;
-        do {
-            System.out.println();
-            DimensionChoisi = new int[2];
-            
-            System.out.print("Entrez la hauteur souhaité : ");
-            if (analyseurChoix.hasNextInt()) {
-                DimensionChoisi[0] = analyseurChoix.nextInt();
-                hauteurValide = true;
-                System.out.println("Hauteur choisi : " + DimensionChoisi[0]);
-            } else {
-                System.out.println("Erreur : Hauteur invalide !");
-                hauteurValide = false;
-            }
-            analyseurChoix.nextLine();
-            
-            System.out.print("Entrez la largeur souhaité : ");
-            if (analyseurChoix.hasNextInt()) {
-                DimensionChoisi[1] = analyseurChoix.nextInt();
-                largeurValide = true;
-                System.out.println("Largeur choisi : " + DimensionChoisi[1]);
-            } else {
-                System.out.println("Erreur : Largeur invalide !");
-                largeurValide = false;
-            }
-            analyseurChoix.nextLine();
-            
-        } while (!hauteurValide || !largeurValide);
-        System.out.println("Choix fait");
-        return DimensionChoisi;                          
-    }                                                    
+                                                  
                                                          
     /**
      * Lancement du menu
@@ -371,6 +333,19 @@ public class Main {
                     }
                     break;
                 }
+                case CHOIX_REPONSE: {
+                    System.out.println("Affichage Reponse");
+                    if (!labyrintheConstruit) {
+                        System.out.println("Aucun graphe n'a été construit. Nous prenons celui par défaut");
+                        partie = labyrintheParDefaut;
+                        boucleJeux(partie);
+                    } else {
+                        System.out.println("Voici le parcours a faire pour trouver la sortie");
+                        System.out.println(partie.parcoursProfondeur());
+                    }
+                    break;
+                }
+                
                 case CHOIX_SAUVEGARDER: {
                     System.out.println("Sauvegarde");
                     if (labyrintheConstruit) {
@@ -387,6 +362,7 @@ public class Main {
                     labyrintheConstruit = true;
                     break;
                 }
+                
 
                 case CHOIX_QUITTER: {
                     quitter = true ;
