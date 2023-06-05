@@ -32,6 +32,7 @@ public class Main {
     private final static char CHOIX_QUITTER = 'Q';
     private static final char CHOIX_SAUVEGARDER = 'S';
     private static final char CHOIX_AFFICHER = 'A';
+    private static final char CHOIX_REPONSE = 'R';
     
     private static Jeux labyrintheParDefaut;
     
@@ -53,12 +54,13 @@ public class Main {
             """
             
             +---------------------------------------------+
-                A. Afficher le labyrinthe
                 D. Choix Dimension labyrinthe
                 C. Construction par Chaîne ascendante
                 B. Construction par Backtracking              
+                A. Afficher le labyrinthe
                 J. Jouer
-
+                R. Affichage de la reponse
+                
                 S. Sauvegarder graphe
                 L. Charger graphe
                 Q. Quitter
@@ -330,6 +332,19 @@ public class Main {
                     }
                     break;
                 }
+                case CHOIX_REPONSE: {
+                    System.out.println("Affichage Reponse");
+                    if (!labyrintheConstruit) {
+                        System.out.println("Aucun graphe n'a été construit. Nous prenons celui par défaut");
+                        partie = labyrintheParDefaut;
+                        boucleJeux(partie);
+                    } else {
+                        System.out.println("Voici le parcours a faire pour trouver la sortie");
+                        System.out.println(partie.parcoursProfondeur());
+                    }
+                    break;
+                }
+                
                 case CHOIX_SAUVEGARDER: {
                     System.out.println("Sauvegarde");
                     if (labyrintheConstruit) {
@@ -346,6 +361,7 @@ public class Main {
                     labyrintheConstruit = true;
                     break;
                 }
+                
 
                 case CHOIX_QUITTER: {
                     quitter = true ;
