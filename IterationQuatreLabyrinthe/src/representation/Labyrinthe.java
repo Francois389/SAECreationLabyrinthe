@@ -335,11 +335,11 @@ public class Labyrinthe {
         int marque = listeSommet[0][0].getMarque();
         for (int i = 0; i < listeSommet.length; i++) {
             for (int j = 0; j < listeSommet[0].length; j++) {
-                    if (listeSommet[i][j].getMarque() != marque) {
-                        return false;
-                    }
+                if (listeSommet[i][j].getMarque() != marque) {
+                    return false;
                 }
             }
+        }
         return true;
     }
     
