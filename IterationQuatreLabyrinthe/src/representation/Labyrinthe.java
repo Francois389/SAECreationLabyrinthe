@@ -185,8 +185,6 @@ public class Labyrinthe {
         return grilleRetour; // stub
     }
    
-
-	// TODO remettre private
     /** 
      * permet d'ajouter une arrete au graphe
      * @param sommet1 1 de l'arrete
@@ -194,7 +192,7 @@ public class Labyrinthe {
      * @throws IllegalArgumentException si les sommet ne sont pas dans le graphe
      *                                     ou si l'arrete existe deja
      */
-    public void ajouterArrete(Sommet sommet1, Sommet sommet2) {
+    private void ajouterArrete(Sommet sommet1, Sommet sommet2) {
         boolean sommet1Valide,
                 sommet2Valide;
         
@@ -503,17 +501,6 @@ public class Labyrinthe {
      * @param sommet2 sommet2
      * @return true si une arrete existe entre les deux sommets, false sinon
      */
-    private boolean sontRelies (Sommet sommet1, Sommet sommet2) {
-        return    existeArcEntre(sommet1, sommet2) 
-               || existeArcEntre(sommet2, sommet1);
-    }
-    
-    /**
-     * 
-     * @param sommet1
-     * @param sommet2
-     * @return
-     */
     private boolean existeArcEntre(Sommet sommet1, Sommet sommet2) {
         for (int i = 0; i < listeArcs.length; i++) {
             if (listeArcs[i][0].equals(sommet1) && listeArcs[i][1].equals(sommet2)) {
@@ -524,9 +511,9 @@ public class Labyrinthe {
     }
    
     /**
-     * 
-     * @param sommet
-     * @return
+     * Permet d'obtenir les sommets voisins d'un sommet
+     * @param sommet sommet dont on souhaite obtenir les voisins
+     * @return les voisins de sommet
      */
     private Sommet[] getVoisinsAvecArc(Sommet sommet) {
         int indice;
@@ -535,7 +522,7 @@ public class Labyrinthe {
         indice = 0;
         for (Sommet[] liste : listeSommet) {
             for (Sommet s : liste) {
-                if (sontRelies(sommet, s)) {
+                if (existeArcEntre(sommet, s)) {
                     retour[indice] = s;
                     indice++;
                 }

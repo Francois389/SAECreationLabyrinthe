@@ -5,6 +5,8 @@
 
 package representation;
 
+import exceptions.PileVideException;
+
 /**
  * classe permettant de représenter une pile
  * @author clement denamiel

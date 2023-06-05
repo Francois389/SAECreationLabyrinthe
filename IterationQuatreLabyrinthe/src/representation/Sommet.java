@@ -8,13 +8,10 @@ package representation;
 /**
  * Représentation d'un sommet d'un graphe
  * Un sommet a une position en x et y et des marque
+ * @author Costes Quentin
+ * @author de Saint Palais Francois
  * @author Denamiel Clément 
  * @author Descriaud Lucas
- */
-/**
- * //TODO Commenter la responsabilités de la classe Sommet
- * @author francois
- *
  */
 public class Sommet {
     
@@ -26,7 +23,7 @@ public class Sommet {
 
     /** Contient les possibles marque du Sommet.  */
     private int marque;
-    
+
     private boolean estParcourus;
     
     /** 
@@ -108,14 +105,15 @@ public class Sommet {
     }
 	
 	/**
-	 * attribut a un sommet une marque
+	 * Permet de modifier la marque d'un sommet
+	 * @param argMarque nouvelle marque a appliquer a this
 	 */
     public void setMarque(int argMarque) {
         this.marque = argMarque;
     }
 
 	/**
-	 * getter de l'atrbut voisins
+	 * getter de l'atribut voisins
 	 * @return liste des voisins
 	 */
 	public boolean[] getVoisins() {
@@ -130,10 +128,15 @@ public class Sommet {
         this.voisins = voisins ; 
     }
 
-	/**
-	 * Met à jour le tableau des voisins. 
-	 * @param indice De 0 à 3
-	 */
+    /**
+     * Met a jour le tableau des voisins
+     * @param indice entier de 0 a 3 
+     *        0 : haut
+     *        1 : droite 
+     *        2 : bas 
+     *        3 : gauche
+     * @param voisin true si on souhaite un voisin , false sinon 
+     */
     public void setVoisin(boolean voisin, int indice) {
         if (indice < 0 || voisins.length <= indice) {
             throw new IllegalArgumentException("Erreur : Indice invalide");
