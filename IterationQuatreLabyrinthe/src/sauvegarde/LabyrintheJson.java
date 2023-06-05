@@ -28,7 +28,7 @@ import representation.Sommet;
  */
 public class LabyrintheJson {
 
-    private final static String CHEMIN_FICHIER = "src/sauvegardes/labyrinthe.json";
+    private final static String CHEMIN_FICHIER = "sauvegardes/labyrinthe.json";
     
     private static Sommet getSommetFromJSON(JsonElement element) {
         JsonObject sommet = element.getAsJsonObject();
