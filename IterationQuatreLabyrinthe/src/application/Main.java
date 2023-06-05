@@ -98,7 +98,7 @@ public class Main {
         //TODO Écrire le corps
         boolean sortiAtteinte;
         boolean quitter;
-        char choix;
+        String choix;
         sortiAtteinte = quitter = false;
 
         System.out.println(INFO_JEUX);
@@ -107,16 +107,18 @@ public class Main {
         do {
             
             System.out.print("Entrez votre déplacement : ");
-            choix = Character.toUpperCase(analyseurChoix.next().charAt(0));
-            analyseurChoix.nextLine();
+            choix = analyseurChoix.next();
+//            analyseurChoix.nextLine();
             
             //TODO Faire mieux
-            quitter = (choix == 'F');
+            quitter = (choix.contains("F") || choix.contains("f"));
             if (!quitter) {
-                try {
-                    partie.bougerJoueur(choix);
-                } catch (Exception e) {
-                    System.out.println("Attention : Vous devez choisir parmi H, D, B et G");
+                for (int i = 0; i < choix.length(); i++) {
+                    try {
+                        partie.bougerJoueur(choix.charAt(i));
+                    } catch (Exception e) {
+                        System.out.println("Attention : Vous devez choisir parmi H, D, B et G");
+                    }
                 }
             }
             
