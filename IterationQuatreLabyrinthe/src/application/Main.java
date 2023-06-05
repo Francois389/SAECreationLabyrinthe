@@ -371,6 +371,7 @@ public class Main {
                         boucleJeux(partie);
                     } else {
                         System.out.println("Voici le parcours a faire pour trouver la sortie");
+                        System.out.println(partie);
                         System.out.println(partie.parcoursProfondeur());
                     }
                     break;

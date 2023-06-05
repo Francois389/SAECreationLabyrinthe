@@ -493,7 +493,16 @@ public class Labyrinthe {
         return retour;
     }    
     
-    
+    /**
+     * permet de verifier la liaison entre 2 sommets
+     * @param sommet1 le premier sommet
+     * @param sommet2 le deuxieme sommet
+     * @return true si les 2 sommets sont relies
+     */
+    private boolean sontRelies (Sommet sommet1, Sommet sommet2) {
+        return    existeArcEntre(sommet1, sommet2) 
+               || existeArcEntre(sommet2, sommet1);
+    }
     
     /**
      * Permet de verifier la présence d'une arrete entre deux sommets
@@ -522,7 +531,7 @@ public class Labyrinthe {
         indice = 0;
         for (Sommet[] liste : listeSommet) {
             for (Sommet s : liste) {
-                if (existeArcEntre(sommet, s)) {
+                if (sontRelies(sommet, s)) {
                     retour[indice] = s;
                     indice++;
                 }
@@ -566,7 +575,8 @@ public class Labyrinthe {
             }
             listeVoisins = OutilsTableau.copieSaufNull(listeVoisins);
             
-            if (sontTousVisites(listeVoisins)) {
+            System.out.println(pileSommets);
+            if (sontTousVisites(listeVoisins) && !pileSommets.estVide()) {
                 pileSommets.depiler();
                 if (!pileSommets.estVide()) {
                     sommetCourant = (Sommet) pileSommets.sommet();
