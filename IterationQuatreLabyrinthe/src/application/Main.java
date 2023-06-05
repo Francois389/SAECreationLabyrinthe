@@ -143,13 +143,15 @@ public class Main {
 //            analyseurChoix.nextLine();
             
             //TODO Faire mieux
-            quitter = (choix.contains("F") || choix.contains("f"));
+            quitter = (choix.toUpperCase().contains(CHOIX_ABANDONNER_PARTIE+""));
+            
             if (!quitter) {
                 for (int i = 0; i < choix.length(); i++) {
                     try {
                         partie.bougerJoueur(choix.charAt(i));
                     } catch (Exception e) {
-                        System.out.println("Attention : Vous devez choisir parmi H, D, B et G");
+                        System.out.println(String.format(ERREUR_COMMANDE, 
+                                Main.HAUT,Main.BAS,Main.DROITE,Main.GAUCHE));
                     }
                 }
             }
