@@ -278,7 +278,7 @@ public class Main {
             analyseurChoix.nextLine();
             
         } while (!hauteurValide || !largeurValide);
-        System.out.println("Choix fais");
+        System.out.println("Choix fait");
         return DimensionChoisi;                          
     }                                                    
                                                          
