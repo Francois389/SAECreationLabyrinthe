@@ -517,7 +517,7 @@ public class Main {
                 case CHOIX_CHARGER: {
                     partie = LabyrintheJson.chargerLabyrinthe();
                     labyrintheConstruit = true;
-                    System.out.printf(LABYRINTHE_CHARGE, dimensionLabyrinthe[0], dimensionLabyrinthe[1]);
+                    System.out.printf(LABYRINTHE_CHARGE, partie.getLargeur(), partie.getHauteur());
                     break;
                 }
                 

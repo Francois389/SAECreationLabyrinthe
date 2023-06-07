@@ -202,21 +202,39 @@ public class Jeux extends Labyrinthe {
                         
                         /* Affichage de l'entrée, de la sortie 
                          * ou de la marque du sommet */
-                        if (   this.getListeSommet()[hauteur][j].getPosX() == posXJoueur 
-                            && this.getListeSommet()[hauteur][j].getPosY() == posYJoueur && i == 1) {
+                        if (   this.getListeSommet()[hauteur][j].getPosX()
+                        		== posXJoueur 
+                            && this.getListeSommet()[hauteur][j].getPosY()
+                                == posYJoueur && i == 1) {
                          affichage += "  J  ";
-                        } else if (this.getListeSommet()[hauteur][j].equals(entree) && i == 1) {
+                        } else if (this.getListeSommet()[hauteur][j]
+                        		       .equals(entree) && i == 1) {
                             affichage += "  E  ";
-                        } else if (this.getListeSommet()[hauteur][j].equals(sortie) && i == 1) {
+                        } else if (this.getListeSommet()[hauteur][j]
+                        		       .equals(sortie) && i == 1) {
                             affichage += "  S  ";
                         } else {
                             if (i == 1) {
-                                if (getListeSommet()[hauteur][j].getMarque() < 10) {
-                                    affichage += String.format(CHAINE_VIDE_MARQUE_UNITE, getListeSommet()[hauteur][j].getMarque());
-                                } else if (getListeSommet()[hauteur][j].getMarque() < 100) {
-                                    affichage += String.format(CHAINE_VIDE_MARQUE_DIZAINE, getListeSommet()[hauteur][j].getMarque());
-                                } else if (getListeSommet()[hauteur][j].getMarque() < 1000) {
-                                    affichage += String.format(CHAINE_VIDE_MARQUE_CENTAINE, getListeSommet()[hauteur][j].getMarque());
+                                if (getListeSommet()[hauteur][j]
+                                    .getMarque() < 10) {
+                                    affichage += String.format(
+                                    		     CHAINE_VIDE_MARQUE_UNITE
+                                    		     , getListeSommet()[hauteur][j]
+                                    		       .getMarque());
+                                    
+                                } else if (getListeSommet()[hauteur][j]
+                                		   .getMarque() < 100) {
+                                    affichage += String.format(
+                                    		     CHAINE_VIDE_MARQUE_DIZAINE
+                                    		     , getListeSommet()[hauteur][j]
+                                    		       .getMarque());
+                                    
+                                } else if (getListeSommet()[hauteur][j]
+                                		   .getMarque() < 1000) {
+                                    affichage += String.format(
+                                    		     CHAINE_VIDE_MARQUE_CENTAINE
+                                    		     , getListeSommet()[hauteur][j]
+                                    		       .getMarque());
                                 } else {
                                     affichage += CHAINE_VIDE;
                                 }
@@ -291,21 +309,26 @@ public class Jeux extends Labyrinthe {
             for (int i = 0; i < HAUTEUR_CASE ; i++) {
                 affichage += "\n";        
                    for (int j = 0; j < this.getLargeur(); j++) {
-                        if (this.getListeSommet()[hauteur][j].getVoisins()[GAUCHE]) {
+                        if (this.getListeSommet()[hauteur][j]
+                        		.getVoisins()[GAUCHE]) {
                             affichage += BORD_VIDE; 
                         } else {
                             affichage += BORD_CASE;
                         }
                         
-                        if (this.getListeSommet()[hauteur][j].equals(entree) && i == 1) {
+                        if (this.getListeSommet()[hauteur][j].equals(entree) 
+                            && i == 1) {
                             affichage += "  E  ";
-                        } else if (this.getListeSommet()[hauteur][j].equals(sortie) && i == 1) {
+                        } else if (this.getListeSommet()[hauteur][j]
+                        		       .equals(sortie) && i == 1) {
                             affichage += "  S  ";
                         } else {
                             if (i == 1) {
-                                if (getListeSommet()[hauteur][j].getMarque() == 0) {
+                                if (getListeSommet()[hauteur][j]
+                                    .getMarque() == 0) {
                                     affichage += "     ";
-                                } else if (getListeSommet()[hauteur][j].getMarque() < 100) {
+                                } else if (getListeSommet()[hauteur][j]
+                                		   .getMarque() < 100) {
                                     affichage += "  X  ";
                                 }
                             } else {
