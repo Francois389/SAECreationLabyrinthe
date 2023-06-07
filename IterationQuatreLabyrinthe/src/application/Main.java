@@ -42,6 +42,7 @@ public class Main {
     private static final char CHOIX_AFFICHER = 'A';
     private static final char CHOIX_REPONSE = 'R';
     private static final char CHOIX_ABANDONNER_PARTIE = 'F' ;
+    private static final char CHOIX_POSITION_ENTREE_SORTIE = 'P';
     
     /** Labyrinthe utilisé par defaut si absence de dimension 
      *  ou absence de construction de la part de l'utilisateur
@@ -74,7 +75,9 @@ public class Main {
             +---------------------------------------------+
                 D. Choix Dimension labyrinthe
                 C. Construction par Chaîne ascendante
-                B. Construction par Backtracking              
+                B. Construction par Backtracking
+                P. Positionnement de l'entree 
+                   et de la sortie (optionnel)
                 A. Afficher le labyrinthe
                 
                 J. Jouer
@@ -225,7 +228,7 @@ public class Main {
             analyseurChoix.nextLine();
             
         } while (!hauteurValide || !largeurValide);
-        System.out.println("Choix fais");
+        System.out.println("Choix fait");
         return dimensionChoisi;                          
     }
 
@@ -310,7 +313,49 @@ public class Main {
                    entree, sortie, 0, 0);
     }
 
-                                                  
+    
+    private static int[] choixPosition(int[] dimension) {
+        boolean xValide ,
+                yValide;
+
+        int [] position;
+        analyseurChoix = new Scanner(System.in);
+        xValide = yValide = false ;
+        do {
+            System.out.println();
+            position = new int[2];
+            
+            System.out.print("Entrez la position X souhaité : ");
+            if (analyseurChoix.hasNextInt()) {
+                position[0] = analyseurChoix.nextInt();
+                xValide = 0 <= position[0] && position[0] < dimension[1];
+            } else {
+                xValide = false;
+            }
+            if (xValide) {
+                System.out.println("coordonnee X choisi : " + position[0]);                
+            } else {
+                System.out.println("Erreur : position invalide !");
+            }
+            
+            analyseurChoix.nextLine();
+            
+            System.out.print("Entrez la position Y souhaité : ");
+            if (analyseurChoix.hasNextInt()) {
+                position[1] = analyseurChoix.nextInt();
+                yValide = 0 <= position[1] && position[1] < dimension[0];
+                System.out.println("coordonnee Y choisi : " + position[1]);
+            } else {
+                System.out.println("Erreur : position invalide !");
+                yValide = false;
+            }
+            analyseurChoix.nextLine();
+            
+        } while (!xValide || !yValide);
+        
+        System.out.println("Choix fait");
+        return position;      
+    }
                                                          
     /**
      * Lancement du menu
@@ -360,11 +405,38 @@ public class Main {
                     labyrintheConstruit = true;
                     break;
                 }
+                
                 case CHOIX_BACKTRACKING: {
                     partie = new Jeux(dimensionLabyrinthe[0], dimensionLabyrinthe[1]);
                     partie.constructionBacktracking();
                     labyrintheConstruit = true;
                     break;
+                }
+                case CHOIX_POSITION_ENTREE_SORTIE: {
+                    System.out.println("Entrez les coordonnees souhaitees de l'entree");
+                    int[] positionEntree = choixPosition(dimensionLabyrinthe);
+                    
+                    Sommet nouvelleEntree = new Sommet(positionEntree[0], positionEntree[1]);
+                    System.out.println(nouvelleEntree);
+                    
+                    Sommet nouvelleSortie;
+                    do {
+                        System.out.println("Entrez les coordonnees souhaitees de la sortie");
+                        int[] positionSortie = choixPosition(dimensionLabyrinthe);
+                        
+                        nouvelleSortie = new Sommet(positionSortie[0], positionSortie[1]);
+                        System.out.println(nouvelleSortie);
+                        if (nouvelleEntree == nouvelleSortie) {
+                            System.out.println("l'entree et la sortie ne doivent pas etre confondues");
+                        }
+                    } while (nouvelleEntree == nouvelleSortie);
+                    
+                    partie.setEntre(nouvelleEntree);
+                    partie.setSortie(nouvelleSortie);
+                    partie.setPosXJoueur(nouvelleEntree.getPosX());
+                    partie.setPosYJoueur(nouvelleEntree.getPosY());
+                    
+                    System.out.println("l'entree et la sortie ont bien ete modifiee");
                 }
                 case CHOIX_JOUER: {
                     if (!labyrintheConstruit) {
@@ -419,5 +491,7 @@ public class Main {
         } while (!quitter);
         analyseurChoix.close();
     }
+
+    
 
 }
