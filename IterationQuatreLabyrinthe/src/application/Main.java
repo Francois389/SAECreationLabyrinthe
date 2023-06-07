@@ -136,6 +136,7 @@ public class Main {
         System.out.println(INFO_JEUX);
         
         System.out.println(partie);
+        //TODO Compter les coups
         do {
             
             System.out.print("Entrez votre déplacement : ");

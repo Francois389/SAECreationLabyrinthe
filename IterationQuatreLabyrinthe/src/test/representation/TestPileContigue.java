@@ -82,6 +82,20 @@ class TestPileContigue {
 		}
 		
 		assertTrue(grossePile.estVide());
+		
+	}
+
+
+	@Test
+	void testEquals() {
+		PileContigue p1 = new PileContigue().empiler(2).empiler("oui");
+		PileContigue p2 = new PileContigue().empiler(2).empiler("oui");
+		
+		assertTrue(p1.equals(p2));
+		
+		p1.depiler();
+		assertNotEquals(p1, p2);
+		
 	}
 
 }
