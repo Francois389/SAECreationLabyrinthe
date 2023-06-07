@@ -442,18 +442,18 @@ public class Labyrinthe {
 
 	/**
 	 * Met des marques uniques sur les sommets du labyrinthe
-	 * Les marques commencent à 0 et se finissent au nombre de sommet -1
+	 * Les marques commencent à 1 et se finissent au nombre de sommet -1
 	 */
 	public void setMarqueSommet() {
 		int marque;
 
-		marque = 0;
+		marque = 1;
 		for (int i = 0; i < listeSommet.length; i++) {
 			for (int j = 0; j < listeSommet[0].length; j++) {
-				marque++;
 				Sommet s = listeSommet[i][j];
 				s.setMarque(marque);
 				s.setEstParcourus(false);
+				marque++;
 			}
 		}  
 	}
@@ -733,10 +733,30 @@ public class Labyrinthe {
 		return Objects.equals(entree, other.entree) 
 				              && hauteur == other.hauteur 
 				              && largeur == other.largeur
-				&& Arrays.deepEquals(listeArcs, other.listeArcs) 
-				&& Arrays.deepEquals(listeSommet, other.listeSommet)
-				&& Objects.equals(sortie, other.sortie);
+					  && Arrays.deepEquals(listeArcs, other.listeArcs) 
+					  && Arrays.deepEquals(listeSommet, other.listeSommet)
+					  && Objects.equals(sortie, other.sortie);
 	}
 
+    /**
+     * Donne les coordonnée d'un sommet à partir de sa marque
+     * @param marque
+     * @return
+     */
+    public int[] getCoordoneeFromMarque(int marque) {
+        if (marque <= 0 || largeur*hauteur < marque) {
+            throw new IllegalArgumentException(
+                    "Erreur : Marque iniexistante dans le labyrinthe"
+                    );
+        }
+        for (int i = 0; i < listeSommet.length; i++) {
+            for (int j = 0; j < listeSommet[i].length; j++) {
+                if (listeSommet[i][j].getMarque() == marque) {
+                    return new int[] {i,j};
+                }
+            }
+        }
+        return new int[] {listeSommet.length,listeSommet[0].length};        
+    }
 
 }

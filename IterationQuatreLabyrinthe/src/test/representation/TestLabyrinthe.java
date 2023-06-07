@@ -489,11 +489,29 @@ private ArrayList<Labyrinthe> labyrintheCorrecte;
     @Test
     @DisplayName("Test du toString")
     void testToString() {
- 
         {
             Labyrinthe aAfficher = new Labyrinthe(12,15);
             aAfficher.chaineAscendante();
         }
+    }
+    
+    @Test
+    void testGetCoordoneeFromMarque() {
+        Labyrinthe laby = labyrintheCorrecte.get(3);
+        laby.setMarqueSommet();
+        assertArrayEquals(new int[] {0,0}, laby.getCoordoneeFromMarque(1));
+        assertArrayEquals(new int[] {0,1}, laby.getCoordoneeFromMarque(2));
+        assertArrayEquals(new int[] {1,0}, laby.getCoordoneeFromMarque(3));
+        assertArrayEquals(new int[] {1,1}, laby.getCoordoneeFromMarque(4));
+        assertThrows(IllegalArgumentException.class,
+                ()-> laby.getCoordoneeFromMarque(0));
+        assertThrows(IllegalArgumentException.class,
+                ()-> laby.getCoordoneeFromMarque(-1));
+        assertThrows(IllegalArgumentException.class,
+                ()-> laby.getCoordoneeFromMarque(5));
+        assertThrows(IllegalArgumentException.class,
+                ()-> laby.getCoordoneeFromMarque(Integer.MAX_VALUE));
+    	
     }
 
 }

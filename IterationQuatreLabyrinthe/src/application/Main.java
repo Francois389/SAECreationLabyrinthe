@@ -350,53 +350,7 @@ public class Main {
                    entree, sortie, 0, 0);
     }
 
-    /**
-     * 
-     * @param dimension
-     * @return
-     */
-    private static int[] choixPosition(int[] dimension) {
-        boolean xValide ,
-                yValide;
-
-        int [] position;
-        analyseurChoix = new Scanner(System.in);
-        xValide = yValide = false ;
-        do {
-            System.out.println();
-            position = new int[2];
-            
-            System.out.print("Entrez la position X souhaité : ");
-            if (analyseurChoix.hasNextInt()) {
-                position[0] = analyseurChoix.nextInt();
-                xValide = 0 <= position[0] && position[0] < dimension[1];
-            } else {
-                xValide = false;
-            }
-            if (xValide) {
-                System.out.println("coordonnee X choisi : " + position[0]);                
-            } else {
-                System.out.println("Erreur : position invalide !");
-            }
-            
-            analyseurChoix.nextLine();
-            
-            System.out.print("Entrez la position Y souhaité : ");
-            if (analyseurChoix.hasNextInt()) {
-                position[1] = analyseurChoix.nextInt();
-                yValide = 0 <= position[1] && position[1] < dimension[0];
-                System.out.println("coordonnee Y choisi : " + position[1]);
-            } else {
-                System.out.println("Erreur : position invalide !");
-                yValide = false;
-            }
-            analyseurChoix.nextLine();
-            
-        } while (!xValide || !yValide);
-        
-        System.out.println("Choix fait");
-        return position;      
-    }
+    
                                                          
     /**
      * Lancement du menu
@@ -526,34 +480,41 @@ public class Main {
      * @param partie
      */
     private static void definitionEntreSortie(int[] dimensionLabyrinthe, Jeux partie) {
-        System.out.println("Entrez les coordonnees souhaitees de l'entree");
-        int[] positionEntree = choixPosition(dimensionLabyrinthe);
+        Sommet nouvelleEntree = null;
+        Sommet nouvelleSortie = null;
         
-        Sommet nouvelleEntree = new Sommet(positionEntree[0]
-        		                         , positionEntree[1]);
-        System.out.println(nouvelleEntree);
-        
-        Sommet nouvelleSortie;
         do {
-            System.out.println(  "Entrez les coordonnees"
-            		           + " souhaitees de la sortie");
-            int[] positionSortie = choixPosition(dimensionLabyrinthe);
-            
-            nouvelleSortie = new Sommet(positionSortie[0]
-            		                  , positionSortie[1]);
-            System.out.println(nouvelleSortie);
+            System.out.println("Entrez la marque de l'entrée souhaitee ");
+            if (analyseurChoix.hasNextInt()) {
+                int[] coordonnee 
+                = partie.getCoordoneeFromMarque(analyseurChoix.nextInt());
+                
+                nouvelleEntree 
+                = partie.getListeSommet()[coordonnee[0]][coordonnee[1]];
+                System.out.println(nouvelleEntree);
+            } else {
+               System.err.println("Veuillez entree un nombre !");
+               analyseurChoix.nextLine();
+            }
+            System.out.println("Entrez la marque de la sortie souhaitee ");
+            if (analyseurChoix.hasNextInt()) {
+                int[] coordonnee 
+                = partie.getCoordoneeFromMarque(analyseurChoix.nextInt());
+                System.out.println(nouvelleSortie);
+                nouvelleSortie 
+                = partie.getListeSommet()[coordonnee[0]][coordonnee[1]];
+            } else {
+                System.err.println("Veuillez entree un nombre !");
+                analyseurChoix.nextLine();
+            }
             if (nouvelleEntree.equals(nouvelleSortie)) {
-                System.out.println(  "l'entree et la sortie ne "
-                		           + "doivent pas etre confondues");
+                System.out.println(  "l'entree et la sortie ne" 
+                                   + "peuvent pas etre confondues ");
             }
         } while (nouvelleEntree.equals(nouvelleSortie));
         
         partie.setEntre(nouvelleEntree);
         partie.setSortie(nouvelleSortie);
-        partie.setPosXJoueur(nouvelleEntree.getPosX());
-        partie.setPosYJoueur(nouvelleEntree.getPosY());
+        partie.joueurAuDebut();
     }
-
-    
-
 }
