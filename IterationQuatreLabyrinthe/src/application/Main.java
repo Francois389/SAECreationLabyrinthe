@@ -141,7 +141,7 @@ public class Main {
     = """           
       +------------------------------------------------------------------+
             
-            le labyrinthe a ete charge, il fait du %d par %d
+            le labyrinthe est charge, il fait du %d par %d
               
       +------------------------------------------------------------------+
       """;
@@ -199,6 +199,7 @@ public class Main {
                             partie.bougerJoueur(choix.charAt(i));
                             nombreCoup ++ ;
                         } catch (Exception e) {
+                            System.out.println(e.getMessage());
                             System.out.println(String.format(ERREUR_COMMANDE, 
                                     Main.HAUT,Main.BAS,Main.DROITE,Main.GAUCHE, 
                                     Main.CHOIX_ABANDONNER_PARTIE, Main.RESET));
@@ -517,7 +518,7 @@ public class Main {
                 case CHOIX_CHARGER: {
                     partie = LabyrintheJson.chargerLabyrinthe();
                     labyrintheConstruit = true;
-                    System.out.printf(LABYRINTHE_CHARGE, partie.getLargeur(), partie.getHauteur());
+                    System.out.printf(LABYRINTHE_CHARGE, partie.getHauteur(), partie.getLargeur());
                     break;
                 }
                 

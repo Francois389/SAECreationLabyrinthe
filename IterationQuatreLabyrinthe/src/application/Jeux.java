@@ -70,7 +70,8 @@ public class Jeux extends Labyrinthe {
      * @param x modifie la valeur de posXJoueur
      */
     public void setPosXJoueur(int x) {
-        if (x < 0 || getHauteur() <= x) {
+        if (x < 0 || getLargeur() <= x) {
+            System.out.println("X : "+x+" hauteur" + getHauteur());
             throw new IllegalArgumentException("Erreur : La coordonnée saisie "
                     + "est en dehors du labyrinthe");
         }
@@ -83,6 +84,7 @@ public class Jeux extends Labyrinthe {
      */
     public void setPosYJoueur(int y) {
         if (y < 0 || getHauteur() <= y) {
+            System.out.println("Y : "+y+" largeur" + getLargeur());
             throw new IllegalArgumentException("Erreur : La coordonnée saisie "
                     + "est en dehors du labyrinthe");
         }
@@ -108,9 +110,11 @@ public class Jeux extends Labyrinthe {
      *         caractere : Z haut , S bas , Q gauche , D droite 
      * 
      */
-    public boolean deplacementValide(char mouvement) {
+    public boolean deplacementValide(char mouvement) 
+            throws IllegalArgumentException{
         mouvement = Character.toUpperCase(mouvement);
-        
+        System.err.print(getListeSommet().length + " ");
+        System.err.println(getListeSommet()[0].length);
         switch (mouvement) {
         case Main.HAUT: {
             return getListeSommet()[posYJoueur][posXJoueur].getVoisins()[0];
@@ -135,7 +139,8 @@ public class Jeux extends Labyrinthe {
      * Bouge le joueur dans la direction indiqué, d'une case
      * @param mouvement un char qui definit le prochaine mouvenement du joueur
      */
-    public void bougerJoueur(char mouvement) {
+    public void bougerJoueur(char mouvement) 
+            throws IllegalArgumentException{
         mouvement = Character.toUpperCase(mouvement);
         if (deplacementValide(mouvement)) {
             switch (mouvement) {
