@@ -21,8 +21,7 @@ import application.Jeux;
 import representation.Sommet;
 
 /**
- * 
- * //TODO Commenter la responsabilités de la classe LabyrintheJson
+ * Export improt de labyrinthe dans un fichier json
  * @author Denamiel Clément
  *
  */
@@ -65,8 +64,8 @@ public class LabyrintheJson {
     }
     
     /**
-     * TODO Commenter
-     * @param laby
+     * Enregistre un labyrinthe dans un fichier json
+     * @param laby labyrinthe a enregistrer
      */
     public static void enregistrerLabyrinthe(Jeux laby) {
         
@@ -84,8 +83,10 @@ public class LabyrintheJson {
             listeArcsLabyrinthe.add(arcs);
         }
      
-        JsonArray listeSommets = new Gson().toJsonTree(listeSommetsLabyrinthe).getAsJsonArray();
-        JsonArray listeArcs    = new Gson().toJsonTree(listeArcsLabyrinthe).getAsJsonArray();
+        JsonArray listeSommets = new Gson().toJsonTree(listeSommetsLabyrinthe).
+                                                       getAsJsonArray();
+        JsonArray listeArcs    = new Gson().toJsonTree(listeArcsLabyrinthe).
+                                                       getAsJsonArray();
        
         JsonElement hauteur = new Gson().toJsonTree(laby.getHauteur());
         JsonElement largeur = new Gson().toJsonTree(laby.getLargeur());
@@ -117,13 +118,17 @@ public class LabyrintheJson {
         
     }
     
+    /**
+     * Charger un labyrinthe json
+     */
     public static Jeux chargerLabyrinthe() {
         
         File fichierLabyrinthe = new File(CHEMIN_FICHIER);
         
         
         try {
-            JsonElement fichier = JsonParser.parseReader(new FileReader(fichierLabyrinthe));
+            JsonElement fichier = JsonParser.parseReader(
+                                             new FileReader(fichierLabyrinthe));
             
             JsonObject objetLabyrinthe = fichier.getAsJsonObject();
             
@@ -133,7 +138,8 @@ public class LabyrintheJson {
             int joueurPosX = objetLabyrinthe.get("posXJoueur").getAsInt();
             int joueurPosY = objetLabyrinthe.get("posYJoueur").getAsInt();
             
-            JsonArray listeSommet = objetLabyrinthe.get("sommets").getAsJsonArray();
+            JsonArray listeSommet = objetLabyrinthe.get("sommets").
+                                    getAsJsonArray();
             JsonArray listeArcs = objetLabyrinthe.get("arcs").getAsJsonArray();
             
             Sommet[][] tableauSommet = new Sommet[hauteur][largeur];
@@ -176,7 +182,7 @@ public class LabyrintheJson {
             System.err.println(ERREUR_LABYRINTHE_MANQUANT);
         }
         
-        return null; //stub
+        return null;
         
     }
 

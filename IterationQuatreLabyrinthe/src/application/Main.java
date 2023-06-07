@@ -443,14 +443,16 @@ public class Main {
                     break;
                 }
                 case CHOIX_CHAINE_ASCENDANTE: {
-                    partie = new Jeux(dimensionLabyrinthe[0], dimensionLabyrinthe[1]);
+                    partie = new Jeux(dimensionLabyrinthe[0]
+                    		          , dimensionLabyrinthe[1]);
                     partie.chaineAscendante();
                     labyrintheConstruit = true;
                     break;
                 }
                 
                 case CHOIX_BACKTRACKING: {
-                    partie = new Jeux(dimensionLabyrinthe[0], dimensionLabyrinthe[1]);
+                    partie = new Jeux(dimensionLabyrinthe[0]
+                    		          , dimensionLabyrinthe[1]);
                     partie.constructionBacktracking();
                     labyrintheConstruit = true;
                     break;
@@ -459,18 +461,22 @@ public class Main {
                     System.out.println("Entrez les coordonnees souhaitees de l'entree");
                     int[] positionEntree = choixPosition(dimensionLabyrinthe);
                     
-                    Sommet nouvelleEntree = new Sommet(positionEntree[0], positionEntree[1]);
+                    Sommet nouvelleEntree = new Sommet(positionEntree[0]
+                    		                         , positionEntree[1]);
                     System.out.println(nouvelleEntree);
                     
                     Sommet nouvelleSortie;
                     do {
-                        System.out.println("Entrez les coordonnees souhaitees de la sortie");
+                        System.out.println(  "Entrez les coordonnees"
+                        		           + " souhaitees de la sortie");
                         int[] positionSortie = choixPosition(dimensionLabyrinthe);
                         
-                        nouvelleSortie = new Sommet(positionSortie[0], positionSortie[1]);
+                        nouvelleSortie = new Sommet(positionSortie[0]
+                        		                  , positionSortie[1]);
                         System.out.println(nouvelleSortie);
                         if (nouvelleEntree == nouvelleSortie) {
-                            System.out.println("l'entree et la sortie ne doivent pas etre confondues");
+                            System.out.println(  "l'entree et la sortie ne "
+                            		           + "doivent pas etre confondues");
                         }
                     } while (nouvelleEntree == nouvelleSortie);
                     
@@ -484,7 +490,8 @@ public class Main {
                 }
                 case CHOIX_JOUER: {
                     if (!labyrintheConstruit) {
-                        System.out.println("Aucun graphe n'a été construit. Nous prenons celui par défaut");
+                        System.out.println(  "Aucun graphe n'a été construit."
+                        		           + " Nous prenons celui par défaut");
                         partie = labyrintheParDefaut;
                         boucleJeux(partie);
                     } else {
@@ -495,12 +502,14 @@ public class Main {
                 case CHOIX_REPONSE: {
                     System.out.println("Affichage Reponse");
                     if (!labyrintheConstruit) {
-                        System.out.println("Aucun graphe n'a été construit. Nous prenons celui par défaut");
+                        System.out.println(  "Aucun graphe n'a été construit."
+                        		          + " Nous prenons celui par défaut");
                         partie = labyrintheParDefaut;
                         System.out.println(partie.parcoursProfondeur());
                         System.out.println(partie.toStringSolution());
                     } else {
-                        System.out.println("Voici le parcours a faire pour trouver la sortie");
+                        System.out.println(  "Voici le parcours a faire "
+                        		           + "pour trouver la sortie");
                         System.out.println(partie.parcoursProfondeur());
                         System.out.println(partie.toStringSolution());
                     }
@@ -519,6 +528,7 @@ public class Main {
                     partie = LabyrintheJson.chargerLabyrinthe();
                     labyrintheConstruit = true;
                     System.out.printf(LABYRINTHE_CHARGE, partie.getHauteur(), partie.getLargeur());
+
                     break;
                 }
                 
