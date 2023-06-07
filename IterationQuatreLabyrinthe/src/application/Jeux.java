@@ -113,8 +113,6 @@ public class Jeux extends Labyrinthe {
     public boolean deplacementValide(char mouvement) 
             throws IllegalArgumentException{
         mouvement = Character.toUpperCase(mouvement);
-        System.err.print(getListeSommet().length + " ");
-        System.err.println(getListeSommet()[0].length);
         switch (mouvement) {
         case Main.HAUT: {
             return getListeSommet()[posYJoueur][posXJoueur].getVoisins()[0];

@@ -94,14 +94,7 @@ public class Main {
             +---------------------------------------------+
             """;
     
-    private static final String MESSAGE_VICTOIRE 
-    = """          
-      +------------------------------------------------+
-                                                       
-          Félicitation vous avez atteint la sortie
-                                                       
-      +------------------------------------------------+
-      """;
+
     private static final String ERREUR_LABYRINTHE_PAS_CONSTRUIT 
     = """
             
@@ -128,13 +121,16 @@ public class Main {
               
       +------------------------------------------------------------------+
       """;
-    private static final String NOMBRE_COUP
+    
+    private static final String MESSAGE_VICTOIRE_NOMBRE_COUP
     = """
-     +------------------------------------------+
+     +------------------------------------------------+
+         Félicitation vous avez atteint la sortie
             
-                Nombre de coup : %d
+                   Nombre de coup : %d
+          Nous avons trouvé un chemin en %d coup
       
-     +------------------------------------------+   
+     +------------------------------------------------+   
      """;
     
     private static final String LABYRINTHE_CHARGE
@@ -216,8 +212,8 @@ public class Main {
         } while (!sortiAtteinte && !quitter);
         
         if (sortiAtteinte) {
-            System.out.println(MESSAGE_VICTOIRE);
-            System.out.printf(NOMBRE_COUP, nombreCoup);
+            System.out.printf(MESSAGE_VICTOIRE_NOMBRE_COUP, nombreCoup,
+                              partie.parcoursProfondeur().length()-1);
         } else {
             System.out.println(ABANDON_PARTIE);
         }
@@ -354,7 +350,11 @@ public class Main {
                    entree, sortie, 0, 0);
     }
 
-    
+    /**
+     * 
+     * @param dimension
+     * @return
+     */
     private static int[] choixPosition(int[] dimension) {
         boolean xValide ,
                 yValide;
@@ -458,32 +458,7 @@ public class Main {
                     break;
                 }
                 case CHOIX_POSITION_ENTREE_SORTIE: {
-                    System.out.println("Entrez les coordonnees souhaitees de l'entree");
-                    int[] positionEntree = choixPosition(dimensionLabyrinthe);
-                    
-                    Sommet nouvelleEntree = new Sommet(positionEntree[0]
-                    		                         , positionEntree[1]);
-                    System.out.println(nouvelleEntree);
-                    
-                    Sommet nouvelleSortie;
-                    do {
-                        System.out.println(  "Entrez les coordonnees"
-                        		           + " souhaitees de la sortie");
-                        int[] positionSortie = choixPosition(dimensionLabyrinthe);
-                        
-                        nouvelleSortie = new Sommet(positionSortie[0]
-                        		                  , positionSortie[1]);
-                        System.out.println(nouvelleSortie);
-                        if (nouvelleEntree == nouvelleSortie) {
-                            System.out.println(  "l'entree et la sortie ne "
-                            		           + "doivent pas etre confondues");
-                        }
-                    } while (nouvelleEntree == nouvelleSortie);
-                    
-                    partie.setEntre(nouvelleEntree);
-                    partie.setSortie(nouvelleSortie);
-                    partie.setPosXJoueur(nouvelleEntree.getPosX());
-                    partie.setPosYJoueur(nouvelleEntree.getPosY());
+                    definitionEntreSortie(dimensionLabyrinthe, partie);
                     
                     System.out.println("l'entree et la sortie ont bien ete modifiee");
                     break;
@@ -544,6 +519,39 @@ public class Main {
             }
         } while (!quitter);
         analyseurChoix.close();
+    }
+
+    /**
+     * @param dimensionLabyrinthe
+     * @param partie
+     */
+    private static void definitionEntreSortie(int[] dimensionLabyrinthe, Jeux partie) {
+        System.out.println("Entrez les coordonnees souhaitees de l'entree");
+        int[] positionEntree = choixPosition(dimensionLabyrinthe);
+        
+        Sommet nouvelleEntree = new Sommet(positionEntree[0]
+        		                         , positionEntree[1]);
+        System.out.println(nouvelleEntree);
+        
+        Sommet nouvelleSortie;
+        do {
+            System.out.println(  "Entrez les coordonnees"
+            		           + " souhaitees de la sortie");
+            int[] positionSortie = choixPosition(dimensionLabyrinthe);
+            
+            nouvelleSortie = new Sommet(positionSortie[0]
+            		                  , positionSortie[1]);
+            System.out.println(nouvelleSortie);
+            if (nouvelleEntree.equals(nouvelleSortie)) {
+                System.out.println(  "l'entree et la sortie ne "
+                		           + "doivent pas etre confondues");
+            }
+        } while (nouvelleEntree.equals(nouvelleSortie));
+        
+        partie.setEntre(nouvelleEntree);
+        partie.setSortie(nouvelleSortie);
+        partie.setPosXJoueur(nouvelleEntree.getPosX());
+        partie.setPosYJoueur(nouvelleEntree.getPosY());
     }
 
     
