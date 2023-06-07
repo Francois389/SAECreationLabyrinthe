@@ -5,6 +5,7 @@
 package application;
 
 import representation.Labyrinthe;
+import representation.PileContigue;
 import representation.Sommet;
 
 /**
@@ -218,6 +219,94 @@ public class Jeux extends Labyrinthe {
                                     affichage += String.format(CHAINE_VIDE_MARQUE_CENTAINE, getListeSommet()[hauteur][j].getMarque());
                                 } else {
                                     affichage += CHAINE_VIDE;
+                                }
+                            } else {
+                                affichage += CHAINE_VIDE;
+                            }
+                            
+                        }
+                        
+                        if (j == this.getLargeur() -1 ) {
+                            affichage.substring(0, affichage.length() - 1);
+                            affichage += BORD_CASE;
+                        }
+                }
+            }
+            affichage += "\n";
+            if (hauteur == this.getHauteur() -1 ) {
+                for (int j = 0 ; j < this.getLargeur() ; j++ ) {
+                    affichage += HAUT_CASE;
+                    if (j == this.getLargeur() -1 ) {
+                        affichage += "+";
+                    }
+                }
+            }
+            
+            
+            
+        }
+        return affichage + "\n";
+    }
+    
+    
+    public String toStringSolution() {
+        String affichage;
+        affichage = "";
+        
+        PileContigue pileSolution = this.parcoursProfondeur();
+        
+        Sommet[] solution = new Sommet[pileSolution.length()];
+        System.out.println(pileSolution.length());
+        int indice = 0;
+        do {
+			solution[indice] = (Sommet) pileSolution.sommet();
+			pileSolution.depiler();
+			indice ++;
+		} while (!pileSolution.estVide());
+        
+        
+        for (int i = 0 ; i < this.getListeSommet().length ; i++){ 
+            for (int j = 0 ; j < this.getListeSommet()[i].length ; j++ ) {
+            	this.getListeSommet()[i][j].setMarque(0);    		
+            	for (int k = 0; k < solution.length; k++) {
+                    if (this.getListeSommet()[i][j].equals(solution[k])) {
+                    	this.getListeSommet()[i][j].setMarque(1);
+                    }
+                }
+            }
+       }
+        
+        for (int hauteur = 0 ; hauteur < this.getHauteur() ; hauteur++){ 
+            for (int j = 0 ; j < this.getLargeur() ; j++ ) {
+                if (this.getListeSommet()[hauteur][j].getVoisins()[HAUT]) {
+                    affichage += HAUT_CASE_VIDE; 
+                }
+                else {
+                    affichage += HAUT_CASE;
+                }  
+                if (j == this.getLargeur() -1 ) {
+                    affichage += "+";
+                }
+            }    
+            for (int i = 0; i < HAUTEUR_CASE ; i++) {
+                affichage += "\n";        
+                   for (int j = 0; j < this.getLargeur(); j++) {
+                        if (this.getListeSommet()[hauteur][j].getVoisins()[GAUCHE]) {
+                            affichage += BORD_VIDE; 
+                        } else {
+                            affichage += BORD_CASE;
+                        }
+                        
+                        if (this.getListeSommet()[hauteur][j].equals(entree) && i == 1) {
+                            affichage += "  E  ";
+                        } else if (this.getListeSommet()[hauteur][j].equals(sortie) && i == 1) {
+                            affichage += "  S  ";
+                        } else {
+                            if (i == 1) {
+                                if (getListeSommet()[hauteur][j].getMarque() == 0) {
+                                    affichage += "     ";
+                                } else if (getListeSommet()[hauteur][j].getMarque() < 100) {
+                                    affichage += "  X  ";
                                 }
                             } else {
                                 affichage += CHAINE_VIDE;

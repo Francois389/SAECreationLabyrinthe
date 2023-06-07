@@ -35,6 +35,13 @@ public class PileContigue {
     public boolean estVide() {
         return nbElements == 0;
     }
+    
+    /**
+     * @return nombres d'elemnt dans la pile
+     */
+    public int length() {
+        return nbElements;
+    }
 
     
     /**

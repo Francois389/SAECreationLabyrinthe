@@ -30,6 +30,16 @@ public class LabyrintheJson {
 
     private final static String CHEMIN_FICHIER = "sauvegardes/labyrinthe.json";
     
+    private static final String ERREUR_LABYRINTHE_MANQUANT 
+    = """
+            
+            +------------------------------------------+
+                                                       
+              Il n'y a pas de labyrinthe en memoire !
+                                                       
+            +------------------------------------------+
+      """;
+    
     private static Sommet getSommetFromJSON(JsonElement element) {
         JsonObject sommet = element.getAsJsonObject();
         
@@ -163,7 +173,7 @@ public class LabyrintheJson {
             return charge;
             
         } catch (FileNotFoundException e) {
-            System.out.println(e.getMessage());
+            System.err.println(ERREUR_LABYRINTHE_MANQUANT);
         }
         
         return null; //stub

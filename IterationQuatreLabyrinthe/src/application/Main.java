@@ -88,8 +88,8 @@ public class Main {
                 J. Jouer
                 
                 R. Affichage de la reponse
-                S. Sauvegarder graphe
-                L. Charger graphe
+                S. Sauvegarder labyrinthe
+                L. Charger labyrinthe
                 Q. Quitter
             +---------------------------------------------+
             """;
@@ -136,6 +136,33 @@ public class Main {
       
      +------------------------------------------+   
      """;
+    
+    private static final String LABYRINTHE_CHARGE
+    = """           
+      +------------------------------------------------------------------+
+            
+            le labyrinthe a ete charge, il fait du %d par %d
+              
+      +------------------------------------------------------------------+
+      """;
+    
+    private static final String ENTREE_INCORECTE
+    = """           
+      +------------------------------+
+            
+            Entree incorecte !
+              
+      +------------------------------+
+      """;
+    
+    private static final String AFFICHEGE_LABY_DEFAULT
+    = """           
+      +--------------------------------------------------------+
+            
+            Pas de labyrinthe charge, voici celui par default
+              
+      +--------------------------------------------------------+
+      """;
     
     /**                                                  
      * La boucle de jeux.                                
@@ -400,7 +427,9 @@ public class Main {
                     if (labyrintheConstruit) {
                         System.out.println(partie);
                     } else {
-                        System.err.println(ERREUR_LABYRINTHE_PAS_CONSTRUIT);
+                    	
+                    	System.out.println(AFFICHEGE_LABY_DEFAULT);
+                        System.out.println(labyrintheParDefaut);
                     }
                     break;
                 }
@@ -467,11 +496,12 @@ public class Main {
                     if (!labyrintheConstruit) {
                         System.out.println("Aucun graphe n'a été construit. Nous prenons celui par défaut");
                         partie = labyrintheParDefaut;
-                        boucleJeux(partie);
+                        System.out.println(partie.parcoursProfondeur());
+                        System.out.println(partie.toStringSolution());
                     } else {
                         System.out.println("Voici le parcours a faire pour trouver la sortie");
-                        System.out.println(partie);
                         System.out.println(partie.parcoursProfondeur());
+                        System.out.println(partie.toStringSolution());
                     }
                     break;
                 }
@@ -487,18 +517,17 @@ public class Main {
                 case CHOIX_CHARGER: {
                     partie = LabyrintheJson.chargerLabyrinthe();
                     labyrintheConstruit = true;
+                    System.out.printf(LABYRINTHE_CHARGE, dimensionLabyrinthe[0], dimensionLabyrinthe[1]);
                     break;
                 }
                 
 
                 case CHOIX_QUITTER: {
-                    //TODO demander confirmation
                     quitter = true ;
                     break;
                 }
                 default:
-                    System.out.println("Choix incorrect");
-                    //TODO meilleur affichage d'erreur
+                    System.err.println(ENTREE_INCORECTE);
                     break;
                 }
             }
