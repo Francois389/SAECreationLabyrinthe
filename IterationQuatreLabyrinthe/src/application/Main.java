@@ -90,13 +90,12 @@ public class Main {
             """;
     
     private static final String MESSAGE_VICTOIRE 
-    = """
-            
-            +------------------------------------------+
+    = """          
+      +------------------------------------------------+
                                                        
-              Félicitation vous avez atteint la sortie
+          Félicitation vous avez atteint la sortie
                                                        
-            +------------------------------------------+
+      +------------------------------------------------+
       """;
     private static final String ERREUR_LABYRINTHE_PAS_CONSTRUIT 
     = """
@@ -123,6 +122,14 @@ public class Main {
               
       +------------------------------------------------------------------+
       """;
+    private static final String NOMBRE_COUP
+    = """
+     +------------------------------------------+
+            
+      Nombre de coup : %d
+      
+     +------------------------------------------+   
+     """;
     
     /**                                                  
      * La boucle de jeux.                                
@@ -131,15 +138,16 @@ public class Main {
      * @param partie partie en cours
      */
     private static void boucleJeux(Jeux partie) {
+        int nombreCoup ;
         boolean sortiAtteinte;
         boolean quitter;
         String choix;
         sortiAtteinte = quitter = false;
 
         System.out.println(INFO_JEUX);
-        
         System.out.println(partie);
-        //TODO Compter les coups
+        nombreCoup = 0;
+        
         do {
             
             System.out.print("Entrez votre déplacement : ");
@@ -153,6 +161,7 @@ public class Main {
                 for (int i = 0; i < choix.length(); i++) {
                     try {
                         partie.bougerJoueur(choix.charAt(i));
+                        nombreCoup ++ ;
                     } catch (Exception e) {
                         System.out.println(String.format(ERREUR_COMMANDE, 
                                 Main.HAUT,Main.BAS,Main.DROITE,Main.GAUCHE, Main.CHOIX_ABANDONNER_PARTIE));
@@ -167,6 +176,7 @@ public class Main {
         
         if (sortiAtteinte) {
             System.out.println(MESSAGE_VICTOIRE);
+            System.out.println(NOMBRE_COUP);
         } else {
             System.out.println(ABANDON_PARTIE);
         }
