@@ -154,6 +154,7 @@ public class Jeux extends Labyrinthe {
                 setPosXJoueur(getPosXJoueur() - 1);
                 break;
             }
+            
             default : {
                 System.err.println(mouvement + " lettre invalide");
                 break;

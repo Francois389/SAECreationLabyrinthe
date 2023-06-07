@@ -29,6 +29,10 @@ public class Main {
     /** Deplacement vers le haut du joueur*/
     public static final char HAUT = 'Z';
     
+    /** Retour a l'entree */
+    public static final char RESET = 'R';
+    
+    
     private static Scanner analyseurChoix;
    
     /* Lettre correspondante au choix du menu */
@@ -64,6 +68,7 @@ public class Main {
                       - Q : vers la droite
                       - D : vers la gauche
                       - F : abandonner la partie
+                      - R : retour à l'entrée
           
           Bonne chance !
       +------------------------------------------------------------------+
@@ -119,6 +124,7 @@ public class Main {
               - %c : vers la droite
               - %c : vers la gauche
               - %c : abandonner la partie
+              - %c : retour a l'entree
               
       +------------------------------------------------------------------+
       """;
@@ -141,6 +147,7 @@ public class Main {
         int nombreCoup ;
         boolean sortiAtteinte;
         boolean quitter;
+        boolean retourAuDebut;
         String choix;
         sortiAtteinte = quitter = false;
 
@@ -156,16 +163,22 @@ public class Main {
             
             //TODO Faire mieux
             quitter = (choix.toUpperCase().contains(CHOIX_ABANDONNER_PARTIE+""));
+            retourAuDebut = choix.toUpperCase().contains(RESET+"");
             
             if (!quitter) {
-                for (int i = 0; i < choix.length(); i++) {
-                    try {
-                        partie.bougerJoueur(choix.charAt(i));
-                        nombreCoup ++ ;
-                    } catch (Exception e) {
-                        System.out.println(String.format(ERREUR_COMMANDE, 
-                                Main.HAUT,Main.BAS,Main.DROITE,Main.GAUCHE, Main.CHOIX_ABANDONNER_PARTIE));
+                if (!retourAuDebut) {                
+                    for (int i = 0; i < choix.length(); i++) {
+                        try {
+                            partie.bougerJoueur(choix.charAt(i));
+                            nombreCoup ++ ;
+                        } catch (Exception e) {
+                            System.out.println(String.format(ERREUR_COMMANDE, 
+                                    Main.HAUT,Main.BAS,Main.DROITE,Main.GAUCHE, 
+                                    Main.CHOIX_ABANDONNER_PARTIE, Main.RESET));
+                        }
                     }
+                } else {
+                    partie.joueurAuDebut();
                 }
             }
             
@@ -437,6 +450,7 @@ public class Main {
                     partie.setPosYJoueur(nouvelleEntree.getPosY());
                     
                     System.out.println("l'entree et la sortie ont bien ete modifiee");
+                    break;
                 }
                 case CHOIX_JOUER: {
                     if (!labyrintheConstruit) {
