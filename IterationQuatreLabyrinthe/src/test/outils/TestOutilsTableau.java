@@ -6,7 +6,6 @@ package test.outils;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Iterator;
 
 import org.junit.jupiter.api.Test;
 
