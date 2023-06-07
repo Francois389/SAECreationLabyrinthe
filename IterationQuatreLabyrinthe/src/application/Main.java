@@ -126,7 +126,7 @@ public class Main {
     = """
      +------------------------------------------+
             
-      Nombre de coup : %d
+                Nombre de coup : %d
       
      +------------------------------------------+   
      """;
@@ -176,7 +176,7 @@ public class Main {
         
         if (sortiAtteinte) {
             System.out.println(MESSAGE_VICTOIRE);
-            System.out.println(NOMBRE_COUP);
+            System.out.printf(NOMBRE_COUP, nombreCoup);
         } else {
             System.out.println(ABANDON_PARTIE);
         }
