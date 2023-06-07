@@ -155,7 +155,7 @@ public class Main {
                         partie.bougerJoueur(choix.charAt(i));
                     } catch (Exception e) {
                         System.out.println(String.format(ERREUR_COMMANDE, 
-                                Main.HAUT,Main.BAS,Main.DROITE,Main.GAUCHE));
+                                Main.HAUT,Main.BAS,Main.DROITE,Main.GAUCHE, Main.CHOIX_ABANDONNER_PARTIE));
                     }
                 }
             }
