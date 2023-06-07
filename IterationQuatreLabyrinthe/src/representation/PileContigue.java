@@ -103,7 +103,8 @@ public class PileContigue {
     	}
     	
     	if (estPleine()) {
-        	elementsEmpiles = augmenterTableau(elementsEmpiles.length + nbElements);
+        	elementsEmpiles = augmenterTableau(  elementsEmpiles.length 
+        			                           + nbElements);
         }
         if (estVide()) {
             elementsEmpiles = augmenterTableau(10);
@@ -133,7 +134,8 @@ public class PileContigue {
         
         nbElements--;
 
-        if (elementsEmpiles.length - nbElements >= elementsEmpiles.length / 2) {
+        if (elementsEmpiles.length - nbElements >= elementsEmpiles.length 
+        		                                   / 2) {
         	elementsEmpiles = reduireTableau(nbElements);
         }
         
@@ -162,7 +164,8 @@ public class PileContigue {
 
         String ligne = "|%s\t|\n";
 
-        for (int i = 0; i < elementsEmpiles.length && elementsEmpiles[i] != null; i++) {
+        for (int i = 0; i < elementsEmpiles.length 
+        		        && elementsEmpiles[i] != null; i++) {
             resultat += String.format(ligne, elementsEmpiles[i].toString());
         }
       
