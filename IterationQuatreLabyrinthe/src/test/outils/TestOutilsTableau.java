@@ -13,8 +13,8 @@ import outils.OutilsTableau;
 import representation.Sommet;
 
 /**
- * //TODO Commenter la responsabilités de la classe TestOutilsTableau
- * @author FranÃ§ois
+ * Test unitaire de la classe OutilsTableau
+ * @author de Saint Palais François
  *
  */
 class TestOutilsTableau {
